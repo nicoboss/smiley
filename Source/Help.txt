@@ -1,0 +1,17 @@
+Help Inhaltsverziechnis
+
+1. PC Voraussetzungen
+2. Sinn und Zusammenfasung des Programms
+3. Wie komme ich zu den einstellungen die 
+    ich beim ersten Programmstart gemacht habe?
+4. Einstellungen der Schwierigkeit
+5. Spielfigur ändern
+6. Sicherungsdatei des Spielstandes machen
+7. Spielstand mit Sicherungsdatei überschreiben
+8. Spielstand umbenennen
+9. Spielstand löschen
+10. Vorstellung von allen Leuten,die am Programm
+      mitgeholfen haben
+11. Züruck zur Hauptauswahl
+
+Geben Sie bitte die Nummer des Kapitels ein, das Sie lesen möchten.

@@ -1,0 +1,5 @@
+Man stellt die Schwierigkeitsstufe ein,
+indem man bei der Hauptauswahl auf
+Schwierigkeitsstuffe wehlen drückt
+und auf eine der vier Schwierigkeitsstufen
+drückt.

@@ -1,0 +1,6 @@
+Man macht eine Sicherungsdatei
+seines Spielstandes,
+indem man bei der Hauptauswahl auf
+Spielstand Kopieren drückt
+und dann auf Sicherungsdatei erstellen
+drückt.

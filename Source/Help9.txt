@@ -1,0 +1,5 @@
+Man Löscht seinen  Spielstand,
+indem man bei der Hauptauswahl auf
+Spielstand löschen drückt,
+dann den Namen des Spielstandes eingibt
+und die Warnung mit ja bestätigt.

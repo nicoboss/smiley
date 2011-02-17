@@ -1,0 +1,4 @@
+Man wählt eine Spielfigur aus,
+indem man bei der Hauptauswahl auf
+Spielfigur wählen drückt
+und die Nummerder Spielfigur eingibt.

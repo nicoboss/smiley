@@ -1,0 +1,5 @@
+Aufgaben=10
+Schwierigkeitsstufe=1
+Spielfigur=.\Bilder\Figur1.bmp
+Protokoll=
+

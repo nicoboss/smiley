@@ -1,0 +1,4 @@
+Sie kommen wieder zu den Einstellungen 
+die Sie beim ersten Programmstart
+gemacht haben indem Sie beim
+Programmstart die Leerschlagtaste drücken.
