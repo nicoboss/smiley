@@ -1,8 +1,0 @@
-Man macht eine Sicherungsdatei
-seines Spielstandes,
-indem man bei der Hauptauswahl auf
-Spielstand Kopieren drückt,
-dann den Namen des Spielstandes eingibt,
-auf Spielstand mit Sicherungsdatei
-überschreiben drückt und dann die
-Warnung mit ja bestätigt.

@@ -1,5 +1,0 @@
-Man benennt seinen Spielstand um,
-indem man bei der Hauptauswahl auf
-Spielstand umbenennen drückt
-und dann den neuen Namen
-eingibt.

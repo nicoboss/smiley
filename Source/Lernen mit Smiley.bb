@@ -1,12 +1,17 @@
 AppTitle "Lernen mit Smiley"
 Const width=1280,height=1024
-Dim RST$(999)
+Dim RST$(1499)
 Dim DVGHJFHMHJG(8)
 Dim SteinK(8)
 Dim GetroffenS(6)
 Dim A14Z(6)
 Dim Fehler16SS(8)
 Dim sf(11)
+Dim SFRXP(4)
+Dim SFRXM(4)
+Dim WMZM$(20)
+Dim QWM$(20)
+Dim NBIMWM$(20)
 
 Const xsize=16
 Const ysize=16
@@ -16,7 +21,7 @@ Const total=xdiv*ydiv
 Const frames=25
 Const choice=total/frames
 Const fps=25
-
+Const ZeitMaxRS = 50  ; 0.1 Sekunden
 
 HidePointer
 
@@ -113,24 +118,25 @@ Global Smeili
 .PStart
 
 Modus=GfxModeExists(1280,1024,16)
-Cls
-Locate 1,1
-If Modus=0 Then Print "Dieser Bildschirm unterstützt"
-If Modus=0 Then Print "die Grafik 1280,1024 nicht!"
-If Modus=0 Then Print "Programm muss darum sofort beendet werden!"
-
-
-filename$=".\Optionen.txt"
-If FileType(filename$)=0 Then ESPS=1
-
-
-fileout = WriteFile(".\Optionen.txt")
+If Modus=0 Then
+filename$=".\Grafik.txt"
+If FileType(filename$)=0 Then
+ESPS=1
+fileout = WriteFile(".\Grafik.txt")
 WriteLine fileout,"Grafik: 1280,1024,0,2"
 CloseFile fileout
+EndIf
+Else
+filename$=".\Grafik.txt"
+If FileType(filename$)=0 Then
+ESPS=1
+fileout = WriteFile(".\Grafik.txt")
+WriteLine fileout,"Grafik: 1280,1024,0,2"
+CloseFile fileout
+EndIf
+EndIf
 
-
-
-filein = ReadFile(".\Optionen.txt")
+filein = ReadFile(".\Grafik.txt")
 Grafik$ = ReadLine$(filein)
 Pos=Instr(Grafik$," ")
 Grafik$=Right$(Grafik$,Len(Grafik$)-Pos)
@@ -163,10 +169,10 @@ ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
 
 Color 0,0,0
-Dateiname$="UptateO.txt"
-rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/UptateO.txt")
-CopyFile "UptateO.txt","Uptate.txt"
-DeleteFile "UptateO.txt"
+Dateiname$="UpdateO.txt"
+rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/UpdateO.txt")
+CopyFile "UpdateO.txt","Update.txt"
+DeleteFile "UpdateO.txt"
 
     Flip
 zielpfad$=ZPFN$
@@ -234,7 +240,7 @@ DATTEX$=webFile$
             
             tReadWebFile = readWebFile
             ;Geschwindikeit
-            If tReadWebFile Mod 1000 = 0 Then BytesReceived (readWebFile, bytesToRead)
+            If tReadWebFile Mod 100000 = 0 Then BytesReceived (readWebFile, bytesToRead)
 
         Next
         EIW$=Right (WebFile$,4)
@@ -263,10 +269,12 @@ End Function
 Function BytesReceived (posByte, totalBytes)
   If KTIBWG=1 Then
     Cls
-    Text 20, 20, "Dateien werden Hinuntergeladen bitte warten..."
+    Text 20, 20, "Dateien werden heruntergeladen bitte warten..."
     Text 20, 60,DATTEX$
-    Text 20, 100, posByte + "/" + totalBytes + " Bytes wurden Hinuntergeladen (" + Percent (posByte, totalBytes) + "%)"
-    Flip
+    If posByte<1000000 Then Text 20, 100,"0,"+Left(posByte,1)+"/" + totalBytes/1000000 + " Megabytes wurden heruntergeladen (" + Percent (posByte, totalBytes) + "%)"
+    If posByte>=1000000 Then Text 20, 100, Left(posByte,1)+","+Mid(posByte,2,1)+"/" + totalBytes/1000000 + " Megabytes wurden heruntergeladen (" + Percent (posByte, totalBytes) + "%)"
+    If posByte>=10000000 Then Text 20, 100, Left(posByte,2)+","+Mid(posByte,3,1)+"/" + totalBytes/1000000 + " Megabytes wurden heruntergeladen (" + Percent (posByte, totalBytes) + "%)"
+VWait
   EndIf
 End Function
 
@@ -275,7 +283,7 @@ Function Percent (part#, total#)
 End Function
 
 If ERINV=1 Then  Goto KINVB2
-filein = ReadFile(".\Uptate.txt")
+filein = ReadFile(".\Update.txt")
 ReadLine$(filein)
 NV$ = ReadLine$(filein)
 CloseFile filein
@@ -303,7 +311,7 @@ DrawImage HGrundH, 0,0
 Schrift = LoadFont ("Arial",50,20100)
 SetFont Schrift
 Print "Neue Version "+NV$+" wurde gefunden."
-Print "Soll sie jetzt hinuntergeladen und installiert werden?"
+Print "Soll sie jetzt heruntergeladen und installiert werden?"
 Print "Der Vorgang kann einige Minuten in Anspruch nehmen."
 Print ""
 Print "Ja: Drücke 1"
@@ -313,16 +321,19 @@ Taste=WaitKey()
 Cls
 Locate 1,1
 If Taste=49 Then
+ClsColor 255,155,255
+Cls
+Color 0,0,0
+Delay 100
 ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
-Color 255,255,255
 KTIBWG=1
 Dateiname$="Update.html"
-rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Update.html")
+rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Setup.exe")
 CreateDir ".\Update"
-CopyFile ".\Update.html",".\Update\Update.html"
-DeleteFile ".\Update.html"
-Datei$=".\Update\Update.html"
+CopyFile ".\Setup.exe",".\Update\Setup.exe"
+DeleteFile ".\Setup.exe"
+Datei$=".\Update\Setup.exe"
 ExecFile Datei$
 End
 EndIf
@@ -368,8 +379,8 @@ Auswahl5a=LoadImage (".\Bilder\Schwierigkeitsstufe wählen.jpg")
 Auswahl5b=LoadImage (".\Bilder\Schwierigkeitsstufe wählenO.jpg")
 Auswahl6a=LoadImage (".\Bilder\Spielstandoptionen.jpg")
 Auswahl6b=LoadImage (".\Bilder\SpielstandoptionenO.jpg")
-Auswahl7a=LoadImage (".\Bilder\Help.jpg")
-Auswahl7b=LoadImage (".\Bilder\HelpO.jpg")
+Auswahl7a=LoadImage (".\Bilder\Grafik.jpg")
+Auswahl7b=LoadImage (".\Bilder\GrafikO.jpg")
 Auswahl8a=LoadImage (".\Bilder\Programm beenden.jpg")
 Auswahl8b=LoadImage (".\Bilder\Programm beendenO.jpg")
 SchwiriegkeitsstuffeW0=LoadImage (".\Bilder\Schwierigkeitsstufe.jpg")
@@ -444,14 +455,13 @@ If ESPS=1 Then Goto Anfang Else Goto AnfangN
 .Anfang            
 Cls
 Locate 1,1
-Schrift = LoadFont ("Arial",30,20100)
+Schrift = LoadFont ("Arial",30,201)
 SetFont Schrift
-
-
+Anfang=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage Anfang, 0,0
 Print "Ich bedanke mich herzlich, dass Sie mein Lernprogramm installiert haben!"
 Print ""
-Print "Bei Problemen, schreiben Sie mir einfach unter nico@bosshard.ch ein E-Mail."
+Print "Bei Problemen, schreiben Sie mir einfach unter nico@bosshome.ch ein E-Mail."
 Print "Viel Spass beim lernen mit meinem Lernprogramm!"
 Input()
 Goto AnfangN
@@ -476,10 +486,27 @@ DrawImage HGrundH, 0,0
 HGrundH=LoadImage (".\Bilder\Lava.jpg")
 TileBlock HGrundH
 Print "Gib deinen Namen ein und drücke auf Enter"
+Datum$=CurrentDate$()
+DATUMM$=Mid$(Datum$,4,3)
+If DATUMM$="Jan" Then DATUMM$="Januar"
+If DATUMM$="Feb" Then DATUMM$="Februar"
+If DATUMM$="Mar" Then DATUMM$="Merz"
+If DATUMM$="Apr" Then DATUMM$="April"
+If DATUMM$="May" Then DATUMM$="Mai"
+If DATUMM$="Jun" Then DATUMM$="Juni"
+If DATUMM$="Jul" Then DATUMM$="Juli"
+If DATUMM$="Aug" Then DATUMM$="August"
+If DATUMM$="Sep" Then DATUMM$="September"
+If DATUMM$="Oct" Then DATUMM$="Oktober"
+If DATUMM$="Nov" Then DATUMM$="November"
+If DATUMM$="Dec" Then DATUMM$="Dezember"
+Protokoll1$=" "
+Protokoll2$=Left$(Datum$,2)+" "+DATUMM$+" "+Right$(Datum$,4)
 FlushMouse
 FlushKeys
-;Name$ = Input()
-Name$="Nico"
+Name$ = Input()
+
+
 If KeyHit(1)=True
 End
 EndIf
@@ -502,6 +529,27 @@ Spielfigur$=ReadLine$(filein)
 Spielfigur$=Right$(Spielfigur$,Len(Spielfigur$)-Instr(Spielfigur$,"="))
 CloseFile filein
 
+
+filein = ReadFile(Name$+".txt")
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+For i=1 To 1499
+RST$(i)=ReadLine$(filein)
+If RST$(i)=Protokoll2$ Then Protokoll1$="" Protokoll2$="" Exit
+hfjdvbkvsl=hfjdvbkvsl+1
+If hfjdvbkvsl=25 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
+Next
+CloseFile filein
+
+Protokoll$=Protokoll1$
+SpielstandS
+Protokoll$=Protokoll2$
+SpielstandS
+Protokoll$=""
+
+SeedRnd MilliSecs()
 If Aufgaben=0 Then Sound$="Harfe 3"
 If Aufgaben=1 Then Sound$="Harfe 3"
 If Aufgaben=2 Then Sound$="Harfe 3"
@@ -522,11 +570,10 @@ If Aufgaben=16 Then Sound$="Harfe 1"
 If Aufgaben=17 Then Sound$="Harfe 1"
 If Aufgaben=18 Then Sound$="Harfe 1"
 If Aufgaben=19 Then Sound$="Harfe 1"
-
+If Aufgaben=100 Then Sound$="Harfe "+Rand(1,3)
 HM=LoadSound(".\Sounds\"+Sound$+".mp3")
 LoopSound HM
 HGM=PlaySound (HM)
-
 
 
 
@@ -535,7 +582,7 @@ Goto F2
 .Fehler1
 Cls
 Locate 1,1
-Print "Der Name muss mindestens aus drei Stellen bestehen!"
+Print "Der Name muss mindestens aus drei Buchstaben bestehen!"
 Delay 3000
 FlushKeys
 Goto AnfangN
@@ -555,7 +602,7 @@ DrawImage HGrundH, 0,0
 Fig1=LoadImage (".\Bilder\Figur1.bmp")
 Fig2=LoadImage (".\Bilder\Figur2.bmp")
 Fig3=LoadImage (".\Bilder\Figur3.bmp")
-Fig4=LoadImage (".\Bilder\Figur1.bmp")
+Fig4=LoadImage (".\Bilder\Figur4.bmp")
 ResizeImage Fig1,ImageWidth(Fig1)*3,ImageHeight(Fig1)*3
 ResizeImage Fig2,ImageWidth(Fig2)*3,ImageHeight(Fig2)*3
 ResizeImage Fig3,ImageWidth(Fig3)*3,ImageHeight(Fig3)*3
@@ -565,7 +612,7 @@ DrawImage Fig2, 330,120
 DrawImage Fig3, 660,120
 DrawImage Fig4, 985,120
 Text 612,20,"Welche Spielfigur willst du haben?",1,1
-Text 612,70,"Gieb die Nummer der Spielfigur ein.",1,1
+Text 612,70,"Gib die Nummer der Spielfigur ein.",1,1
 Text 115,420,"1"
 Text 458,420,"2"
 Text 785,420,"3"
@@ -673,7 +720,6 @@ circleY=0
 Nomen=0
 Nomen1=0
 Nomen2=0
-
 ClsVB
 If jhhfgfsSFGjsgjmsgmsztzsh=1 Then
 PauseChannel MXP
@@ -706,12 +752,14 @@ Auswahl6=Auswahl6a
 Auswahl7=Auswahl7a
 Auswahl8=Auswahl8a
 
+StartZeit = MilliSecs()
+Const ZeitMaxHA = 1000  ; 1 Sekunden
+
 Repeat
 circleX=MouseX()
 circleY=MouseY()
 NNEZKAW=0
 Cls
-Locate 1,1
 DrawImage Auswahl, 0,0
 DrawImage Auswahl1, 340,110
 DrawImage Auswahl2, 340,210
@@ -723,58 +771,59 @@ DrawImage Auswahl7, 340,710
 DrawImage Auswahl8, 340,810
 DrawImage gfxCircle,circleX,circleY
 Flip
+JetztZeit = MilliSecs()
 
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,110,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto Programmstart
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto Programmstart
 Auswahl1=Auswahl1b
 NNEZKAW=1
 Else
 Auswahl1=Auswahl1a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,210,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto Uebersicht
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto Uebersicht
 Auswahl2=Auswahl2b
 NNEZKAW=1
 Else
 Auswahl2=Auswahl2a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,310,600,100) And NNEZKAW=0 Then
-;If MouseDown(1) Then Goto Programmstart
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto Protokoll
 Auswahl3=Auswahl3b
 NNEZKAW=1
 Else
 Auswahl3=Auswahl3a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,410,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto SpielfigurW
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto SpielfigurW
 Auswahl4=Auswahl4b
 NNEZKAW=1
 Else
 Auswahl4=Auswahl4a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,510,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto SchwierikeitsstufeW
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto SchwierikeitsstufeW
 Auswahl5=Auswahl5b
 NNEZKAW=1
 Else
 Auswahl5=Auswahl5a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,610,600,100) And NNEZKAW=0 Then
-;If MouseDown(1) Then Goto SchwierikeitsstufeW
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto SpielstandKopieren
 Auswahl6=Auswahl6b
 NNEZKAW=1
 Else
 Auswahl6=Auswahl6a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,710,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto Help
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto Grafik
 Auswahl7=Auswahl7b
 NNEZKAW=1
 Else
 Auswahl7=Auswahl7a
 EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,810,600,100) And NNEZKAW=0 Then
-If MouseDown(1) Then Goto EPro
+If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxHA) Then Goto EPro
 Auswahl8=Auswahl8b
 NNEZKAW=1
 Else
@@ -841,8 +890,6 @@ End
 
 
 
-
-
 .Uebersicht
 ClsVB
 jhhfgfsSFGjsgjmsgmsztzsh=0
@@ -861,7 +908,6 @@ FlushKeys
 FlushMouse
 StartZeit = MilliSecs()
 Const ZeitMaxU = 1000  ; 1 Sekunden
-
 Uebersicht1=Uebersicht1a
 Uebersicht2=Uebersicht2a
 Uebersicht3=Uebersicht3a
@@ -1032,12 +1078,79 @@ End
 
 
 
+.Protokoll
+ClsVB
+hfjdvbkvsl=0
+PSeiten=1
+filein = ReadFile(Name$+".txt")
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+For i=1 To 1499
+RST$(i)=ReadLine$(filein)
+If RST$(i)="" Then Exit
+hfjdvbkvsl=hfjdvbkvsl+1
+If hfjdvbkvsl=25 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
+Next
+CloseFile filein
 
+
+ClsColor 253,202,13
+Cls
+Color 1,1,1
+PSeitenA=1
+Schrift = LoadFont ("Arial",60,20100)
+SetFont Schrift
+Text 640,10,"Protokoll Seite "+PSeitenA+"/"+PSeiten,1
+Schrift = LoadFont ("Arial",30,20100)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste",1
+Schrift = LoadFont ("Arial",35,20100)
+SetFont Schrift
+filein = ReadFile(Name$+".txt")
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+NUESSCH=0
+For i=1 To 1499
+NUESSCH=NUESSCH+1
+RST$(i)=ReadLine$(filein)
+If RST$(i)="" Then Exit
+Text 640,(NUESSCH*35)+40,RST$(i),1
+If NUESSCH=25 Then
+WaitKey
+Cls
+PSeitenA=PSeitenA+1
+NUESSCH=0
+Schrift = LoadFont ("Arial",60,20100)
+SetFont Schrift
+Text 640,10,"Protokoll Seite "+PSeitenA+"/"+PSeiten,1
+Schrift = LoadFont ("Arial",30,20100)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste",1
+Schrift = LoadFont ("Arial",35,20100)
+SetFont Schrift
+EndIf
+Next
+
+CloseFile filein
+
+
+WaitKey
+Goto Auswahl
+End
 
 
 
 .SpielfigurW
-ClsVB
+Color 0,0,0
+ClsColor 0,0,0
+SetBuffer FrontBuffer()
+Cls
+FlushKeys
+FlushMouse
 TFormFilter 0
 Schrift = LoadFont ("Arial",50,20100)
 SetFont Schrift
@@ -1046,7 +1159,7 @@ DrawImage HGrundH, 0,0
 Fig1=LoadImage (".\Bilder\Figur1.bmp")
 Fig2=LoadImage (".\Bilder\Figur2.bmp")
 Fig3=LoadImage (".\Bilder\Figur3.bmp")
-Fig4=LoadImage (".\Bilder\Figur1.bmp")
+Fig4=LoadImage (".\Bilder\Figur4.bmp")
 ResizeImage Fig1,ImageWidth(Fig1)*3,ImageHeight(Fig1)*3
 ResizeImage Fig2,ImageWidth(Fig2)*3,ImageHeight(Fig2)*3
 ResizeImage Fig3,ImageWidth(Fig3)*3,ImageHeight(Fig3)*3
@@ -1056,7 +1169,7 @@ DrawImage Fig2, 330,120
 DrawImage Fig3, 660,120
 DrawImage Fig4, 985,120
 Text 612,20,"Welche Spielfigur willst du haben?",1,1
-Text 612,70,"Gieb die Nummer der Spielfigur ein.",1,1
+Text 612,70,"Gib die Nummer der Spielfigur ein.",1,1
 Text 115,420,"1"
 Text 458,420,"2"
 Text 785,420,"3"
@@ -1297,7 +1410,7 @@ End
 
 
 .SpielstandKopierenI2
-WarnungF$="Willst du wirklich deinen Spielstand mit der letzten Sicherungsdateien überschreiben?"
+WarnungF$="Willst du wirklich deinen Spielstand mit der letzten Sicherungsdatei überschreiben?"
 WarnungA
 If JaO=1 Then
 Cls
@@ -1308,7 +1421,7 @@ DeleteFile ".\"+Name$+".txt"
 quellpfad$ = ".\"+Name$+"BAK.txt"
 zielpfad$ = ".\"+Name$+".txt"
 CopyFile quellpfad$, zielpfad$
-Print "Speilstand erfolgreich mit der Letzten Sicherungsdatei überschrieben!"
+Print "Spielstand erfolgreich mit der Letzten Sicherungsdatei überschrieben!"
 Else
 Print "Sicherungsdatei wurde nicht gefunden!"
 EndIf
@@ -1332,7 +1445,7 @@ DrawImage HGrundH, 0,0
 HGrundH=LoadImage (".\Bilder\Lava.jpg")
 TileBlock HGrundH
 FlushKeys
-Schrift = LoadFont ("Arial",35,20100)
+Schrift = LoadFont ("Arial",35,201)
 SetFont Schrift
 Print "Gib bitte den Namen ein dessen Spielstand du auf deinen Spielstand kopieren willst."
 NameS$ = Input()
@@ -1346,7 +1459,7 @@ End
 
 .Fehler
 ClsVB
-Schrift = LoadFont ("Arial",45,20100)
+Schrift = LoadFont ("Arial",45,201)
 SetFont Schrift
 ClsColor 253,202,13
 Cls
@@ -1379,37 +1492,60 @@ End
 
 
 
-.Help
-Graphics 1280,1024,0,2
-
+.Grafik
+ClsVB
 ClsColor 255,201,14
-Repeat
 Cls
-Locate 1,1
-
-Schrift = LoadFont ("Arial",45,20100)
+Schrift = LoadFont ("Arial",55,201)
 SetFont Schrift
-Color 1,1,1
-
-Datei$=".\Help.txt"
-DateiID = ReadFile(Datei$)
-While Not Eof(DateiID)
-Print ReadLine$(DateiID)
-Wend
-ClsColor 255,255,255
-HelpK$=Input()
-If HelpK$="11" Then Goto Auswahl
-ClsColor 255,201,14
-Cls
-Locate 1,1
-Datei$=".\Help"+HelpK$+".txt"
-DateiID = ReadFile(Datei$)
-While Not Eof(DateiID)
-Print ReadLine$(DateiID)
-Wend
-Input()
-Forever
+Print "Grafik"
+Schrift = LoadFont ("Arial",28,201)
+SetFont Schrift
+fntArialB=LoadFont("Arial",32,True,False,False)
+Print ""
+SetFont fntArialB
+Print "1280,1024,16,1 (Nicht empfohlen)"
+SetFont Schrift
+Print "Bei dieser Grafik wird mein Lernprogramm so verzogen, dass es den ganzen Bildschirm bedeckt."
+Print "Vorteile:"
+Print "Keine Ablenkungen von Hintergrundsfenstern."
+Print "Wird von fast allen Bildschirmen unterstützt."
+Print "Nachteile:"
+Print "Lernprogramm wird eventuell sehr verzogen."
+Print "Spiele die sehr viel Grafik benötigen werden wegen der Hochrechnumng der Grafik sehr langsam. "
+Print "Das Fenster kann bei Problemen nicht einfach oben rechts geschlossen werden,
+Print "da das Kreuzchen schliessen fehlt."
+Print ""
+SetFont fntArialB
+Print "1280,1024,16,2 (empfolen)"
+SetFont Schrift
+Print "Vorteile:"
+Print "Die Grafik muss nicht umgerechnet werden."
+Print "sehr schneller Grafikaufbau."
+Print "Das Fenster kann bei Problenen einfach geschlossen werden"
+Print "Nachteile:"
+Print "Bei grossen Bildschirmen können  andere Fenster im Hintergrund stören"
+Print "Wird nur von ca. 80% aller Bildschirmen unterstützt."
+Print ""
+SetFont fntArialB
+Print "1280,1024,16,3 (empfohlen)"
+SetFont Schrift
+Print "Vorteile"
+Print "Dieses Fenster ist skalierbar, dass heisst man kann es manuell vergrössern und verkleinern (mit der Maus"
+Print "am Fensterrand ziehen) und so sich selber eine eigene Fenstergrösse formen"
+Print "Wird von fast allen Bildschirmen unterstützt."
+Print "Das Fenster kann bei Problenen einfach geschlossen werden"
+Print "Nachteile:"
+Print "Wird nach jedem Programmstart automatisch wieder auf den Standard verkleinert."
+Print "Spiele die sehr viel Grafik benötigen werden wegen der Umrechnung der Grafik sehr langsam."
+Print ""
+Print "Um die Grafick zu ändern, schreiben Sie einfach in die Datei .\Grafik.txt die Grafik rein z.b. 1280,1024,16,3."
+Print ""
+Print "Zur Auswahl mit beliebiger Taste."
+WaitKey
+Goto Auswahl
 End
+
 
 
 
@@ -1464,18 +1600,10 @@ EndIf
 End
 
 
-.Karte
-ClsVB
-HGrundH=LoadImage (".\Bilder\Karte.jpg")
-DrawImage HGrundH, 0,0
-WaitKey ()
-Goto Programmstart
-End
-
-
 
 ;Programmstart
 .Programmstart
+Protokoll$=""
 FreeSound Game
 ResumeChannel HGM
 SpielstandS
@@ -1526,6 +1654,7 @@ If Aufgaben=16 Then Goto Teil17
 If Aufgaben=17 Then Goto Teil18
 If Aufgaben=18 Then Goto Teil19
 If Aufgaben=19 Then Goto Teil20
+If Aufgaben=100 Then Goto Uebersicht
 Goto Vorfilm
 End
 
@@ -1915,7 +2044,7 @@ End
 .Teil11
 ClsVB
 FY=950
-FX=580
+FX=570
 G=1
 SFGG=0
 GZSFG
@@ -1951,55 +2080,118 @@ g=g+1
 GZSFG
 SFGG=SFGG+1
 Until SFGG=4
-Goto Aufgabe8
+SXM
+SXM
+SXM
+SXM
+SXM
+SXM
+SXM
+SXM
+SYP
+SYP
+g=g+1
+GZSFG
+SYP
+g=g+1
+GZSFG
+SFGG=SFGG+1
+
+SYP
+SYP
+SYP
+Goto Aufgabe12
 End
 
 .Teil13
 ClsVB
 FY=950
 FX=675
-G=1
+G=3
 SFGG=0
 GZSFG
 HGrundSF=LoadImage (".\Bilder\07.jpg")
-Repeat
+SYP
+SYP
+SYP
+SXM
+SXM
+SXM
+SXM
+g=g+1
+GZSFG
+SYP
+SYP
 SYP
 SYP
 g=g+1
 GZSFG
 SYP
+SYP
+SYP
+SXP
+SYP
+SXP
 g=g+1
 GZSFG
-SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+SYP
+SYP
+SYP
+SYP
+SXP
+SYP
+SYP
+Goto Aufgabe13
 End
 
 .Teil14
 ClsVB
-FY=950
-FX=675
-G=1
+FY=650
+FX=1200
+G=2
 SFGG=0
 GZSFG
 HGrundSF=LoadImage (".\Bilder\08.jpg")
-Repeat
-SYP
-SYP
+SXM
+SXM
+SXM
+SXM
+SXM
 g=g+1
 GZSFG
 SYP
+SXM
+SXM
+SXM
+SXM
+SXM
 g=g+1
 GZSFG
-SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+SYP
+SXM
+SXM
+SXM
+SXM
+SXM
+g=g+1
+GZSFG
+SXM
+SXM
+SYP
+SXM
+SXM
+SXM
+g=g+1
+GZSFG
+SYP
+SYP
+Goto Aufgabe14
 End
 
 .Teil15
 ClsVB
 FY=950
-FX=675
+FX=690
 G=1
 SFGG=0
 GZSFG
@@ -2013,35 +2205,35 @@ SYP
 g=g+1
 GZSFG
 SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+Until SFGG=2
+SYP
+Goto Aufgabe15
 End
 
 .Teil16
 ClsVB
 FY=950
-FX=675
+FX=50
 G=1
 SFGG=0
 GZSFG
-HGrundSF=LoadImage (".\Bilder\10jpg")
+HGrundSF=LoadImage (".\Bilder\10.jpg")
 Repeat
 SYP
 SYP
-g=g+1
-GZSFG
 SYP
 g=g+1
 GZSFG
 SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+Until SFGG=7
+SYP
+Goto Aufgabe16
 End
 
 .Teil17
 ClsVB
 FY=950
-FX=675
+FX=450
 G=1
 SFGG=0
 GZSFG
@@ -2055,18 +2247,32 @@ SYP
 g=g+1
 GZSFG
 SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+Until SFGG=2
+SYP
+SXP
+g=g+1
+GZSFG
+SXP
+SXP
+SXP
+g=g+1
+GZSFG
+SYP
+SYP
+
+Goto Aufgabe17
 End
 
 .Teil18
 ClsVB
 FY=950
-FX=675
+FX=730
 G=1
 SFGG=0
 GZSFG
 HGrundSF=LoadImage (".\Bilder\12.jpg")
+BildSU=HGrundSF
+CLSVB
 Repeat
 SYP
 SYP
@@ -2076,14 +2282,69 @@ SYP
 g=g+1
 GZSFG
 SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+Until SFGG=2
+SYP
+SYP
+SetBuffer FrontBuffer()
+LockBuffer FrontBuffer()
+Repeat
+rgb=ReadPixelFast(x,y,FrontBuffer)
+r=(rgb And $FF0000)/$10000 
+g=(rgb And $FF00)/$100
+b=rgb And $FF
+r=r/4
+g=g/4
+b=b/4
+Farbe=r*$10000 + g*$100 + b
+WritePixelFast x,y,Farbe
+x=x+1
+If x=1280 Then y=y+1 x=0
+If y=1023 And x=1279 Then
+UnlockBuffer FrontBuffer()
+Exit
+EndIf
+Forever
+Schrift = LoadFont ("Arial",40,201)
+SetFont Schrift
+Color 0,255,0
+Text 640,10,"Du bist nicht mehr weit von deinem Haus entfernt,",1
+Text 640,60,"Achtung: vor deinem Haus wartet schon dein Feind",1
+Text 640,110,"auf dich!",1
+Text 640,160,"Ich war ihm begegnet,  konnte mich aber zum Glück noch",1
+Text 640,210,"ganz knapp in diesem hohlen Baumstamm verstecken!",1
+Schrift = LoadFont ("Arial",30,201)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste",1
+WaitKey
+CLSVB
+G=4
+SFGG=0
+GZSFG
+SXM
+SXM
+SXM
+SYP
+SYP
+SYP
+g=g+1
+GZSFG
+SYP
+SYP
+g=g+1
+GZSFG
+SYP
+g=g+1
+GZSFG
+SFGG=SFGG+1
+SYP
+SYP
+Goto Aufgabe18
 End
 
 .Teil19
 ClsVB
 FY=950
-FX=675
+FX=350
 G=1
 SFGG=0
 GZSFG
@@ -2091,17 +2352,34 @@ HGrundSF=LoadImage (".\Bilder\13.jpg")
 Repeat
 SYP
 SYP
-g=g+1
-GZSFG
 SYP
 g=g+1
 GZSFG
 SFGG=SFGG+1
-Until SFGG=4
-Goto Aufgabe8
+Until SFGG=6
+SYP
+SYP
+Goto Aufgabe19
 End
 
 .Teil20
+ClsVB
+FY=950
+FX=570
+G=1
+SFGG=0
+GZSFG
+HGrundSF=LoadImage (".\Bilder\14e.jpg")
+SYP
+SYP
+SYP
+g=g+1
+GZSFG
+SFGG=SFGG+1
+SYP
+SYP
+SYP
+Goto LAufgabe
 End
 
 
@@ -2115,9 +2393,9 @@ Print "Plusrechnen"
 Schrift = LoadFont ("Arial",40,201)
 SetFont Schrift
 Print ""
-Print "Rechne die volgenden Rechnungen aus.
-Print "Du musst mindestens 17 vun zwanzig Rechnungen richtig lösen,"
-Print "damit du wieter zur nächsten Aufgabe kommst."
+Print "Rechne die folgenden Rechnungen aus.
+Print "Du musst mindestens 17 von zwanzig Rechnungen richtig lösen,"
+Print "damit du weiter zur nächsten Aufgabe kommst."
 Print ""
 Print "Viel Glück!"
 Input()
@@ -2202,7 +2480,8 @@ If Ergebnis<>Zahl1+Zahl2 Then
 Print "Falsch!"
 Falsch=Falsch+1
 EndIf
-Delay 2000
+FlushKeys
+Delay 1500
 Cls
 Locate 1,1
 If Richtig =1 Then DrawImage HGrund1, 200,0
@@ -2248,7 +2527,7 @@ If Richtig =20 Then DrawImage HGrund20, 1064,768 Delay 3000 Goto Aufgabe1b
 Until RichtigR=1
 RichtigR=0
 Aufgabe=Aufgabe+1
-Until Aufgabe > 20
+Until Aufgabe=2
 
 
 .Aufgabe1b
@@ -2256,8 +2535,14 @@ Cls
 Locate 1,1
 FlushKeys
 FlushMouse
-Print "Du hast "+ Richtig+ " Aufgaben richtig gelöst!"
-If Richtig<17 Then Print "Du hast zu viele Fehler, versuche die Aufgabe nochmals!" Delay 4000 Goto Aufgabe1
+Print "Du hast "+(20-Falsch)+"/20 Aufgaben richtig gelöst!"
+Input()
+Protokoll$="Plusrechnen"
+SpielstandS
+Protokoll$="Punkte: "+(20-Falsch)+"/20"
+SpielstandS
+If 20-Falsch<17 Then Print "Du hast zu viele Fehler, versuche die Aufgabe nochmals!" Delay 4000 SpielstandS Goto Aufgabe1
+SpielstandS
 If UebersichtA=1 Then Goto Uebersicht3
 ;Spielstandsicherung
 Aufgaben=Aufgaben+1
@@ -2279,7 +2564,7 @@ Print "Wörterdiktat"
 Schrift = LoadFont ("Arial",40,201)
 SetFont Schrift
 Print ""
-Print "Zuerst wird ein Wort je nach Schwierikeitsstufe
+Print "Zuerst wird ein Wort je nach Schwierikeitsstufe"
 Print "0.75 bis 3 Sekunden lang gezeigt, dann wird es gelöscht."
 Print "Du musst es dann fehlerfrei schreiben (und Enter drücken)."
 Print ""
@@ -2309,7 +2594,7 @@ Input()
 ClsVB
 ClsColor 255,0,0
 Cls
-Color 255,255,255 
+Color 255,255,255
 DrawImage HGrundH, 0,0
 Locate 1,1
 Schrift = LoadFont ("Arial",24)
@@ -2412,6 +2697,7 @@ Delay 1000
 Color 0,0,0
 Rect 0,0,200,1024
 Color 255,255,255
+If WortRichtig=0 Then WDRVP=WDRVP+1
 Until WortRichtig=1
 WortRichtig=0
 FlushKeys
@@ -2420,6 +2706,10 @@ Until Worteraten = 20
 ;Spielstandsicherung
 FlushKeys
 FlushMouse
+Protokoll$="Wörterdiktat"
+SpielstandS
+Protokoll$="Punkte: "+(20-WDRVP)+"/20"
+SpielstandS
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
 Smeili=2
@@ -2694,7 +2984,7 @@ End
 Locate 1,1
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Print "Was dachte der Zinnsoldaten als das Boot untergieng?"
+Print "Was dachte der Zinnsoldaten als das Boot unterging?"
 Zinnsoldat3$ = Input()
 If Zinnsoldat3$ = "Er dachte, dass er die Täntzerin nie wieder sehen würde" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
 If Zinnsoldat3$ = "Er dachte an die Tänzerin" Then Print " Fast Richtig aber die Rechtschriebung nicht 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich1
@@ -2709,13 +2999,13 @@ End
 Locate 1,1
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-If Textverstentnis = 0 Then Print "Lese bitte die Geschichte Bitte Später noch einmahl etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 1 Then Print "Lese bitte die Geschichte Bitte Später noch einmahl etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 0 Then Print "Lese bitte die Geschichte bitte Später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 1 Then Print "Lese bitte die Geschichte bitte Später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 If Textverstentnis = 2 Then Goto ZinnD
 If Textverstentnis = 3 Then Goto ZinnD
 If Textverstentnis = 4 Then Goto ZinnD
 If Textverstentnis = 5 Then Goto ZinnD
-If Textverstentnis = 6 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Goto PunkteZinn
+If Textverstentnis = 6 Then Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
 End
 .ZinnD
 Locate 1,1
@@ -2734,12 +3024,12 @@ End
 Locate 1,1
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-If Textverstentnis = 2 Then Print "Lese bitte die Geschichte Bitte Später noch einmahl etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 3 Then Print "Lese bitte die Geschichte Bitte Später noch einmahl etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 2 Then Print "Lese bitte die Geschichte bitte Später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 3 Then Print "Lese bitte die Geschichte bitte Später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 If Textverstentnis = 4 Then Goto ZinnE
 If Textverstentnis = 5 Then Goto ZinnE
-If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Goto PunkteZinn
-If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Goto PunkteZinn
+If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
+If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
 End
 .ZinnE
 Locate 1,1
@@ -2758,10 +3048,10 @@ End
 Locate 1,1
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-If Textverstentnis = 4 Then Print "Lese bitte die Geschichte Bitte später noch einmal etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 5 Then Print "Lese bitte die Geschichte Bitte später noch einmal etwas genauer!" Delay 3000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Goto PunkteZinn
-If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Goto PunkteZinn
+If Textverstentnis = 4 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 5 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
+If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverstäntniss (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
 Goto Programmstart
 End
 
@@ -2780,6 +3070,7 @@ End
 .Nomen
 ClsVB
 PauseChannel HGM
+Protokoll$="Nomen" SpielstandS
 FlushKeys
 Nomen = 0   Nomen1 = 0    Nomen2 = 0 
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
@@ -2801,7 +3092,7 @@ Else
   Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Satz"
 
 Print "Welcher Artikel hat das Nomen?"
@@ -2815,7 +3106,7 @@ Else
 Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "der"
 
 Print
@@ -2829,7 +3120,7 @@ Else
 Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Sätze"
 Print
 
@@ -2851,7 +3142,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1 
 PlayMusic (".\Sounds\Door1.mp3")
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Brief"
 
 Print
@@ -2865,7 +3156,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "der"
 
 Print
@@ -2878,7 +3169,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Briefe"
 Print
 
@@ -2901,7 +3192,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Tagebuch"
 
 Print
@@ -2915,7 +3206,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "das"
 
 Print
@@ -2928,7 +3219,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Tagebücher"
 Print
 
@@ -2951,7 +3242,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Dorf"
 
 Print
@@ -2965,7 +3256,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "das"
 
 Print
@@ -2978,12 +3269,12 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "Dörfer"
 Print
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
-Smeili=2
+Protokoll$="Nomen"
 Goto Programmstart
 End
 
@@ -2995,8 +3286,6 @@ End
 
 .Aufgabe5
 ClsVB
-; (c) Graham Kennedy
-AppTitle "Laborint"
 Global Looo
 .maze_endofintro
 
@@ -3501,8 +3790,8 @@ SetFont Schrift
 Aus=1
 	maze_startup("mazeblocks.png",16,16)
 
-	mwidth = 32; 	set a variable for the width 
-	mheight = 32;	and the height of the maze
+	mwidth = 50;32; 	set a variable for the width 
+	mheight = 50;32;	and the height of the maze
 
 
 	SetBuffer BackBuffer()
@@ -3512,35 +3801,37 @@ Aus=1
 	finished = 0
 	x = 0
 	y = 0
+	LabLA=0
 	
-	
-	a$="n"
+	a$="1"
 	k = Asc(a$)
 .StartL
-	a$="n"
+	a$="1"
 	 Looo=0
 	While Not finished
 		Cls
 		
-		If a$ = "n" Then
+		If a$ = "1" Then
 			If m.maze <> Null Then maze_Delete(m)
 			m.maze = maze_create(mwidth,mheight,MilliSecs(),0)
 			x = 0
 			y = 0		
 		End If
 		
-		If a$="r" And x <> mwidth-1 And y <> mheight-1 Then
+		If a$="2" And x <> mwidth-1 And y <> mheight-1 Then
+		LabLA=1
 			maze_clearRoute(m)
 			maze_solve(m,x,y,mwidth-1,mheight-1)
 		End If
 		
-		If a$="s" Then  maze_save(m,"maze.maz")
-		If a$="l" Then
+		If a$="4" Then  maze_save(m,"maze.maz")
+		If a$="5" Then
 			maze_delete(m)
 			m = maze_load("maze.maz")
 		End If
 		
-		If a$ = "c" Then maze_clearroute(m)
+		If a$ = "3" Then maze_clearroute(m)
+		
 		
 		If k = 28 And maze_NorthOpen(m,x,y) Then
 			y=y-1
@@ -3557,30 +3848,50 @@ Aus=1
 		If k = 31 And maze_WestOpen(m,x,y) Then
 			x=x-1
 		End If
+
+	maze_display(m,1)
+
+	If a$ = "6" Then
+	Bild = CreateImage (800,800)
+	SetBuffer ImageBuffer (Bild)
+	CopyRect 0,0,800,800,0,0,FrontBuffer(),ImageBuffer(Bild)
+	SetBuffer FrontBuffer()
+	Repeat
+	Cls
+	Print "Unterstützte Bildformate: Bmp, Jpg, Png, Pcx, Tga, Iff"
+	Print "Pfad und Dateinamen um das Labyrinth zu speichern z.b. C:\Users\Nico\Desktop\newball.jpg:"
+	Pfad$=Input()
+	OK=SaveImage (Bild,Pfad$)
+	If OK=0 Then Print "Ungültiger Pfad!" Delay 1000
+	Until OK=1
+	SaveBuffer(BackBuffer(),"maze.bmp")
+	maze_display(m,1)
+	EndIf
+	maze_drawincell(x,y,255,255,255)
+	Text 810,0, "Bewege dich mit den Pfeiltasten!"
+	Text 810,30,"Start: Oben links Ziel: Unten rechts"	
+	Text 810,60,"1 = Neues Labyrinth"
+	Text 810,90,"2 = Zeig mir die Lösung"
+	Text 810,120,"3 = Lösungen nicht mehr anzeigen"
+	Text 810,150,"4 = Labyrinth sichern"
+	Text 810,180,"5 = Gesichertes Labyrinth laden"
+	Text 810,210,"6 = Labyrinth exportieren"
+	Flip
+
+
 		
-		maze_display(m,1)
-		maze_drawincell(x,y,255,255,255)
-						Text 520,0, "Bewege dich mit den Pfeiltasten!"
-		Text 520,30,"X = Zum Spiel"
-		Text 520,60,"N = Neues Labyrinth"
-		Text 520,90,"R = Zeig mir die Lösung"
-		Text 520,120,"C = Lösungen nicht mehr anzeigen"
-		Text 520,150,"S = Labyrinth sichern"
-		Text 520,180,"L = Gesichertes Labyrinth laden"
-		Flip
 
-		If k = 13 Then
-			SaveBuffer(FrontBuffer(),"maze.bmp") 
-		End If
-
-		k = WaitKey()
-		a$ = Lower$(Chr$(k))
-		If a$ = "x" Then Goto Teil6
-If x=31 And y=31 Then
+If x=49 And y=49 Then
+If LabLA=1 Then Protokoll$="Labyrinth (Mithilfe der Lösung)" Else Protokoll$="Labyrinth"
+SpielstandS
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
-Goto Teil6
+FlushKeys
+FlushMouse
+Goto Programmstart
 EndIf
+		k = WaitKey()
+		a$ = Lower$(Chr$(k))
 	Wend
 		
 
@@ -3604,9 +3915,9 @@ Restore Woerter
 Dim Wort$(Max)
 Print "Errate das Wort indem du einzelne"
 Print "Buchstaben vorschlägst."
-Print "Die ? geben dier an, wieviele Buchstaben das Wort hat."
-Print "Du kannst nur einen Buchstaben auf einmahl erraten."
-Print "Tipp: alle Wörter sind Verben."
+Print "Die ? geben dir an, wieviele Buchstaben das Wort hat."
+Print "Du kannst nur einen Buchstaben auf einmal erraten."
+Print "Tipp: es hat keine Nomen."
 
 .Woerter
 Data "ihm", "ihn", "ihr", "ihnen", "riechen", "fernsehen", "bezahlen"
@@ -3660,7 +3971,7 @@ If Len (Zeichen$)>1 Or Len (Zeichen$)=0 Then
 Cls
 Locate 1,1
 DrawImage HGrundH1, 0,0
-Print "Du kannst nur einen Buchstaben auf einmahl erraten!"
+Print "Du kannst nur einen Buchstaben auf einmal erraten!"
 Delay 2000
 Cls
 Locate 1,1
@@ -3689,14 +4000,15 @@ ClsVB
 HGrundH1=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH1, 0,0
 If Geraten$ = Zufall$ Then
-Print "Häzlichen Glückwunsch!"
-Print "Du hast das Wort in "+Versuche+" Versuche herausefunden!"
+Print "Herzlichen Glückwunsch!"
+Print "Du hast das Wort in "+Versuche+" Versuchen herausgefunden!"
 Input()
 Else
-Print "Das Wort währe "+Zufall$+" gewesen!"
+Print "Das Wort wäre "+Zufall$+" gewesen!"
 Print ""
-Print "Du hast das Wort leider nicht in 10 Versuche herausgevunden."
+Print "Du hast das Wort leider nicht in 10 Versuchen herausgefunden."
 Print "Versuche die Aufgabe erneut."
+Protokoll$="Wörter erraten Versuche: "+Versuche SpielstandS
 Input()
 Goto Aufgabe6
 EndIf
@@ -3714,6 +4026,7 @@ Return
 
 
 .Aufgabe7
+Protokoll$="Verben" SpielstandS
 Goto Verben
 End
 
@@ -3742,7 +4055,7 @@ Else
 Verben = Verben +1
 PlayMusic (".\Sounds\Door1.mp3")
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "fährt"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -3754,10 +4067,10 @@ If Ratwort1$ = "fahren" Then
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "fahren"
 Print
-Print "Und wie heisst das Verb in Präteritum?"
+Print "Und wie heisst das Verb im Präteritum?"
 Repeat
 Ratwort1$ = Input()
 If Ratwort1$ = "fuhr" Then
@@ -3767,7 +4080,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "fuhr"
 Print
 
@@ -3795,7 +4108,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "zeichne"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -3808,10 +4121,10 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "zeichnen"
 Print
-Print "Und wie heisst das Verb in Präteritum?"
+Print "Und wie heisst das Verb im Präteritum?"
 Repeat
 Ratwort1$ = Input()
 If Ratwort1$ = "zeichnete" Then
@@ -3821,7 +4134,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "zeichnete"
 Print
 
@@ -3849,7 +4162,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "kennst"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -3862,10 +4175,10 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "kennen"
 Print
-Print "Und wie heisst das Verb in Präteritum?"
+Print "Und wie heisst das Verb im Präteritum?"
 Repeat
 Ratwort1$ = Input()
 If Ratwort1$ = "kannte" Then
@@ -3875,7 +4188,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben3=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben3=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "kannte"
 Print
 
@@ -3917,11 +4230,11 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 
 Until Ratwort1$ = "heissen"
 Print
-Print "Und wie heisst das Verb in Präteritum?"
+Print "Und wie heisst das Verb im Präteritum?"
 Repeat
 Ratwort1$ = Input()
 If Ratwort1$ = "hiess" Then
@@ -3931,7 +4244,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "hiess"
 Print
 If UebersichtA=1 Then Goto Uebersicht3
@@ -3949,7 +4262,7 @@ Locate 1,1
 Color 1,1,1
 ClsColor 253,202,13
 Cls
-Schrift = LoadFont ("Arial",45,20100)
+Schrift = LoadFont ("Arial",45,201)
 SetFont Schrift
 Print "Beschrieb"
 Schrift = LoadFont ("Arial",24)
@@ -3961,7 +4274,7 @@ Print "Gar nichts bedeutet Falsch!"
 Print "Mit einem weiteren Druck auf Enter hörst du dann wieder ein Lied."
 Print "So geht es noch zehn mal weiter bis du dann schliesslich wieder zum Spiel kommst.
 Print "Achtung!
-Print "Wenn du mehr als drei von zehn Aufgaben falsch hast kommst du wieder genau zu diesem Text den du jetzt liest!
+Print "Wenn du mehr als drei von zehn Aufgaben falsch hast, kommst du wieder genau zu diesem Text den du jetzt liest!
 Print "Viel Spass!"
 Game= LoadSound (".\Sounds\0001Geame.mp3")
 Input()
@@ -4102,9 +4415,9 @@ Locate 1,1
 ClsColor 253,202,13
 Cls
 Print "Du hast "+ RichtigLZ+" Aufgaben gelöst!"
+Protokoll$="Zeitverstänbtnis Punkte: "+RichtigLZ+"/10" SpielstandS
 Input()
 ResumeChannel kamelpianoP
-
 If  RichtigLZ=7 Or  RichtigLZ>7 Then
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
@@ -4123,8 +4436,7 @@ End
 .Aufgabe9
 PauseChannel HGM
 ClsVB
-Cls
-Locate 1,1
+Protokoll$="Wize" SpielstandS
 Witze=0
 Color 0,255,255 
 Schrift = LoadFont ("Arial",45,20100)
@@ -4139,7 +4451,7 @@ Print "Diese Aufgabe ist zum Entspannen gedacht."
 Print "Mit einem Druck auf Enter erscheint ein Witz."
 Print "Wenn du dann nochmals auf Enter drückst erscheint ein weiterer Witz."
 Print "So geht es immer weiter bis du 10 Witze gelesen hast."
-WaitKey ()
+Input()
 ClsColor 255,0,0
 Cls
 Color 255,255,255 
@@ -4205,15 +4517,15 @@ If Zufall=3 Then Print "Nun, wenn ich meinen Fernseher anmache, kommt auch "
 If Zufall=3 Then Print "erst der Ton, und .... Durchgefallen! der Nächste"
 If Zufall=3 Then Print "bitte. Was ist schneller, Licht oder Schall?"
 If Zufall=3 Then Print "Licht! Und warum? Wenn ich mein Radio anmache"
-If Zufall=3 Then Print "geht auch zuerst das Licht und ...Durchgefallen, "
+If Zufall=3 Then Print "geht auch zuerst das Licht und ...Durchgefallen,"
 If Zufall=3 Then Print "raus. Der Nächste, bitte. Was ist schneller Licht"
 If Zufall=3 Then Print "oder Schall? Licht, ist doch klar! Aha.Und warum?"
 If Zufall=3 Then Print "Nun, die Augen sind doch am Kopf viel weiter"
 If Zufall=3 Then Print "vorn als die Ohren..."
 
-If Zufall=4 Then Print "Der Lehrer: Lukas, warum kommst du schon "
-If Zufall=4 Then Print "wieder zu spät? "
-If Zufall=4 Then Print "Ich habe von einem Fussballspiel geträumt. "
+If Zufall=4 Then Print "Der Lehrer: Lukas, warum kommst du schon"
+If Zufall=4 Then Print "wieder zu spät?"
+If Zufall=4 Then Print "Ich habe von einem Fussballspiel geträumt."
 If Zufall=4 Then Print "Das ist doch kein Grund, zu spät zukommen!"
 If Zufall=4 Then Print "Doch! Es gab Verlängerung!"
 
@@ -4221,7 +4533,7 @@ If Zufall=5 Then Print "Hören Sie mal zu, sagt der Polizist zum Golfspieler,"
 If Zufall=5 Then Print "ihr Ball ist auf die Strasse geflogen und hat"
 If Zufall=5 Then Print "dort die Frontscheibe eines Feuerwehrwagens im"
 If Zufall=5 Then Print "Einsatz zertrümmert, der deswegen gegen eine "
-If Zufall=5 Then Print "Mauer geprallt ist. Das Haus, das gelöscht werden "
+If Zufall=5 Then Print "Mauer geprallt ist. Das Haus, das gelöscht werden"
 If Zufall=5 Then Print "sollte ist bis auf die Grundmauer niedergebrannt"
 If Zufall=5 Then Print "Was haben Sie zu diesem Schlamassel zu sagen?"
 If Zufall=5 Then Print "Golfer: Wo ist mein Golfball!"
@@ -4461,7 +4773,6 @@ FlushKeys
 FlushMouse
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=9
-Smeili=1
 FlushKeys
 FlushMouse
 Goto Programmstart
@@ -4475,6 +4786,7 @@ PauseChannel HGM
 ClsVB
 Fa=0
 Art=0
+ARichtig=0
 Schrift = LoadFont ("Arial",45,20100)
 SetFont Schrift
 FlushKeys
@@ -4487,11 +4799,8 @@ Print "Bei dieser Aufgabe muss man den Artikel anklicken der"
 Print "zum oben stehenden Nomen passt."
 Print "Bei dieser Aufgabe musst du mindestens 17 von 20 richtig"
 Print "haben, sonst kommst du wieder zum Spiel oder zur Übersicht."
-Print "Noch ein Tipp, wenn du keinen Curser mehr siehst dann erscheint"
-Print "der Text entweder nur eine gewisse Zeit oder du kannst eine"
-Print "beliebige Taste drücken wie es hier der Fall ist!"
-WaitKey ()
-Restore Woerter2W
+Input()
+Restore Woerter2A
  ;Einleseschlaufe für 50 Wörter
       Const MaxsA = 49
 Dim Wort$(MaxsA)
@@ -4525,45 +4834,22 @@ Cls
 ;EndIf
 ;Spielstandsicherung
 
-If Zufall$=1 Then Goto ArFehler
-If Zufall$=2 Then Goto ArFehler
-If Zufall$=3 Then Goto ArFehler
-If Zufall$=4 Then Goto ArFehler
-If Zufall$=5 Then Goto ArFehler
-If Zufall$=6 Then Goto ArFehler
-If Zufall$=7 Then Goto ArFehler
-If Zufall$=8 Then Goto ArFehler
-If Zufall$=9 Then Goto ArFehler
-If Zufall$=10 Then Goto ArFehler
-If Zufall$=11 Then Goto ArFehler
-If Zufall$=12 Then Goto ArFehler
-If Zufall$=13 Then Goto ArFehler
-If Zufall$=14 Then Goto ArFehler
-If Zufall$=15 Then Goto ArFehler
-If Zufall$=16 Then Goto ArFehler
-If Zufall$=17 Then Goto ArFehler
-If Zufall$=18 Then Goto ArFehler
-If Zufall$=19 Then Goto ArFehler
-If Zufall$=20 Then Goto ArFehler
-If Zufall$=21 Then Goto ArFehler
-If Zufall$=22 Then Goto ArFehler
-If Zufall$=23 Then Goto ArFehler
-If Zufall$=24 Then Goto ArFehler
-If Zufall$=25 Then Goto ArFehler
-If Zufall$=26 Then Goto ArFehler
-If Zufall$=27 Then Goto ArFehler
-If Zufall$=28 Then Goto ArFehler
-If Zufall$=29 Then Goto ArFehler
-If Zufall$=30 Then Goto ArFehler
-
-
 
 Cls
 Locate 1,1
-Bild1= LoadImage (".\Bilder\Artikel.jpg")
-Bild2=LoadImage (".\Bilder\ArtikelK1.jpg")
-Bild3=LoadImage (".\Bilder\ArtikelK2.jpg")
-Bild4=LoadImage (".\Bilder\ArtikelK3.jpg")
+HGrundH= LoadImage (".\Bilder\Gletscher.jpg")
+ArtikelK1=LoadImage (".\Bilder\ArtikelK1.jpg")
+ArtikelK2=LoadImage (".\Bilder\ArtikelK2.jpg")
+ArtikelK3=LoadImage (".\Bilder\ArtikelK3.jpg")
+ArtikelK1O=LoadImage (".\Bilder\ArtikelK1O.jpg")
+ArtikelK2O=LoadImage (".\Bilder\ArtikelK2O.jpg")
+ArtikelK3O=LoadImage (".\Bilder\ArtikelK3O.jpg")
+MaskImage ArtikelK1,255,0,0
+MaskImage ArtikelK2,255,0,0
+MaskImage ArtikelK3,255,0,0
+MaskImage ArtikelK1O,255,0,0
+MaskImage ArtikelK2O,255,0,0
+MaskImage ArtikelK3O,255,0,0
 SetBuffer BackBuffer ()
 
 
@@ -4575,71 +4861,40 @@ SetBuffer BackBuffer()
 Color 1,1,1
 
 
-hotX=0
+hotX=440
 hotY=100
 hotW=400
-hotH=100
+hotH=108
 
-hotX1=0
-hotY1=200
+hotX1=440
+hotY1=208
 hotW1=400
-hotH1=100
+hotH1=108
 
-hotX2=0
-hotY2=300
+hotX2=440
+hotY2=316
 hotW2=400
-hotH2=100
+hotH2=108
 
-HGrundH=Bild1
 Schrift = LoadFont ("Arial",90,20100)
 SetFont Schrift
 
 
 
-.ArtikelMaus
+Repeat
+ARTMG=0
 circleX=MouseX()
 circleY=MouseY()
-
-Cls
-Locate 1,1
-
-DrawImage HGrundH, 1,0
-DrawImage gfxCircle,circleX,circleY
-Text 1,1,Zufall$
 Flip
-If ImageRectOverlap (gfxCircle,circleX,circleY,hotX,hotY,hotW,hotH) Goto ArtikelMaus1
-If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX1,hotY1,hotW1,hotH1) Goto ArtikelMaus2
-If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX2,hotY2,hotW2,hotH2) Goto ArtikelMaus3
 Cls
-HGrundH=Bild1
-Goto ArtikelMaus
-End
+DrawImage HGrundH, 1,0
+Text 640,1,Zufall$,1
+If ImageRectOverlap (gfxCircle,circleX,circleY,hotX,hotY,hotW,hotH) Then DrawImage ArtikelK1O,440,100 ARTMG=1 ArtikelK=1 Else DrawImage ArtikelK1,440,100
+If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX1,hotY1,hotW1,hotH1) Then DrawImage ArtikelK2O,440,208 ARTMG=1 ArtikelK=2 Else DrawImage ArtikelK2,440,208
+If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX2,hotY2,hotW2,hotH2) Then DrawImage ArtikelK3O,440,316 ARTMG=1 ArtikelK=3 Else DrawImage ArtikelK3,440,316
+DrawImage gfxCircle,circleX,circleY
+Until MouseDown(1) And ARTMG=1
 
-.ArtikelMaus1
-;Der
-HGrundH=Bild2
-If MouseDown(1) Then ArtikelK=1 Goto ArtikelEntscheid
-Goto ArtikelMaus
-End
-
-
-.ArtikelMaus2
-;Die
-HGrundH=Bild3
-If MouseDown(1) Then ArtikelK=2 Goto ArtikelEntscheid
-Goto ArtikelMaus
-End
-
-
-.ArtikelMaus3
-;Das
-HGrundH=Bild4
-If MouseDown(1) Then ArtikelK=3 Goto ArtikelEntscheid
-Goto ArtikelMaus
-End
-
-
-.ArtikelEntscheid
 PPE=0
 ArtikelVRichtig=0
 If Zufall$="Akte (Schriftstück)" And ArtikelK=2 Then ArRichtig=ArRichtig+1 ArtikelVRichtig=1
@@ -4700,11 +4955,12 @@ CopyRect 0,0,1280,1024,0,0,FrontBuffer(),ImageBuffer(RFT)
 SetBuffer FrontBuffer()
 CLSVB
 DrawImage RFT,0,0
-If ArtikelVRichtig=1 Then AR=1 Text 1,410,"Richtig" Else AR=0 Text 1,410,"Falsch"
+If ArtikelVRichtig=1 Then AR=1 Text 640,430,"Richtig",1 ARichtig=ARichtig+1 Else AR=0 Text 640,430,"Falsch",1
 Delay 1000
 Art=Art+1
-.ArFehler
 Until Art=20
+
+Protokoll$="Artikel Punkte: "+ARichtig+"/20" SpielstandS
 If Fa=4 Or Fa>4 And UebersichtA=1 Then Goto Uebersicht3
 If Fa=4 Or Fa>4 Then Goto Aufgabe10
 FlushKeys
@@ -4724,18 +4980,17 @@ End
 
 
 .Aufgabe11
+VSJBL=0
+Versuche=0
 ClsVB
-Cls
-Locate 1,1
-Schrift = LoadFont ("Arial",50,20100)
+Schrift = LoadFont ("Arial",30,201)
 SetFont Schrift
 HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
 DrawImage HGrundH, 0,0
 SeedRnd MilliSecs() 
-If Schwierigkeitsstufe=1 Then Zufall = Rand (1,100)
-If Schwierigkeitsstufe=2 Then Zufall = Rand (1,100)
-If Schwierigkeitsstufe=3 Then Zufall = Rand (1,1000)
-If Schwierigkeitsstufe=4 Then Zufall = Rand (1,10000)
+If Schwierigkeitsstufe=1 Then ZufallZZ = Rand (1,100)
+If Schwierigkeitsstufe=2 Then ZufallZZ = Rand (1,1000)
+If Schwierigkeitsstufe=4 Then ZufallZZ = Rand (1,10000)
 Versuche = 0
 If Schwierigkeitsstufe=1 Then Print "Ich denke mir eine Zahl zwischen 1 und 100 errate sie!"
 If Schwierigkeitsstufe=1 Then Print "Das Ziel ist, die Zahl in 10 Versuchen herauszufinden."
@@ -4745,79 +5000,54 @@ If Schwierigkeitsstufe=3 Then Print "Ich denke mir eine Zahl zwischen 1 und 1000
 If Schwierigkeitsstufe=3 Then Print "Das Ziel ist, die Zahl in 15 Versuchen herauszufinden."
 If Schwierigkeitsstufe=4 Then Print "Ich denke mir eine Zahl zwischen 1 und 10000 errate sie!"
 If Schwierigkeitsstufe=4 Then Print "Das Ziel ist, die Zahl in 20 Versuchen herauszufinden."
-Print "Wenn du die Zahl einfach nicht herausfindest oder einen Fehler im Programm ist"
+Print ""
+Print "Wenn du die Zahl einfach nicht herausfindest,"
 Print "dann kommst du mit Enter wieder zum Spiel oder zur Übersicht."
-Print "Wenn du 0 und Enter drückst kommst du auch zum Spiel."
+Print ""
 Print "Viel Glück!"
 Input()
+Cls
+Locate 1,1
+HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
+DrawImage HGrundH, 0,0
 Repeat
+Zahl=0
   Zahl = Input("Rate mal: ")
-If Zahl=0 And UebersichtA=1 Then Goto Uebersicht3
-;If Zahl=0 Then Goto Teil9
   Versuche = Versuche + 1
-  If Zahl < Zufall Then Print "Zu klein!"
-  If Zahl > Zufall Then Print "Zu groß!"
-If Versuche=24 Then Cls
-If Versuche=24 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=48 Then Cls
-If Versuche=48 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=72 Then Cls
-If Versuche=72 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=96 Then Cls
-If Versuche=96 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=120 Then Cls
-If Versuche=120 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=144 Then Cls
-If Versuche=144 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=168 Then Cls
-If Versuche=168 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=192 Then Cls
-If Versuche=192 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=216 Then Cls
-If Versuche=216 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=240 Then Cls
-If Versuche=240 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=264 Then Cls
-If Versuche=264 Then Locate 1,1 DrawImage HGrundH, 0,0
-If Versuche=288 Then Cls
-If Versuche=288 Then Locate 1,1 DrawImage HGrundH, 0,0
+  If Zahl < ZufallZZ Then Print "Zu klein!"
+  If Zahl > ZufallZZ Then Print "Zu gross!"
+VSJBL=VSJBL+1
+If VSJBL=16 Then
+VSJBL=0
+Delay 500
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+EndIf
 
-If Versuche=288 Then Print "Die Zahl wäre "+Zufall+" gewesen."
-If Versuche=288 Then Print "Du hast viel zu viel Versuche gebraucht."
-If Versuche=288 And Schwierigkeitsstufe=1 Then Print "Das Ziel wäre es eigentlich"
-If Versuche=288 And Schwierigkeitsstufe=1 Then Print "die Zahl in 10 Versuchen zu erraten."
-If Versuche=288 And Schwierigkeitsstufe=2 Then Print "Das Ziel wäre es eigentlich"
-If Versuche=288 And Schwierigkeitsstufe=2 Then Print "die Zahl in 10 Versuchen zu erraten."
-If Versuche=288 And Schwierigkeitsstufe=3 Then Print "Das Ziel wäre es eigentlich"
-If Versuche=288 And Schwierigkeitsstufe=3 Then Print "die Zahl in 15 Versuchen zu erraten."
-If Versuche=288 And Schwierigkeitsstufe=4 Then Print "Das Ziel wäre es eigentlich"
-If Versuche=288 And Schwierigkeitsstufe=4 Then Print "die Zahl in 20 Versuchen zu erraten."
-If Versuche=288 Then Print "Versuche die Aufgabe später noch einmal."
-If Versuche=288 Then Input()
-If Versuche=288 And UebersichtA=1 Then Goto Uebersicht3
-;If Versuche=288 Then Goto Teil9
-Until Zahl = Zufall
+Until Zahl = ZufallZZ
+
+
+
+
 Cls
 Locate 1,1
 DrawImage HGrundH, 0,0
 Print "Richtig!"
 Print "Du hast " + Versuche + " Mal geraten."
-If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=1 Then Print "Herzlichen Glückwunsch du hast das Ziel erreicht!"
+Protokoll$="Zahlen erraten Versuche: "+Versuche SpielstandS
+If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=1 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
 If Versuche>10 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
 If Versuche>10 And Schwierigkeitsstufe=1 Then Input()
-;If Versuche>10 And Schwierigkeitsstufe=1 Then Versuche=0 Zahl=0 Goto Teil9
-If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=2 Then Print "Herzlichen Glückwunsch du hast das Ziel erreicht!"
+If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=2 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
 If Versuche>10 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
 If Versuche>10 And Schwierigkeitsstufe=1 Then Input()
-;If Versuche>10 And Schwierigkeitsstufe=1 Then Versuche=0 Zahl=0 Goto Teil9
-If Versuche=15 Or Versuche<15 And Schwierigkeitsstufe=3 Then Print "Herzlichen Glückwunsch du hast das Ziel erreicht!"
+If Versuche=15 Or Versuche<15 And Schwierigkeitsstufe=3 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
 If Versuche>15 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
 If Versuche>15 And Schwierigkeitsstufe=1 Then Input()
-;If Versuche>15 And Schwierigkeitsstufe=1 Then Versuche=0 Zahl=0 Goto Teil9
-If Versuche=20 Or Versuche<20 And Schwierigkeitsstufe=4 Then Print "Herzlichen Glückwunsch du hast das Ziel erreicht!"
+If Versuche=20 Or Versuche<20 And Schwierigkeitsstufe=4 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
 If Versuche>20 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
 If Versuche>20 And Schwierigkeitsstufe=1 Then Input()
-;If Versuche>20 And Schwierigkeitsstufe=1 Then Versuche=0 Zahl=0 Goto Teil9
 Versuche=0
 Zahl=0
 Input()
@@ -4837,7 +5067,6 @@ Return
 
 
 
-
 .Aufgabe12
 FehlerD=0
 score=0
@@ -4847,7 +5076,39 @@ bat2=0
 ball=0
 AAAB=0
 ClsVB
-
+JetztZeit = MilliSecs()
+If (JetztZeit-StartZeit > ZeitMaxX) Then Goto Ende
+If FileType("Tennis.txt") = 0 Then
+fileout = WriteFile("Tennis.txt")
+CloseFile fileout
+EndIf
+Schrift = LoadFont ("Arial",45,201)
+SetFont Schrift
+FlushKeys
+FlushMouse
+Color 1,1,1
+ClsColor 253,202,13
+Cls
+Print "Tennis"
+Schrift = LoadFont ("Arial",24)
+SetFont Schrift
+Print "Mit einem Druck auf enter erscheint in der Mitte innen ball und am Rand zwie Balken."
+Print "Versuche den Ball immer im mit diesen zbei Balken hin und her zu spielen."
+Print "Bei dieser Aufgabe musst du den Ball mindestens 20 mal mit einem der Balken zuruck
+Print "in das Feld Spielen."
+Print "Wenn du es nicht im ersten Versuch safst, ist es auch nicht schlimm, da du bei"
+Print "jedm Fehlfersuch das spiel von neuem beginnt."
+Print "Viel Spass!"
+Input()
+Repeat
+Cls
+Locate 1,1
+TTempo=Input("Tempo (Zahl von 1(langsam) - 20(sehr schnell))")
+Repeat
+TTempoFZ=TTempoFZ+1
+Until TTempo=TTempoFZ Or TTempoFZ=31
+Until Not TTempoFZ=21
+ClsVB
 SetBuffer BackBuffer()
 
 bat1=LoadImage("Bilder/bat.jpg")
@@ -4856,11 +5117,10 @@ ball=LoadImage("Bilder/ball.jpg")
 
 beep1=LoadSound("Sounds/beep.mp3")
 beep2=LoadSound("Sounds/beeplow.mp3")
-load=ReadFile("sthighscore")
+load=ReadFile("Tennis.txt")
 high=ReadLine(load)
 font=LoadFont("arial",32)
 SetFont font
-; Set text colour to green
 Color 0,255,0 
 
 ; Set initial ball position and movement values
@@ -4873,24 +5133,13 @@ ballmovy#=2
 once=2
 score=0
 
-; Repeat following loop until escape key is pressed
+
+; eat following loop until escape key is pressed
 Repeat
 
-; Clear screen
 Cls
-
-; Print current score to screen
 Text width/2,0,score,1
-
-; Print high score to screen
-Text width/2,height-92,"Rekord gemischt: "+high,1
-Text width/2,height-62,"Das Ziel ist, 20 Schwierigkeitsstufe zu erreichen!",1
-Text width/2,height-32,"Du darfst aber nicht mehr als 3 mal den Ball durchlassen sonst kommst du wieder zum Spiel!",1
-If  FehlerD=4 And UebersichtA=1 Then Goto Uebersicht3
-If  score=20 And UebersichtA=1 Then Goto Uebersicht3
-If score=20 Then Delay 1000 Aufgaben=12 Smeili=1 Goto Programmstart
-If FehlerD=4 Then Delay 1000 Goto Programmstart
-
+Text width/2,height-50,"Rekord gemischt: "+high,1
 
 ; Get position of bats
 batx1=0
@@ -4902,12 +5151,12 @@ baty2=height-MouseY()-64
 ballx#=ballx#+ballmovx#
 bally#=bally#+ballmovy#
 ; If ball image collides with either bat image then alter x ball movement value and play beep sound
-If once=1 And ImagesCollide(ball,ballx#,bally#,0,bat1,batx1,baty1,0) Then ballmovx#=Rnd(1,16) : PlaySound beep1 : score=score+1: once=2  
-If once=2 And ImagesCollide(ball,ballx#,bally#,0,bat2,batx2,baty2,0) Then ballmovx#=Rnd(1,16)*-1 : PlaySound beep1 : score=score+1: once=1
+If once=1 And ImagesCollide(ball,ballx#,bally#,0,bat1,batx1,baty1,0) Then ballmovx#=TTempo : PlaySound beep1 : score=score+1: once=2  
+If once=2 And ImagesCollide(ball,ballx#,bally#,0,bat2,batx2,baty2,0) Then ballmovx#=TTempo*-1 : PlaySound beep1 : score=score+1: once=1
 
 ; If ball touches top or bottom of screen then alter y ball movement value
-If bally#>height-16 Then ballmovy#=Rnd(1,16)*-1 : PlaySound beep2
-If bally#<0 Then ballmovy#=Rnd(1,16) : PlaySound beep2
+If bally#>height-16 Then ballmovy#=TTempo*-1 : PlaySound beep2
+If bally#<0 Then ballmovy#=TTempo : PlaySound beep2
 
 ; If bats touch top or bottom of screen then prevent them from going outside of screen
 If baty1<0 Then baty1=0
@@ -4917,14 +5166,64 @@ If baty2>height-64 Then baty2=height-64
 
 ; If ball touches left side of screen then save high score if necessary, reset ball and score values
 If ballx#<0
-If score>high Then high=score : save=WriteFile("sthighscore") : WriteLine save,high : CloseFile save
-ballx#=width/2 : bally#=height/2 : ballmovx#=1 : ballmovy#=1 : once=2 : score=0 FehlerD=FehlerD+1
+If score>high Then high=score : save=WriteFile("Tennis.txt") : WriteLine save,high : CloseFile save
+ballx#=width/2 : bally#=height/2 : ballmovx#=1 : ballmovy#=1 : once=2
+If score=>20 And UebersichtA=1 Then
+Protokoll$="Tennis"
+SpielstandS
+Protokoll$="Punkte: "+score
+SpielstandS
+Protokoll$="Versuche: "+(FehlerD+1)
+SpielstandS
+Protokoll$="Geschwindigkeit: "+TTempo
+SpielstandS
+Goto Uebersicht3
+EndIf
+
+If score=>20 Then
+Protokoll$="Tennis"
+SpielstandS
+Protokoll$="Punkte: "+score
+SpielstandS
+Protokoll$="Versuche: "+(FehlerD+1)
+SpielstandS
+Protokoll$="Geschwindigkeit: "+TTempo
+SpielstandS
+Goto Programmstart
+EndIf
+FehlerD=FehlerD+1
+score=0
 EndIf
 
 ; If ball touches right side of screen then save high score if necessary, reset ball and score values
 If ballx#>width-16
-If score>high Then high=score : save=WriteFile("sthighscore") : WriteLine save,high : CloseFile save
-ballx#=width/2 : bally#=height/2 : ballmovx#=1 : ballmovy#=1 : once=2 : score=0 FehlerD=FehlerD+1
+If score>high Then high=score : save=WriteFile("Tennis.txt") : WriteLine save,high : CloseFile save
+ballx#=width/2 : bally#=height/2 : ballmovx#=1 : ballmovy#=1 : once=2
+If score=>20 And UebersichtA=1 Then
+Protokoll$="Tennis"
+SpielstandS
+Protokoll$="Punkte: "+score
+SpielstandS
+Protokoll$="Versuche: "+(FehlerD+1)
+SpielstandS
+Protokoll$="Geschwindigkeit: "+TTempo
+SpielstandS
+Goto Uebersicht3
+EndIf
+
+If score=>20 Then
+Protokoll$="Tennis"
+SpielstandS
+Protokoll$="Punkte: "+score
+SpielstandS
+Protokoll$="Versuche: "+(FehlerD+1)
+SpielstandS
+Protokoll$="Geschwindigkeit: "+TTempo
+SpielstandS
+Goto Programmstart
+EndIf
+FehlerD=FehlerD+1
+score=0
 EndIf
 
 DrawImage bat1,batx1,baty1
@@ -4932,7 +5231,6 @@ DrawImage bat2,batx2,baty2
 DrawImage ball,ballx#,bally#
 
 Flip
-
 Forever
 
 
@@ -4966,7 +5264,7 @@ Print "Du hast drei Minuten Zeit, um möglichst viele Wörter"
 Print "die mit sagen zu tun haben aufzuschreiben wie"
 Print "ZB. antworten."
 Print "Diese Übung dient dazu einen Text spannend zu ma-"
-Print "chen indem man nicht immer sagte braucht."
+Print "chen, indem man nicht immer sagte braucht."
 Print ""
 Print "Du musst mindestens 15 Wörter schaffen um weiter"
 Print "zu kommen!"
@@ -4978,7 +5276,7 @@ Input()
 
 ;Zeit!
 StartZeit = MilliSecs()
-Const ZeitMax = 1800  ;180 Sekunden
+Const ZeitMax = 180000  ;180 Sekunden
 
 
 EGWFSY=100
@@ -5038,9 +5336,7 @@ Repeat
 
 
 SYN$=WS$(EDVWS)
-If SYN$="flüstern"Or SYN$="zischen"Or SYN$="murmeln"Or SYN$="hauchen"Or SYN$="wispern"Or SYN$="tuscheln"Or SYN$="rufen"Or SYN$="schreien"Or SYN$="brüllen"Or SYN$="kreischen"Or SYN$="krakeelen"Or SYN$="reden"Or SYN$="sagen"Or SYN$="plaudern"Or SYN$="sprechen"Or SYN$="quasseln"Or SYN$="plappern"Or SYN$="schnattern"Or SYN$="bemerken"Or SYN$="andeuten"Or SYN$="meinen"Or SYN$="faseln"Or SYN$="äussern"Or SYN$="schwatzen"Or SYN$="erzählen"Or SYN$="berichten"Or SYN$="erwähnen"Or SYN$="erklären"Or SYN$="beschliessen"Or SYN$="überlegen"Or SYN$="glauben"Or SYN$="schildern"Or SYN$="erleutern"Or SYN$="raten"Or SYN$="reimen"Or SYN$="dichten"Or SYN$="übertreiben"Or SYN$="lügen"Or SYN$="loben"Or SYN$="sich erinnern"Or SYN$="erinnern"Or SYN$="von sich geben"Or SYN$="geben"Or SYN$="prahlen"Or SYN$="wiederholen"Or SYN$="weinen"Or SYN$="schluchzen"Or SYN$="plärren"Or SYN$="seufzen"Or SYN$="stöhnen"Or SYN$="jammern"Or SYN$="klagen"Or SYN$="trösten"Or SYN$="kichern"Or SYN$="fragen"Or SYN$="sich erkundigen"Or SYN$="erkundigen"Or SYN$="antworten"Or SYN$="erwiedern"Or SYN$="bejahen"Or SYN$="verneinen"Or SYN$="wiedersprechen"Or SYN$="entgegnen"Or SYN$="behaupten"Or SYN$="zustimmen"Or SYN$="verkünden"Or SYN$="bezeugen"Or SYN$="einwenden"Or SYN$="einwerffen"Or SYN$="unterbrechen"Or SYN$="befehlen"Or SYN$="auffordern"Or SYN$="vorschlagen"Or SYN$="bitten"Or SYN$="betteln"Or SYN$="versichern"Or SYN$="versprechen"Or SYN$="schimpfen"Or SYN$="sich beschweren"Or SYN$="beschweren"Or SYN$="tadeln"Or SYN$="reklamieren"Or SYN$="sich ärgern"Or SYN$="ärgern"Or SYN$="schmollen"Or SYN$="lästern"Or SYN$="drohen"Or SYN$="zurechtweisen"Or SYN$="anschnauzen"Or SYN$="protesteiren"Or SYN$="petzen"Or SYN$="zanken"Or SYN$="fluchen"Or SYN$="stottern"Or SYN$="lallen"Or SYN$="nuscheln"Or SYN$="krächzen"Or SYN$="stammeln"Or SYN$="brummen"Or SYN$="labern"Or SYN$="hervorstossen"Or SYN$="näseln"Then WIEDSML=1 Color 1,255,1 WSR=WSR+1 Else WIEDSML=0 Color 255,1,1
-
-FSWV=0
+If SYN$="flüstern"Or SYN$="zischen"Or SYN$="murmeln"Or SYN$="hauchen"Or SYN$="wispern"Or SYN$="tuscheln"Or SYN$="rufen"Or SYN$="schreien"Or SYN$="brüllen"Or SYN$="kreischen"Or SYN$="krakeelen"Or SYN$="reden"Or SYN$="sagen"Or SYN$="plaudern"Or SYN$="sprechen"Or SYN$="quasseln"Or SYN$="plappern"Or SYN$="schnattern"Or SYN$="bemerken"Or SYN$="andeuten"Or SYN$="meinen"Or SYN$="faseln"Or SYN$="äussern"Or SYN$="schwatzen"Or SYN$="erzählen"Or SYN$="berichten"Or SYN$="erwähnen"Or SYN$="erklären"Or SYN$="beschliessen"Or SYN$="überlegen"Or SYN$="glauben"Or SYN$="schildern"Or SYN$="erläutern"Or SYN$="raten"Or SYN$="reimen"Or SYN$="dichten"Or SYN$="übertreiben"Or SYN$="lügen"Or SYN$="loben"Or SYN$="sich erinnern"Or SYN$="erinnern"Or SYN$="von sich geben"Or SYN$="geben"Or SYN$="prahlen"Or SYN$="wiederholen"Or SYN$="weinen"Or SYN$="schluchzen"Or SYN$="plärren"Or SYN$="seufzen"Or SYN$="stöhnen"Or SYN$="jammern"Or SYN$="klagen"Or SYN$="trösten"Or SYN$="kichern"Or SYN$="fragen"Or SYN$="sich erkundigen"Or SYN$="erkundigen"Or SYN$="antworten"Or SYN$="erwidern"Or SYN$="bejahen"Or SYN$="verneinen"Or SYN$="wiedersprechen"Or SYN$="entgegnen"Or SYN$="behaupten"Or SYN$="zustimmen"Or SYN$="verkünden"Or SYN$="bezeugen"Or SYN$="einwenden"Or SYN$="einwerffen"Or SYN$="unterbrechen"Or SYN$="befehlen"Or SYN$="auffordern"Or SYN$="vorschlagen"Or SYN$="bitten"Or SYN$="betteln"Or SYN$="versichern"Or SYN$="versprechen"Or SYN$="schimpfen"Or SYN$="sich beschweren"Or SYN$="beschweren"Or SYN$="tadeln"Or SYN$="reklamieren"Or SYN$="sich ärgern"Or SYN$="ärgern"Or SYN$="schmollen"Or SYN$="lästern"Or SYN$="drohen"Or SYN$="zurechtweisen"Or SYN$="anschnauzen"Or SYN$="protesteiren"Or SYN$="petzen"Or SYN$="zanken"Or SYN$="fluchen"Or SYN$="stottern"Or SYN$="lallen"Or SYN$="nuscheln"Or SYN$="krächzen"Or SYN$="stammeln"Or SYN$="brummen"Or SYN$="labern"Or SYN$="hervorstossen"Or SYN$="näseln"Then WIEDSML=1 Color 1,255,1 WSR=WSR+1 Else WIEDSML=0 Color 255,1,1FSWV=0
 
 Repeat
 If WS$(EDVWS)=WS$(FSWV) And FSWV<>EDVWS And WIEDSML=1 Then WSR=WSR-1 WSG=WES+1 Color 255,155,55
@@ -5086,7 +5382,7 @@ Dim Wort$(MaxWS)
 .WoerterLWS
 
 
-Data "flüstern","zischen","murmeln","hauchen","wispern","tuscheln","rufen","schreien","brüllen","kreischen","krakeelen","reden","sagen","plaudern","sprechen","quasseln","plappern","schnattern","bemerken","andeuten","meinen","faseln","äussern","schwatzen","erzählen","berichten","erwähnen","erklären","beschliessen","überlegen","glauben","schildern","erleutern","raten","reimen","dichten","übertreiben","lügen","loben","sich erinnern","erinnern","von sich geben","geben","prahlen","wiederholen","weinen","schluchzen","plärren","seufzen","stöhnen","jammern","klagen","trösten","kichern","fragen","sich erkundigen","erkundigen","antworten","erwiedern","bejahen","verneinen","wiedersprechen","entgegnen","behaupten","zustimmen","verkünden","bezeugen","einwenden","einwerffen","unterbrechen","befehlen","auffordern","vorschlagen","bitten","betteln","versichern","versprechen","schimpfen","sich beschweren","beschweren","tadeln","reklamieren","sich ärgern","ärgern","schmollen","lästern","drohen","zurechtweisen","anschnauzen","protesteiren","petzen","zanken","fluchen","stottern","lallen","nuscheln","krächzen","stammeln","brummen","labern","hervorstossen","näseln"
+Data "flüstern","zischen","murmeln","hauchen","wispern","tuscheln","rufen","schreien","brüllen","kreischen","krakeelen","reden","sagen","plaudern","sprechen","quasseln","plappern","schnattern","bemerken","andeuten","meinen","faseln","äussern","schwatzen","erzählen","berichten","erwähnen","erklären","beschliessen","überlegen","glauben","schildern","erläutern","raten","reimen","dichten","übertreiben","lügen","loben","sich erinnern","erinnern","von sich geben","geben","prahlen","wiederholen","weinen","schluchzen","plärren","seufzen","stöhnen","jammern","klagen","trösten","kichern","fragen","sich erkundigen","erkundigen","antworten","erwidern","bejahen","verneinen","wiedersprechen","entgegnen","behaupten","zustimmen","verkünden","bezeugen","einwenden","einwerffen","unterbrechen","befehlen","auffordern","vorschlagen","bitten","betteln","versichern","versprechen","schimpfen","sich beschweren","beschweren","tadeln","reklamieren","sich ärgern","ärgern","schmollen","lästern","drohen","zurechtweisen","anschnauzen","protesteiren","petzen","zanken","fluchen","stottern","lallen","nuscheln","krächzen","stammeln","brummen","labern","hervorstossen","näseln"
 
  
 
@@ -5125,6 +5421,7 @@ If WSR<15 Then Text 640,230,"Versuche die Aufgabe nochmahls!",1
 Schrift = LoadFont ("Arial",40,201)
 SetFont Schrift
 Text 640,950,"weiter mit beliebeger Taste",1
+Protokoll$="Wortfeld Sagen Punkte: "+WSR SpielstandS
 WaitKey()
 If WSR<15 Then Goto WSRStart
 If UebersichtA=1 Then Goto Uebersicht3
@@ -5144,6 +5441,7 @@ End
 
 .Aufgabe14
 ClsVB
+Protokoll$="Lotto" SpielstandS
 PauseChannel HGM
 Game= LoadSound (".\Sounds\0001Geame.mp3")
 GameP=PlaySound(Game)
@@ -5308,16 +5606,163 @@ End
 
 
 
+
+
+
+
+
+
 .Aufgabe15
+WMP#=0
+AWM=0
+WMAZZWL=0
+SeedRnd MilliSecs()
 ClsVB
-	If score=1000 Or score>1000 Then
-	If UebersichtA=1 Then Goto Uebersicht3
-	Aufgaben=15
-Smeili=1
-FlushKeys
-FlushMouse
-Goto Programmstart
+HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
+DrawImage HGrundH, 0,0
+Schrift = LoadFont ("Arial",55,101)
+SetFont Schrift
+Color 0,0,0
+Print "Wörter merken"
+Print ""
+Schrift = LoadFont ("Arial",42,101)
+SetFont Schrift
+Print "Mit enem Druck auf Enter erscheinen 20 Wörter."
+Print "Merke dir so viele wie möglich."
+Print "jedes Wort in der richtigen Reihenfolge ergibt 1 Punkt,"
+Print "jedes Wort in der falschen Reihenfolge einen halbenn Punkt"
+Print "und jedes falsche Wort 0 Punkte."
+Print "Um das Ziel zu erreichen, musst du mindestens 10 von 20 Punkte haben."
+Print ""
+Print "Viel Glück!"
+Input()
+
+Restore WoerterWM
+ ;Einleseschlaufe für 140 Wörter
+      Const MaxWM = 125
+Dim Wort$(MaxWM)
+
+Color 255,255,255
+            
+
+.WoerterWM
+
+Data "Kerze","Vase","Computer","Batterie","Kaktus","Stein","Kugel","Puzzle","Lautsprecher","Lampe","Sand","Glas","Teller","Kabel","Stecker","Bleistift","Kugelschreiber","Farbstift"
+Data "Taschentuch","Lineal","Gummi","Salat","Engel","Hose","Socken","Bett","Poster","Heft","Buch","Schere","CD","Klebeband","Licht","Fenster","Keller","Spiegel"
+Data "Schokolade","Leim","Xylophon","Pflanze","Webcam","Lego","Murmel","Stachel","Memorystick","Witz","Uhr","Draht","Harfe","Gitarre","Klavier","Bad","Dusche","Topf"
+Data "Strom","Paris","Foto","Heizung","Schere","Geld","Münzen","Holz","Muschel","Telefon","Brille","Film","Kamera","Floss","Arm","Gürtel","Tasche","Kind"
+Data "Pizza","Schachtel","Schlauch","Karton","Wäsche","Ton","Zimmer","Haus","Türe","Klingel","Velo","Auto","Kompost","Garten","Rose","Stuhl","Kiste","Auge"
+Data "Zahn","Maus","Katze","Hund","Postkarte","Brief","Seil","Knoten","Turm","Pisa","Griff","Abfall","Hand","Taschenrechner","Gehirn","Schule","Löffel","Käfer"
+Data "Spinne","Bildschirm","Würfel","Vogel","Eule","Hufeisen","Kopfhörer","Treppe","Wand","See","Meer","Figur","Stab","Name","Planet","Erde","Sofa","Möbel"
+For i = 0 To MaxWM
+  ;
+Read Wort$(i)
+Next
+
+
+DrawImage HGrundH, 0,0
+Schrift = LoadFont ("Arial",55,101)
+SetFont Schrift
+Color 0,0,0
+WMAZZWL=0
+Text 640,10,"Wörter merken",1
+Schrift = LoadFont ("Arial",42,101)
+SetFont Schrift
+
+Repeat
+WMAZZWL=WMAZZWL+1
+WMZM$(WMAZZWL)=Wort$(Rand (0,125))
+Text 640,WMAZZWL*42+50,WMZM$(WMAZZWL),1
+Until WMAZZWL=20
+Text 640,950,"Weiter mit beliebiger Taste",1
+WaitKey
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+AWM=0
+Repeat
+AWM=AWM+1
+QWM$(AWM)=Input()
+Until AWM=20
+AWM=0
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+
+
+Schrift = LoadFont ("Arial",55,101)
+SetFont Schrift
+Text 640,10,"Korrigierte Wörter",1
+Schrift = LoadFont ("Arial",30,101)
+SetFont Schrift
+Text 640,70,"(grün richtig, orange richtig aber an falscher Stelle, rot Falsch)",1
+Schrift = LoadFont ("Arial",30,101)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste",1
+Schrift = LoadFont ("Arial",42,101)
+SetFont Schrift
+Repeat
+BSCHTWM=0
+fgaijk=0
+fjkfbuaedkl=0
+rvmbfthjbn=0
+Color 255,0,0
+AWM=AWM+1
+rvmbfthjbn=0
+Repeat
+fgaijk=fgaijk+1
+If QWM(AWM)=NBIMWM$(fgaijk) Then BSCHTWM=1
+Until fgaijk=20
+If QWM$(AWM)=WMZM$(AWM) And BSCHTWM=0 Then
+Color 0,255,0
+WMEVR=2
+Else
+Repeat
+rvmbfthjbn=rvmbfthjbn+1
+If QWM(AWM)=WMZM(rvmbfthjbn) Then fjkfbuaedkl=1
+Until rvmbfthjbn=20
+
+
+
+If fjkfbuaedkl=1 Then
+If BSCHTWM=0 Then Color 255,155,50 WMEVR=1 Else Color 255,0,0 WMEVR=0
+
+Else
+Color 255,0,0
+WMEVR=0
 EndIf
+EndIf
+NBIMWM$(AWM)=QWM(AWM)
+Text 640,AWM*42+70,QWM(AWM),1
+If WMEVR=1 Then WMP#=WMP#+0.5
+If WMEVR=2 Then WMP#=WMP#+1
+Color 255,0,0
+Until AWM=20
+WaitKey
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+
+
+Schrift = LoadFont ("Arial",50,101)
+SetFont Schrift
+Color 0,0,0
+Text 640,487,"Du hast "+WMP#+" von 20 Punkten erreicht!",1,1
+If WMP#<10 Then Text 640,537,"Ziel nicht erreicht!",1,1
+If WMP#>=10 And WMP#<15 Then Text 640,537,"Ziel erreicht!",1,1
+If WMP#>=15 And WMP#<18 Then Text 640,537,"Ziel gut erreicht!",1,1
+If WMP#>=18 Then Text 640,537,"Ziel sehr gut erreicht!",1,1
+Schrift = LoadFont ("Arial",30,101)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste",1
+Protokoll$="Wörter merken Punkte: "+WMP#+"/20" SpielstandS
+WaitKey
+If WMP#=>10 And UebersichtA=1 Then Goto Uebersicht3
+If WMP#=>10 Then Aufgaben=Aufgaben+1 Goto Programmstart
+Goto Aufgabe15
+End
+
+
 
 
 
@@ -5325,9 +5770,55 @@ EndIf
 
 
 .Aufgabe16
+FY=0
+FX=0
+G=1
+SFGG=0
+ClsVB
+G=8
+GZSFG
 If hfdujkhbgjgjuvkhuj16=0 Then
 PauseChannel MXP
 ClsVB
+
+SFRXP(1) = CreateImage (18*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXP(1))
+DrawImageRect SF(g), 0,0, 0*SFG#, 32*SFG#, 18*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXP(2) = CreateImage (22*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXP(2))
+DrawImageRect SF(g), 0,0, 19*SFG#,32*SFG#, 22*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXP(3) = CreateImage (22*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXP(3))
+DrawImageRect SF(g), FX, FY, 41*SFG#, 32*SFG#, 18*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXP(4) = CreateImage (19*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXP(4))
+DrawImageRect SF(g), 0,0, 60*SFG#, 32*SFG#, 19*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+
+
+SFRXM(1) = CreateImage (19*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXM(1))
+DrawImageRect SF(g), 0,0, 0*SFG#, 0*SFG#, 19*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXM(2) = CreateImage (22*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXM(2))
+DrawImageRect SF(g), FX, FY, 19*SFG#,0*SFG#, 22*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXM(3) = CreateImage (19*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXM(3))
+DrawImageRect SF(g), 0,0, 41*SFG#, 0*SFG#, 19*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+SFRXM(4) = CreateImage (22*SFG#,32*SFG#)
+SetBuffer ImageBuffer (SFRXM(4))
+DrawImageRect SF(g), 0,0, 60*SFG#, 0*SFG#, 22*SFG#, 32*SFG#
+SetBuffer FrontBuffer()
+
+
+rocket=SFRXP(1)
+
 Schrift = LoadFont ("Arial",90,20100)
 SetFont Schrift
 Color 0,0,0
@@ -5349,6 +5840,8 @@ Print "deine Spielfigur am unteren Bildrand ankommt."
 Print "Es sind 7 Aufgaben richtig zu lösen."
 Print ""
 Print "Viel Glück!"
+StartZeit = MilliSecs()
+Protokoll$="Rechenspiel" SpielstandS
 Input()
 hfdujkhbgjgjuvkhuj16=1
 hfdujkhbgjgjuvkhuj161=1
@@ -5356,6 +5849,7 @@ EndIf
 
 If RichtigA16=7 Then
 RichtigA16=0
+SFSCHNR=1
 SteinKoY=0
 SteinKoX=0
 SteinAnz=0
@@ -5401,7 +5895,7 @@ Aufgaben=16
 Smeili=0
 Goto Programmstart
 EndIf
-
+SFSCHNR=1
 SteinKoY=0
 SteinKoX=0
 SteinAnz=0
@@ -5451,24 +5945,22 @@ ClsVB
 Schrift = LoadFont ("Arial",90,20100)
 SetFont Schrift
 Color 255,255,155
-B1= LoadImage (".\Bilder\1.jpg")
-B2= LoadImage (".\Bilder\2.jpg")
-B3= LoadImage (".\Bilder\3.jpg")
-B4= LoadImage (".\Bilder\4.jpg")
-B5= LoadImage (".\Bilder\5.jpg")
-B6= LoadImage (".\Bilder\6.jpg")
-B7= LoadImage (".\Bilder\7.jpg")
-B8= LoadImage (".\Bilder\8.jpg")
-B9= LoadImage (".\Bilder\9.jpg")
+B1= LoadImage (".\Bilder\1.bmp")
+B2= LoadImage (".\Bilder\2.bmp")
+B3= LoadImage (".\Bilder\3.bmp")
+B4= LoadImage (".\Bilder\4.bmp")
+B5= LoadImage (".\Bilder\5.bmp")
+B6= LoadImage (".\Bilder\6.bmp")
+B7= LoadImage (".\Bilder\7.bmp")
+B8= LoadImage (".\Bilder\8.bmp")
+B9= LoadImage (".\Bilder\9.bmp")
 
-Bild1= LoadImage (".\Bilder\Teil16.jpg")
+Bild1=LoadImage (".\Bilder\Teil16.jpg")
 SetBuffer BackBuffer ()
-rocket = LoadImage (".\Bilder\"+Name$+".jpg")
-MaskImage rocket, 255, 0, 255
 x = 0
-y = 191
+y = 169
 ClsColor 1,1,1
-HGrundH= LoadImage (".\Bilder\Teil16.jpg")
+HGrundH=Bild1
 
 
 SteinKoY=100
@@ -5752,13 +6244,25 @@ If SteinAnz<15 Then Goto A16SteinAn
 SteinKoY=SteinKoY+6750
 SteinAnz=0
 
-    If KeyDown (205) = 1 Then x = x + 2
-    If KeyDown (203) = 1 Then x = x - 2
+JetztZeit = MilliSecs()
+If (JetztZeit-StartZeit > ZeitMaxRS) Then
+If SFSCHNR=4 Then SFSCHNR=0
+SFSCHNR=SFSCHNR+1
+    If KeyDown (205) = 1 Then x = x + 12:rocket=SFRXP(SFSCHNR)
+    If KeyDown (203) = 1 Then x = x - 12:rocket=SFRXM(SFSCHNR)
+StartZeit = MilliSecs()
+EndIf
     DrawImage rocket, x, y
     Flip
 Cls
 Goto Aufgabe16A
 End
+
+
+
+
+
+
 
 
 
@@ -5873,6 +6377,7 @@ Print "Richtig und in angemesenem Tempo gelöst."
 Print ""
 If Richtig=>25 Then
 Print "Ziel erreicht!"
+Protokoll$="Schnellrechnen: "+Richtg+"/30" SpielstandS
 Input()
 Aufgabe=0
 Richtig=0
@@ -5888,6 +6393,7 @@ Goto Programmstart
 Else
 Print "Ziel nicht erreicht!"
 Print "Versuche die Aufgabe erneut!"
+Protokoll$="Schnellrechnen: "+Richtg+"/30" SpielstandS
 Input()
 Aufgabehhhjjhujh=0
 Richtig=0
@@ -5907,6 +6413,7 @@ EndIf
 .Aufgabe18
 PauseChannel MXP
 ClsVB
+Protokoll$="Adjektive" SpielstandS
 Goto Adjektive
 End
 
@@ -5933,7 +6440,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4  Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4  Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "gut"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -5946,7 +6453,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "besser"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -5959,7 +6466,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "am besten"
 Print
 
@@ -5985,7 +6492,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "vergnügt"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -5998,7 +6505,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "vergnügter"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6011,7 +6518,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "am vergnügtesten"
 Print
 
@@ -6037,7 +6544,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "toll"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -6050,7 +6557,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "toller"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6063,7 +6570,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "am tollsten"
 Print
 
@@ -6083,14 +6590,14 @@ Print
 Print "Ich esse gerne süsse Schokolade."
 Repeat
 Ratwort1$ = Input()
-If Ratwort1$ = "süss" Then
+If Ratwort1$ = "süss" Or Ratwort1$ = "süsse" Then
   Print "Richtig!" 
 Else
   Print "War wohl nix, bitte nochmal versuchen!"
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "süss"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -6103,7 +6610,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "süsser"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6116,7 +6623,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "am süssesten"
 Print
 If UebersichtA=1 Then Goto Uebersicht3
@@ -6130,6 +6637,7 @@ End
 .Aufgabe19
 PauseChannel HGM
 ClsVB
+Protokoll$="Pronomen"
 Goto Pronomen
 End
 
@@ -6158,7 +6666,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "mein"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -6171,7 +6679,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "das"
 Print
 
@@ -6198,7 +6706,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "eine"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -6211,7 +6719,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "die"
 Print
 
@@ -6252,7 +6760,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "die"
 Print
 
@@ -6280,7 +6788,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "zehn"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -6293,7 +6801,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
 Until Ratwort1$ = "die"
 Print
 If UebersichtA=1 Then Goto Uebersicht3
@@ -6310,25 +6818,29 @@ Cls
 Schrift = LoadFont ("Arial",40,20100)
 SetFont Schrift
 Color 1,1,1
-Print "Beschrieb:
 Print "Letzte Aufgabe!
 Print "Dein Feind, der dich am Amfang vom"
-Print "Spiel von deinem Haus gejagt hat,"
-Print "will dich fangen!"
-Print "Renne ihm davon bis die Zeit um ist,"
+Print "Spiel entführt hat, will dich fangen!"
+Print "Leider hat er dich auch noch als kleines Smiley"
+Print "verwandelt, damit du wenn er dich fängt keine"
+Print "Chance hast gegen ihn zu kämpfen"
 Print "Noch ein paar Tipps:"
 Print "Der Feind wird immer schneller."
-Print "Auf dem blauen Feld sind beide schneller."
-Print "Der rote Flecken, der immer wieder kommt und"
-Print "verschwindet kann man als kurzes"
-Print "Versteck nutzen."
+Print "Auf dem blauen Feld sind beide schneller und auf dem
+Print "grünen beide langsamer."
+Print ""
+Print "Wenn du es nicht im ersten Versuch schaffst, ist es"
+Print "auch nicht schlimm, denn nach jedem Fehlversuch kommst"
+Print "du wieder zu diesem Beschrieb."
 Print ""
 Print "Viel Glück!"
+Protokoll$="Letzte Aufgabe" SpielstandS
 Input()
 ClsVB
 SetBuffer BackBuffer ()
-rocket = LoadImage (".\Bilder\"+Name$+".jpg")
-MaskImage rocket, 255, 0, 255
+;rocket = LoadImage (".\Bilder\FEnd.bmp")
+rocket = LoadImage (".\Bilder\FEnd.bmp")
+MaskImage rocket, 255,255,255
 x = 1000
 y = 380
 ;ClsColor 1,1,1
@@ -6390,7 +6902,8 @@ SGe=0
 EndIf
 
 ICrocket=ImagesCollide (rocket, x1,y1,0, monster,x2,y2,0)
- If ICrocket Then
+If ICrocket Then
+Goto LAufgabe
 End
   EndIf
 
@@ -6489,74 +7002,34 @@ End
 
 
 .Ende
-PauseChannel HGM
-If MX=0 Then
-MX=LoadSound (".\Sounds\MusiX.mp3")
-LoopSound MX
-MXP=PlaySound(MX)
-Else
-ResumeChannel HGM
-EndIf
-ChannelVolume MXP,1
 ClsVB
-Bild=LoadImage (".\Bilder\Brücke.jpg")
-SetBuffer BackBuffer ()
-rocket = LoadImage (".\Bilder\"+Name$+".jpg")
-MaskImage rocket, 255, 0, 255
-x = 1240
-y = 103
-ClsColor 1,1,1
-HGrundH= LoadImage (".\Bilder\EndeB.jpg")
-Color 0,0,255
-
-
-hotX=339
-hotY=0
-hotW=370
-hotH=50
-
-hotX1=711
-hotY1=0
-hotW1=230
-hotH1=50
-
-BEX=1280
-XL=1000
-YL=-600
-
-
-Color 128,64,0
-
-Repeat
+FY=700
+FX=570
+G=1
+SFGG=0
+GZSFG
+HGrundSF=LoadImage (".\Bilder\14.jpg")
+SYP
+ClsVB
+Schrift = LoadFont ("Arial",50,20100)
+SetFont Schrift
+Color 0,0,0
+ClsColor 253,202,13
 Cls
-If BEX=>250 Then BEX=BEX-1
-DrawImage HGrundH, 0,0
-If YL<132 Then
-XL=XL-1
-YL=YL+1
-EndIf
-
-Line 1000,132,XL,YL
-Line 1001,132,XL+1,YL
-Line 1002,132,XL+2,YL
-Line 1003,132,XL+3,YL
-Line 1004,132,XL+4,YL
-Line 1005,132,XL+5,YL
-
-
-
-If x<=0 Then x=0
-If x>=1250 Then x=1250
-If x<=182 Then Exit
-    If BEX=<250 Then x = x - 1
-      DrawImage rocket, x, y
-    Flip
-Forever
-
-SeedRnd MilliSecs()
+Text 640,410,"Herzlichen Glückwunsch:",1,1
+Text 640,460,"du bist am Ende meines Lernprogramms angelangt!",1,1
+Text 640,510,"Natürlich kannst du auch wieterhin alle",1,1
+Text 640,560,"Aufgaben unter der Übersicht lösen.",1,1
+Text 640,610,"Auch wieterhin Viel Spass!",1,1
+Schrift = LoadFont ("Arial",30,20100)
+SetFont Schrift
+Text 640,970,"Weiter mit beliebiger Taste.",1,1
+WaitKey
 ClsVB
+DrawImage HGrundSF,0,0
+SeedRnd MilliSecs()
 
-img=LoadImage(".\Bilder\EndeMB.jpg")
+img=LoadImage(".\Bilder\14.jpg")
 
 
 Dim matrix(xdiv,ydiv)
@@ -6637,7 +7110,7 @@ Text 1,AAAER,""
 AAAER=AAAER-30
 Text 1,AAAER,"Programmfehler gesucht"
 AAAER=AAAER-30
-Text 1,AAAER,"Geplant"
+Text 1,AAAER,"Beratung bei Planung"
 AAAER=AAAER-30
 Text 1,AAAER,"Fotografiert"
 AAAER=AAAER-30
@@ -6647,7 +7120,7 @@ Text 1,AAAER,""
 AAAER=AAAER-30
 Text 1,AAAER,""
 AAAER=AAAER-30
-Text 1,AAAER,"Schreibfehler Korrigiert"
+Text 1,AAAER,"Schreibfehler korrigiert"
 AAAER=AAAER-30
 Text 1,AAAER,"Witze abgetippt"
 AAAER=AAAER-30
@@ -6683,7 +7156,7 @@ Text 1,AAAER,""
 AAAER=AAAER-30
 Text 1,AAAER,"Programm programmiert mit Blitzbasic 2D"
 AAAER=AAAER-30
-Text 1,AAAER,"Bilder Höhle von Nico und Daniel Bosshard in Elba aufgenommen"
+Text 1,AAAER,"Bilder von Nico und Daniel Bosshard in Elba und Oberwald aufgenommen"
 AAAER=AAAER-30
 Text 1,AAAER,""
 AAAER=AAAER-30
@@ -6704,7 +7177,6 @@ Print "        Ende"
 Delay 3000
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=100
-Smeili=100
 Goto Programmstart
 End
 
@@ -6715,13 +7187,14 @@ End
 ChannelPitch HGM, 18000
 ClsVB
 FY=900
-FX=50
+FX=70
 SFG#=3
 Feind=LoadImage (".\Bilder\Monster1.bmp")
 HGrundSF=LoadImage (".\Bilder\14.jpg")
 g=1
 VFSWA=22000
 Repeat
+SXP
 SXP
 VVSFLZ=VVSFLZ+1
 Until VVSFLZ=5
@@ -6799,23 +7272,23 @@ Function SXM()
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 0*SFG#, 0*SFG#, 19*SFG#, 32*SFG#
-Delay 200
-FX=FX-25
+Delay 175
+FX=FX-4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 19*SFG#,0*SFG#, 22*SFG#, 32*SFG#
-Delay 200
-FX=FX-25
+Delay 175
+FX=FX-4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 41*SFG#, 0*SFG#, 19*SFG#, 32*SFG#
-Delay 200
-FX=FX-25
+Delay 175
+FX=FX-4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 60*SFG#, 0*SFG#, 22*SFG#, 32*SFG#
-Delay 200
-FX=FX-25
+Delay 175
+FX=FX-4*SFG#
 End Function
 
 
@@ -6828,35 +7301,23 @@ Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 0*SFG#, 32*SFG#, 18*SFG#, 32*SFG#
 Delay 200
-FX=FX+25
+FX=FX+4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 19*SFG#,32*SFG#, 22*SFG#, 32*SFG#
 Delay 200
-FX=FX+25
+FX=FX+4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 41*SFG#, 32*SFG#, 18*SFG#, 32*SFG#
 Delay 200
-FX=FX+25
+FX=FX+4*SFG#
 Cls
 DrawImage HGrundSF,0,0
 DrawImageRect SF(g), FX, FY, 60*SFG#, 32*SFG#, 19*SFG#, 32*SFG#
 Delay 200
-FX=FX+25
+FX=FX+4*SFG#
 End Function
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -6980,19 +7441,6 @@ End Function
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 Function SYP()
 Cls
 DrawImage HGrundSF,0,0
@@ -7026,7 +7474,7 @@ ReadLine$(filein)
 ReadLine$(filein)
 ReadLine$(filein)
 ReadLine$(filein)
-For i=0 To 999
+For i=1 To 1499
 RST$(i)=ReadLine$(filein)
 Next
 CloseFile filein
@@ -7043,7 +7491,7 @@ zwfzdpi=zwfzdpi+1
 If RST$(zwfzdpi)="" Then Exit
 WriteLine fileout, RST$(zwfzdpi)
 Forever
-WriteLine fileout, Protokoll$
+If Not Protokoll$="" Then WriteLine fileout, Protokoll$
 CloseFile fileout
 
 
