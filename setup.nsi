@@ -11,7 +11,7 @@
 AutoCloseWindow true
 
 ; The name of the installer
-Name "Lernen mit Smiley"
+Name "Lernen mit Smiley 1.0"
 
 ; Disable compression
 SetCompressor LZMA
@@ -25,9 +25,10 @@ InstallDir "$PROGRAMFILES\Lernen mit Smiley"
 InstallDirRegKey HKLM "Software\Nico Bosshard\Lernen mit Smiley" "Install Path"
 
 
-
 ; The text to prompt the user to enter a directory
-DirText "In welches Verzeichnis sollte das Lernprogramm installiert werden?$\nWenn dies ein Ubdate ist solten Sie den vergeschlagedne Pfad ahnnemen, da sonst alle Spielstende verlohren gehen."
+DirText "In welches Verzeichnis sollte das Lernprogramm installiert werden?$\nWenn dies ein Update ist, sollten Sie den vorgeschlagen Pfad annehmen, da sonst alle Spielstände verloren gehen."
+
+
 
 ;--------------------------------
 
@@ -37,9 +38,10 @@ Section "" ;No components page, name is not important
 ; Set output path to the installation directory.
 SetOutPath $INSTDIR
 
-
+RMDir /r $INSTDIR\Bilder
+RMDir /r `$SMPROGRAMS\Nico Bosshard`
 ; Put file there
-File /r /x *.bb* /x *.info /x *.db /x *.Mid /x "" ".\Lernen mit Smiley 0.5\"
+File /r /x *.bb* /x *.info /x *.db /x *.Mid /x "" ".\Lernen mit Smiley 1.0\"
 
 
 ; Register uninstaller
@@ -51,8 +53,7 @@ WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Lernen mit
 WriteUninstaller $INSTDIR\uninstall.exe
 
 ; Startmenu
-CreateDirectory "$SMPROGRAMS\Nico Bosshard"
-CreateShortCut "$SMPROGRAMS\Nico Bosshard\Lernen mit Smiley.lnk" "$INSTDIR\Lernen mit Smiley.exe"
+CreateShortCut "$SMPROGRAMS\Lernen mit Smiley.lnk" "$INSTDIR\Lernen mit Smiley.exe"
 ; Desktop Link
 
 CreateShortCut "$DESKTOP\Lernen mit Smiley.lnk" "$INSTDIR\Lernen mit Smiley.exe"
@@ -60,7 +61,7 @@ CreateShortCut "$DESKTOP\Lernen mit Smiley.lnk" "$INSTDIR\Lernen mit Smiley.exe"
 ; Save Path for updates
 WriteRegStr HKLM "Software\Nico Bosshard\Lernen mit Smiley" "Install Path" "$INSTDIR"
 
-MessageBox MB_YESNO "Die Instalation wurde erfolgreich abgeschlossen!$\nWollen Sie mein Lernprogramm jetzt starten?" IDYES True IDNO False
+MessageBox MB_YESNO "Die Installation wurde erfolgreich abgeschlossen!$\nWollen Sie mein Lernprogramm jetzt starten?" IDYES True IDNO False
 true:
   Exec '"$INSTDIR\Lernen mit Smiley.exe"'
   GoTo next
@@ -72,11 +73,13 @@ SectionEnd ; end the section
 
 
 Section "Uninstall"
-;AutoCloseWindow True
+;AutoCloseWindow true
 MessageBox MB_YESNO "Wollen Sie mein Lernprogramm wirklich deinstallieren?" IDYES True1 IDNO False1
 True1:
   Delete $INSTDIR\uninstall.exe ; delete self (see explanation below why this works)
   Delete `$INSTDIR\Lernen mit Smiley.exe`
+  Delete `$DESKTOP\Lernen mit Smiley.lnk`
+  Delete `$SMPROGRAMS\Lernen mit Smiley.lnk`
   RMDir /r $INSTDIR
   RMDir /r `$SMPROGRAMS\Nico Bosshard`
   DeleteRegKey HKLM `Software\Microsoft\Windows\CurrentVersion\Uninstall\Lernen mit Smiley`
