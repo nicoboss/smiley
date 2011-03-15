@@ -11,7 +11,7 @@ Const fps=25
 Const ZeitMaxRS = 50  ; 0.1 Sekunden
 
 HidePointer
-DeleteFile ".\Setup.exe"
+Global GTJNEP
 Global NNWA
 Global DNGA1GB
 Global Spielfigur$
@@ -112,7 +112,7 @@ filename$=".\Grafik.txt"
 If FileType(filename$)=0 Then
 ESPS=1
 fileout = WriteFile(".\Grafik.txt")
-WriteLine fileout,"Grafik: 1280,1024,0,3"
+WriteLine fileout,"Grafik: 1280,1024,16,3"
 CloseFile fileout
 EndIf
 Else
@@ -120,7 +120,7 @@ filename$=".\Grafik.txt"
 If FileType(filename$)=0 Then
 ESPS=1
 fileout = WriteFile(".\Grafik.txt")
-WriteLine fileout,"Grafik: 1280,1024,0,2"
+WriteLine fileout,"Grafik: 1280,1024,16,2"
 CloseFile fileout
 EndIf
 EndIf
@@ -141,9 +141,9 @@ Grafik4$=Mid$ (Grafik$,Pos3+1,(Pos4-Pos3)-1)
 
 CloseFile filein
 
+Modus=GfxModeExists(800,600,16)
+If Modus=1 Then Graphics 800,600,0,2
 Graphics Grafik1$,Grafik2$,Grafik3$,Grafik4$
-
-
 
 
 TB=LoadImage(".\Bilder\Titelbild.jpg")
@@ -167,6 +167,7 @@ Dim WMZM$(20)
 Dim QWM$(20)
 Dim NBIMWM$(20)
 Dim NZDGW(30)
+DeleteFile ".\Setup.exe"
 Delay 100
 
 ZPFN$=zielpfad$
@@ -534,9 +535,7 @@ MaskImage SWK4O,0,0,255
 MaskImage SWK5O,0,0,255
 
 AuswahOBL=1
-If KeyHit(57) Then
-ESPS=1
-EndIf
+If KeyHit(57) Then ESPS=1
 FlushKeys
 FlushMouse
 
@@ -545,11 +544,12 @@ If ESPS=1 Then Goto Anfang Else Goto AnfangN
 
 
 
-.Anfang            
+.Anfang
 Cls
 Locate 1,1
-Schrift = LoadFont ("Arial",30,201)
-SetFont Schrift
+ESPS=0
+Schrift1 = LoadFont ("Arial",30,True)
+SetFont Schrift1
 Anfang=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage Anfang, 0,0
 Print "Ich bedanke mich herzlich, dass Sie mein Lernprogramm installiert haben!"
@@ -557,7 +557,30 @@ Print ""
 Print "Bei Problemen schreiben Sie mir einfach unter nico@bosshome.ch ein E-Mail."
 Print "Viel Spass beim Lernen mit meinem Lernprogramm!"
 Input()
+Cls
+Locate 1,1
+DrawImage Anfang, 0,0
+gfxCircle=CreateImage(20,20)
+SetBuffer ImageBuffer(gfxCircle)
+Color 255,0,0
+Oval 0,0,20,20,1
+SetBuffer BackBuffer()
+WarnungF$="Sehen Sie die 4 grünen Rechtecke?"
+GTJNEP=1
+NNWA=1
+WarnungA
+GTJNEP=0
+NNWA=0
+If JaO=1 Then
 Goto AnfangN
+Else
+SetFont Schrift1
+Anfang=LoadImage (".\Bilder\Sonnenuntergang.jpg")
+DrawImage Anfang, 0,0
+Print "Da die Grafik zu gross ist, werden sie mit einem Druck auf Enter"
+Print "zu dem imformations und Auswahklfede der Grafuk umgeleitet!"
+Goto Grafik
+EndIf
 End
 
 
@@ -970,7 +993,7 @@ img = CreateImage (1280,1024)
 SetBuffer ImageBuffer (img)
 TB=LoadImage(".\Bilder\Titelbild.jpg")
 TileBlock TB
-Schrift = LoadFont ("Arial",130,20100)
+Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
 Text 640,375,"Lernen mit Smiley",1
@@ -1659,15 +1682,15 @@ End
 
 .Grafik
 ClsVB
+GWITGV=0
 ClsColor 255,201,14
 Cls
 Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Print "Grafik"
-Schrift = LoadFont ("Arial",15,True)
+Schrift = LoadFont ("Arial",29,True)
 SetFont Schrift
 Print ""
-Schrift = LoadFont ("Arial",27,True)
 fntArialB=LoadFont("Arial",32,True)
 SetFont fntArialB
 Print "1280,1024,16,1 (Nicht empfohlen)"
@@ -1681,18 +1704,17 @@ Print "Lernprogramm wird eventuell sehr verzogen."
 Print "Spiele die sehr viel Grafik benötigen werden wegen der Hochrechnumng der Grafik sehr langsam. "
 Print "Das Fenster kann bei Problemen nicht einfach oben rechts geschlossen werden,"
 Print "da das Kreuzchen schliessen fehlt."
-Print "Wird nur von ca. 50% aller Bildschirmen unterstützt."
+Print "Wird nur von ca. 60% aller Bildschirmen unterstützt."
 Print ""
 SetFont fntArialB
 Print "1280,1024,16,2 (empfolen)"
 SetFont Schrift
+Print "Bei dieser Grafik wird mein Lernprogramm so angezeigt wie es ist."
 Print "Vorteile:"
-Print "Die Grafik muss nicht umgerechnet werden."
 Print "sehr schneller Grafikaufbau."
-Print "Das Fenster kann bei Problenen einfach geschlossen werden"
-Print "Wird von ca. 80% aller Bildschirmen unterstützt."
 Print "Nachteile:"
-Print "Bei grossen Bildschirmen können andere Fenster im Hintergrund stören"
+Print "Bei grossen Bildschirmen können andere Fenster im Hintergrund stören und bei"
+Print "kleinen Bildschirmen kann der ein Teil des Fensters fehlen zB. der untere Rand."
 Print ""
 SetFont fntArialB
 Print "1280,1024,16,3 (empfohlen)"
@@ -1700,17 +1722,45 @@ SetFont Schrift
 Print "Vorteile"
 Print "Dieses Fenster ist skalierbar, dass heisst man kann es manuell vergrössern und verkleinern (mit der Maus"
 Print "am Fensterrand ziehen) und so sich selber eine eigene Fenstergrösse formen"
-Print "Wird von fast allen Bildschirmen unterstützt."
-Print "Das Fenster kann bei Problenen einfach geschlossen werden"
 Print "Nachteile:"
 Print "Wird nach jedem Programmstart automatisch wieder auf den Standard verkleinert."
 Print "Spiele die sehr viel Grafik benötigen werden wegen der Umrechnung der Grafik sehr langsam."
 Print ""
-Print "Um die Grafik zu ändern, schreiben Sie einfach in die Datei .\Grafik.txt die Grafik rein z.b. 1280,1024,16,3."
-Print ""
-SetFont fntArialB
-Print "Zur Auswahl mit beliebiger Taste."
-WaitKey
+Print "Um die Grafik zu ändern, drücken Sie 1,2 oder 3 (je nach Grafiknummer)."
+Print "Wenn die Grafik nicht geändert werden kann,weil der Bildschrim die Grafik nicht unterstüzt,
+Print "wird einfach die jetztige Grafik beibehalten."
+Taste=WaitKey()
+Cls
+Locate 1,1
+Modus=GfxModeExists(1280,1024,16)
+filename$=".\Grafik.txt"
+
+If Taste=49 And Modus=1 Then
+GWITGV=1
+fileout = WriteFile(".\Grafik.txt")
+WriteLine fileout,"Grafik: 1280,1024,0,1"
+CloseFile fileout
+EndIf
+
+If Taste=50 Then
+GWITGV=1
+fileout = WriteFile(".\Grafik.txt")
+WriteLine fileout,"Grafik: 1280,1024,0,2"
+CloseFile fileout
+EndIf
+
+If Taste=51 Then
+GWITGV=1
+fileout = WriteFile(".\Grafik.txt")
+WriteLine fileout,"Grafik: 1280,1024,0,3"
+CloseFile fileout
+EndIf
+
+If GWITGV=1 Then
+GWITGV=0
+FreeSound HM
+Goto PStart
+EndIf
 Goto Auswahl
 End
 
@@ -3346,7 +3396,7 @@ Print
 
 ;Brief
 Cls 
-Locate 1,1
+Locate 1,10
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH, 0,0
 Nomen = 0   Nomen1 = 0    Nomen2 = 0   
@@ -3356,7 +3406,7 @@ Print
 Print "Ich schreibe dir einen Brief."
 Repeat
 Ratwort1$ = Input()
-If Ratwort1$ = "Brief" Then
+If Ratwort1$ = "  Brief" Then
   Print "Richtig!" 
 Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1 
@@ -3370,7 +3420,7 @@ Print "Welcher Artikel hat das Nomen?"
 Print"Schreibe der, die oder das und drücke Enter"
 Repeat
 Ratwort1$ = Input()
-If Ratwort1$ = "der" Then
+If Ratwort1$ = "  der" Then
   Print "Richtig!" 
 Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
@@ -5177,12 +5227,13 @@ MaskImage ArtikelK3O,255,0,0
 SetBuffer BackBuffer ()
 
 
-gfxCircle=CreateImage(50,50)
+gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
-Oval 10,10,30,30,1
+Oval 0,0,20,20,1
 SetBuffer BackBuffer()
-Color 1,1,1
+Color 0,0,0
+
 
 
 hotX=440
@@ -5213,9 +5264,9 @@ Flip
 Cls
 DrawImage HGrundH, 1,0
 Text 640,1,Zufall$,1
-If ImageRectOverlap (gfxCircle,circleX,circleY,hotX,hotY,hotW,hotH) Then DrawImage ArtikelK1O,440,100 ARTMG=1 ArtikelK=1 Else DrawImage ArtikelK1,440,100
-If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX1,hotY1,hotW1,hotH1) Then DrawImage ArtikelK2O,440,208 ARTMG=1 ArtikelK=2 Else DrawImage ArtikelK2,440,208
-If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX2,hotY2,hotW2,hotH2) Then DrawImage ArtikelK3O,440,316 ARTMG=1 ArtikelK=3 Else DrawImage ArtikelK3,440,316
+If ImageRectOverlap (gfxCircle,circleX,circleY,hotX,hotY,hotW,hotH) And ARTMG=0 Then DrawImage ArtikelK1O,440,100 ARTMG=1 ArtikelK=1 Else DrawImage ArtikelK1,440,100
+If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX1,hotY1,hotW1,hotH1) And ARTMG=0 Then DrawImage ArtikelK2O,440,208 ARTMG=1 ArtikelK=2 Else DrawImage ArtikelK2,440,208
+If  ImageRectOverlap (gfxCircle,circleX,circleY,hotX2,hotY2,hotW2,hotH2) And ARTMG=0 Then DrawImage ArtikelK3O,440,316 ARTMG=1 ArtikelK=3 Else DrawImage ArtikelK3,440,316
 DrawImage gfxCircle,circleX,circleY
 Until MouseDown(1) And ARTMG=1
 
@@ -5423,7 +5474,7 @@ Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Print ""
 Print "Mit einem Druck auf Enter erscheint in der Mitte ein Ball und am Rand zwei Balken."
-Print "Versuche den Ball immer immwer zwischen diesen zwei Balken hin und her zu spielen."
+Print "Versuche den Ball immer zwischen diesen zwei Balken hin und her zu spielen."
 Print "Bei dieser Aufgabe musst du den Ball mindestens 20 mal mit einem der Balken zurück"
 Print "in das Feld spielen."
 Print "Wenn du es nicht im ersten Versuch schaffst, ist es auch nicht schlimm, da bei"
@@ -5438,13 +5489,20 @@ GameP=PlaySound(Game)
 Repeat
 Cls
 Locate 1,1
+TTempoFZ=0
 Print "Während des Spiels kannst du das Tempo nur mit der Taste +(schneller und -(langsamer) verändern."
 Print "Achtung: das Tempo wird erst nach einer gewissen Zeit aktualisiert."
 Print ""
 TTempo=Input("Tempo (Zahl von 1 (langsam) - 20 (sehr schnell)) ")
 Repeat
 TTempoFZ=TTempoFZ+1
-Until TTempo=TTempoFZ Or TTempoFZ=31
+Until TTempo=TTempoFZ Or TTempoFZ=21
+If TTempoFZ=21 Then
+Cls
+Locate 1,1
+Print "Ungültige oder zu grosse Zahl!"
+Delay 1000
+EndIf
 Until Not TTempoFZ=21
 ClsVB
 SetBuffer BackBuffer()
@@ -7658,7 +7716,7 @@ Until VFFBSF=650
 ClsVB
 ClsColor 1,255,1
 Cls
-Schrift = LoadFont ("Arial",30,20100)
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Color 1,1,1
 Print "Dein Feind hat dich entführt,"
@@ -7666,6 +7724,11 @@ Print "und weit weg von deinem Zuhause in sein Nest gelegt!"
 Print ""
 Print "Löse alle 20 Aufgaben um wieder"
 Print "zu deinem Haus zu gelangen."
+Print ""
+Print "Noch ein Tipp:"
+Print "Bei den meisten Texten kommst du nur"
+Print "mit der Entertaste weiter!"
+Print ""
 Print "Viel Glück!"
 ChannelPitch HGM, 22000
 Input()
@@ -7922,6 +7985,8 @@ Function WarnungA()
 ClsVB
 If NNWA=0 Then
 Schrift = LoadFont ("Arial",35,True)
+ElseIf GTJNEP=1
+Schrift = LoadFont ("Arial",45,True)
 Else
 Schrift = LoadFont ("Arial",55,True)
 EndIf
@@ -7933,7 +7998,6 @@ K2=LoadImage (".\Bilder\Nein.jpg")
 K2O=LoadImage (".\Bilder\NeinO.jpg")
 K1B=K1
 K2B=K2
-
 ClsColor 255,201,14
 Cls
 SetBuffer BackBuffer()
@@ -7943,13 +8007,27 @@ NeinO=0
 circleX=MouseX()
 circleY=MouseY()
 Cls
+Color 0,255,0
+Rect 0,0,50,50,1
+Rect 0,974,50,50,1
+Rect 1230,0,50,50,1
+Rect 1230,974,50,50,1
 Color 0,0,0
 If NNWA=0 Then
 Text 640,1,"Warnung:",1
 Text 640,35,WarnungF$,1
+ElseIf GTJNEP=1
+Text 640,1,"Grafiktest:",1
+Text 640,45,WarnungF$,1
 Else
 Text 640,20,WarnungF$,1
 EndIf
+
+
+
+
+
+
 DrawImage K1B, 300,362
 DrawImage K2B, 300,512
 DrawImage gfxCircle,circleX,circleY
