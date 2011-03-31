@@ -1,108 +1,6 @@
 AppTitle "Lernen mit Smiley"
-Const width=1280,height=1024
-Const xsize=16
-Const ysize=16
-Const xdiv=width/xsize
-Const ydiv=height/ysize
-Const total=xdiv*ydiv
-Const frames=25
-Const choice=total/frames
-Const fps=25
-Const ZeitMaxRS = 50  ; 0.1 Sekunden
-
-HidePointer
-Global GTJNEP
-Global NNWA
-Global DNGA1GB
-Global Spielfigur$
-Global g
-Global FY
-Global FX
-Global HGrundSF
-Global SFG#
-Global WarnungF$
-Global JaO
-Global NeinO
-Global Name$
-Global Aufgaben
-Global Schwierigkeitsstufe
-Global Smiley
-Global Saund$
-Global Protokoll$
-Global AAAB
-Global KTIBWG
 Global filename$
-Global ERINV
 Global ESPS
-Global BildSagen
-Global hgjkhkgkh
-Global AndGetroffenS
-Global Fehler16SS2
-Global Fehler16SS3
-Global Fehler16SS4
-Global Fehler16SS5
-Global Fehler16SS6
-Global Anfang
-Global HGrund1
-Global HGrund2
-Global HGrund3
-Global HGrund4
-Global HGrund5
-Global HGrund6
-Global HGrund7
-Global HGrund8
-Global HGrund9
-Global HGrund10
-Global HGrund11
-Global HGrund12
-Global HGrund13
-Global HGrund14
-Global HGrund15
-Global HGrund16
-Global HGrund17
-Global HGrund18
-Global HGrund19
-Global HGrund20
-Global Auswahl0
-Global Auswahl1
-Global Auswahl2
-Global Auswahl3
-Global Auswahl4
-Global Auswahl5
-Global Auswahl6
-Global Auswahl7
-Global Auswahl8
-Global Auswahl9
-;Global Uebersicht
-Global UebersichtA
-Global SchwierikeitsstufeA
-Global HRTZUIO
-Global HERHZ
-Global NameS$
-Global NameN$
-Global SpielstandLA
-Global ASDREFGHHGHUJK
-Global roket
-;Global L
-;Global A
-Global hotX
-Global hotY
-Global hotW
-Global hotH
-Global hotX1
-Global hotY1
-Global hotW1
-Global hotH1
-;Global x
-;Global y
-Global gfxCircle
-Global Textverstentnis
-Global circleX
-Global circleY
-Global Nomen
-Global Nomen1
-Global Nomen2
-Global Smeili
 
 .PStart
 
@@ -148,12 +46,88 @@ Graphics Grafik1$,Grafik2$,Grafik3$,Grafik4$
 
 TB=LoadImage(".\Bilder\Titelbild.jpg")
 TileBlock TB
-Schrift = LoadFont ("Arial",130,20100)
-SetFont Schrift
+SchriftLMSS = LoadFont ("Arial",130,True)
+SetFont SchriftLMSS
 Color 0,0,0
 Text 170,400,"Lernen mit Smiley"
+VWait
+
 StartZeit = MilliSecs()
-Const ZeitMaxSLMS = 1500  ; 2 Sekunden
+Const ZeitMaxSLMS = 1500  ; 1.5 Sekunden
+Const width=1280,height=1024
+Const xsize=16
+Const ysize=16
+Const xdiv=width/xsize
+Const ydiv=height/ysize
+Const total=xdiv*ydiv
+Const frames=25
+Const choice=total/frames
+Const fps=25
+Const ZeitMaxRS = 50  ; 0.1 Sekunden
+
+HidePointer
+
+Global NZWNDGBA12
+Global GTJNEP
+Global NNWA
+Global DNGA1GB
+Global Spielfigur$
+Global g
+Global FY
+Global FX
+Global HGrundSF
+Global SFG#
+Global WarnungF$
+Global JaO
+Global NeinO
+Global Name$
+Global Aufgaben
+Global Schwierigkeitsstufe
+Global Smiley
+Global Saund$
+Global Protokoll$
+Global AAAB
+Global KTIBWG
+Global ERINV
+Global BildSagen
+Global hgjkhkgkh
+Global AndGetroffenS
+Global Fehler16SS2
+Global Fehler16SS3
+Global Fehler16SS4
+Global Fehler16SS5
+Global Fehler16SS6
+Global Anfang
+;Global Uebersicht
+Global UebersichtA
+Global SchwierikeitsstufeA
+Global HRTZUIO
+Global HERHZ
+Global NameS$
+Global NameN$
+Global SpielstandLA
+Global ASDREFGHHGHUJK
+Global roket
+;Global L
+;Global A
+Global hotX
+Global hotY
+Global hotW
+Global hotH
+Global hotX1
+Global hotY1
+Global hotW1
+Global hotH1
+;Global x
+;Global y
+Global gfxCircle
+Global Textverstentnis
+Global circleX
+Global circleY
+Global Nomen
+Global Nomen1
+Global Nomen2
+Global Smeili
 Dim RST$(1499)
 Dim DVGHJFHMHJG(8)
 Dim SteinK(8)
@@ -167,15 +141,21 @@ Dim WMZM$(20)
 Dim QWM$(20)
 Dim NBIMWM$(20)
 Dim NZDGW(30)
+Dim infoNE$(999)
 DeleteFile ".\Setup.exe"
+DeleteFile ".\info.txt"
 Delay 100
 
 ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
 
 Color 0,0,0
+Dateiname$="info.txt"
+rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/info.txt")
 Dateiname$="Neuste_Version.txt"
 rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Neuste_Version.txt")
+
+
 
     Flip
 zielpfad$=ZPFN$
@@ -288,34 +268,228 @@ Function Percent (part#, total#)
     Return Int (100 * (part / total))
 End Function
 
+
+AAAB=0
+filename$="Nicht an Info erinnern.txt"
+If FileType(filename$)=1 Then AAAB=1
+If FileType(filename$)=0 Then AAAB=2
+If AAAB=1 Then
+filein = ReadFile("Nicht an Info erinnern.txt")
+For i=0 To 999
+infoNE$(i) = ReadLine$(filein)
+Next
+Else
+NE$ = "0"
+EndIf
+
+
+filein = ReadFile(".\Aktuelle Version.txt")
+ReadLine$(filein)
+AV$ = ReadLine$(filein)
+CloseFile filein
+
+
+If FileType(".\info.txt")=1 Then
+
+filein = ReadFile("info.txt")
+SchriftN = LoadFont ("Arial",30,True)
+SetFont SchriftN
+ClsColor 253,202,13
+Cls
+Color 0,0,0
+Repeat
+DateiI$=ReadLine$(filein)
+If Left$(DateiI$,1)="#" Then
+IDDIM$=Mid$(DateiI$,2)
+IVA1=Instr(IDDIM$,"{")
+IVA2=Instr(IDDIM$,"}")
+IVA3=Instr(IDDIM$,"{",IVA1+1)
+IVA4=Instr(IDDIM$,"}",IVA2+1)
+IVA5=Instr(IDDIM$,"{",IVA3+1)
+IVA6=Instr(IDDIM$,"}",IVA4+1)
+IVA7=Instr(IDDIM$,"{",IVA5+1)
+IVA8=Instr(IDDIM$,"}",IVA6+1)
+IVA9=Instr(IDDIM$,"{",IVA7+1)
+IVA10=Instr(IDDIM$,"}",IVA8+1)
+IVA11=Instr(IDDIM$,"{",IVA9+1)
+IVA12=Instr(IDDIM$,"}",IVA10+1)
+IVA13=Instr(IDDIM$,"{",IVA11+1)
+IVA14=Instr(IDDIM$,"}",IVA12+1)
+IVA15=Instr(IDDIM$,"{",IVA13+1)
+IVA16=Instr(IDDIM$,"}",IVA14+1)
+IVA17=Instr(IDDIM$,"{",IVA15+1)
+IVA18=Instr(IDDIM$,"}",IVA16+1)
+IVA19=Instr(IDDIM$,"{",IVA17+1)
+IVA20=Instr(IDDIM$,"}",IVA18+1)
+If IVA1<>0 And IVA2<>0 Then INFEBV1$=Mid$(IDDIM$,IVA1+1,IVA2-IVA1-1)
+If IVA3<>0 And IVA4<>0 Then INFEBV2$=Mid$(IDDIM$,IVA3+1,IVA4-IVA3-1)
+If IVA5<>0 And IVA6<>0 Then INFEBV3$=Mid$(IDDIM$,IVA5+1,IVA6-IVA5-1)
+If IVA7<>0 And IVA8<>0 Then INFEBV4$=Mid$(IDDIM$,IVA7+1,IVA8-IVA7-1)
+If IVA9<>0 And IVA10<>0 Then INFEBV5$=Mid$(IDDIM$,IVA9+1,IVA10-IVA9-1)
+If IVA11<>0 And IVA12<>0 Then INFEBV6$=Mid$(IDDIM$,IVA11+1,IVA12-IVA11-1)
+If IVA13<>0 And IVA14<>0 Then INFEBV7$=Mid$(IDDIM$,IVA13+1,IVA14-IVA13-1)
+If IVA15<>0 And IVA16<>0 Then INFEBV8$=Mid$(IDDIM$,IVA15+1,IVA16-IVA15-1)
+If IVA17<>0 And IVA18<>0 Then INFEBV9$=Mid$(IDDIM$,IVA17+1,IVA18-IVA17-1)
+If IVA19<>0 And IVA20<>0 Then INFEBV10$=Mid$(IDDIM$,IVA19+1,IVA20-IVA19-1)
+If INFEBV1$<>AV$ And INFEBV2$<>AV$ And INFEBV3$<>AV$ And INFEBV4$<>AV$ And INFEBV5$<>AV$ And INFEBV6$<>AV$ And INFEBV7$<>AV$ And INFEBV8$<>AV$ And INFEBV9$<>AV$ And INFEBV10$<>AV$ And INFEBV1$<>"" Then DINMA=1 IPOISEA=1
+IDDIM$=Mid$(DateiI$,2)
+INVA1=Instr(IDDIM$,"[")
+INVA2=Instr(IDDIM$,"]")
+INVA3=Instr(IDDIM$,"[",INVA1+1)
+INVA4=Instr(IDDIM$,"]",INVA2+1)
+INVA5=Instr(IDDIM$,"[",INVA3+1)
+INVA6=Instr(IDDIM$,"]",INVA4+1)
+INVA7=Instr(IDDIM$,"[",INVA5+1)
+INVA8=Instr(IDDIM$,"]",INVA6+1)
+INVA9=Instr(IDDIM$,"[",INVA7+1)
+INVA10=Instr(IDDIM$,"]",INVA8+1)
+INVA11=Instr(IDDIM$,"[",INVA9+1)
+INVA12=Instr(IDDIM$,"]",INVA10+1)
+INVA13=Instr(IDDIM$,"[",INVA11+1)
+INVA14=Instr(IDDIM$,"]",INVA12+1)
+INVA15=Instr(IDDIM$,"[",INVA13+1)
+INVA16=Instr(IDDIM$,"]",INVA14+1)
+INVA17=Instr(IDDIM$,"[",INVA15+1)
+INVA18=Instr(IDDIM$,"]",INVA16+1)
+INVA19=Instr(IDDIM$,"[",INVA17+1)
+INVA20=Instr(IDDIM$,"]",INVA18+1)
+If INVA1<>0 And INVA2<>0 Then INNFEBV1$=Mid$(IDDIM$,INVA1+1,INVA2-INVA1-1)
+If INVA3<>0 And INVA4<>0 Then INNFEBV2$=Mid$(IDDIM$,INVA3+1,INVA4-INVA3-1)
+If INVA5<>0 And INVA6<>0 Then INNFEBV3$=Mid$(IDDIM$,INVA5+1,INVA6-INVA5-1)
+If INVA7<>0 And INVA8<>0 Then INNFEBV4$=Mid$(IDDIM$,INVA7+1,INVA8-INVA7-1)
+If INVA9<>0 And INVA10<>0 Then INNFEBV5$=Mid$(IDDIM$,INVA9+1,INVA10-INVA9-1)
+If INVA11<>0 And INVA12<>0 Then INNFEBV6$=Mid$(IDDIM$,INVA11+1,INVA12-INVA11-1)
+If INVA13<>0 And INVA14<>0 Then INNFEBV7$=Mid$(IDDIM$,INVA13+1,INVA14-INVA13-1)
+If INVA15<>0 And INVA16<>0 Then INNFEBV8$=Mid$(IDDIM$,INVA15+1,INVA16-INVA15-1)
+If INVA17<>0 And INVA18<>0 Then INNFEBV9$=Mid$(IDDIM$,INVA17+1,INVA18-INVA17-1)
+If INVA19<>0 And INVA20<>0 Then INNFEBV10$=Mid$(IDDIM$,INVA19+1,INVA20-INVA19-1)
+If INNFEBV1$=AV$ Or INNFEBV2$=AV$ Or INNFEBV3$=AV$ Or INNFEBV4$=AV$ Or INNFEBV5$=AV$ Or INNFEBV6$=AV$ Or INNFEBV7$=AV$ Or INNFEBV8$=AV$ Or INNFEBV9$=AV$ Or INNFEBV10$=AV$ Then DINMA=1 IPOISEA=1
+EndIf
+If IPOISEA=0 Then
+i=0
+Repeat
+i=i+1
+If infoNE$(i)=IDDIM$ Then DINMA=1 Exit
+If i=999 Then DINMA=0 Exit
+Forever
+EndIf
+
+If FNANEWAZ=1 Then
+FNANEWAZ=0
+If DateiI$="!!!1E" Then WaitKey() : End
+If DateiI$="!!!2E" Then
+WaitKey()
+Cls
+Locate 1,1
+fileout = WriteFile("Nicht an Info erinnern.txt")
+i=0
+Repeat
+WriteLine fileout,infoNE$(i)
+i=i+1
+Until infoNE$(i)="" Or i=999
+WriteLine fileout,IDDIM$
+CloseFile(fileout)
+End
+EndIf
+If DateiI$="!!!1" Then WaitKey() : Cls : Locate 1,1
+If DateiI$="!!!2" Then
+WaitKey()
+Cls
+Locate 1,1
+fileout = WriteFile("Nicht an Info erinnern.txt")
+i=0
+Repeat
+WriteLine fileout,infoNE$(i)
+i=i+1
+Until infoNE$(i)="" Or i=999
+WriteLine fileout,IDDIM$
+CloseFile(fileout)
+AAAB=0
+filein1 = ReadFile("Nicht an Info erinnern.txt")
+For i=0 To 999
+infoNE$(i) = ReadLine$(filein1)
+Next
+EndIf
+If DateiI$="???" Then
+Print ""
+Print "Sollte diese Informartion nochmals angezeigt werden?"
+Print ""
+Print "Ja: Drücke 1"
+Print "Nein: Drücke 2"
+Taste=WaitKey()
+Cls
+Locate 1,1
+If Taste=50 Then
+fileout = WriteFile("Nicht an Info erinnern.txt")
+i=0
+Repeat
+WriteLine fileout,infoNE$(i)
+i=i+1
+Until infoNE$(i)="" Or i=999
+WriteLine fileout,IDDIM$
+CloseFile(fileout)
+AAAB=0
+filename$="Nicht an info erinnern.txt"
+If FileType(filename$)=1 Then AAAB=1
+If FileType(filename$)=0 Then AAAB=2
+If AAAB=1 Then
+filein1 = ReadFile("Nicht an info erinnern.txt")
+For i=0 To 999
+infoNE$(i) = ReadLine$(filein1)
+Next
+Else
+NE$ = "0"
+EndIf
+EndIf
+EndIf
+EndIf
+
+
+If DINMA=0 And DateiI$<>"???" And DateiI$<>"!!!1" And DateiI$<>"!!!2" And Left$(DateiI$,1)<>"#" And Left$(DateiI$,1)<>";" Then Print DateiI$ FNANEWAZ=1
+Until DateiI$=""
+CloseFile(filein)
+
+TileBlock TB
+SetFont SchriftLMSS
+Color 0,0,0
+Text 170,400,"Lernen mit Smiley"
+Delay 100
+
+EndIf
+
+
+
+
+
+
+
+
+
 If ERINV=1 Then Goto KINVB2
 filein = ReadFile("Neuste_Version.txt")
 ReadLine$(filein)
 NV$ = ReadLine$(filein)
 CloseFile filein
-filein = ReadFile(".\Aktuelle Version.txt")
-ReadLine$(filein)
-AV$ = ReadLine$(filein)
-CloseFile filein
 AAAB=0
-E=0
-filename$="Nicht an diese Version erinnern.txt"
+filename$="Nicht an Version erinnern.txt"
 If FileType(filename$)=1 Then AAAB=1
 If FileType(filename$)=0 Then AAAB=2
 If AAAB=1 Then
-filein = ReadFile("Nicht an diese Version erinnern.txt")
+filein = ReadFile("Nicht an Version erinnern.txt")
 NE$ = ReadLine$(filein)
-CloseFile filein
 Else
 NE$ = "0"
 EndIf
 If AV$<>NV$ And NV$<>NE$ Then
 Cls
 Locate 1,1
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
+Color 0,0,0
 Print "Neue Version "+NV$+" wurde gefunden."
 Print "Soll sie jetzt heruntergeladen und installiert werden?"
 Print "Der Vorgang kann einige Minuten in Anspruch nehmen."
@@ -344,20 +518,22 @@ If Taste=50 Then
 Cls
 TB=LoadImage(".\Bilder\Titelbild.jpg")
 TileBlock TB
-Schrift = LoadFont ("Arial",130,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
 Text 170,400,"Lernen mit Smiley"
 Delay 100
 EndIf
 If Taste=51 Then
-fileout = WriteFile("Nicht an diese Version erinnern.txt")
+fileout = WriteFile("Nicht an Version erinnern.txt")
 WriteLine fileout,NV$
 CloseFile(fileout)
 Cls
 TB=LoadImage(".\Bilder\Titelbild.jpg")
 TileBlock TB
-Schrift = LoadFont ("Arial",130,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
 Text 170,400,"Lernen mit Smiley"
@@ -462,7 +638,6 @@ NAK2O=LoadImage (".\Bilder\NAK2O.jpg")
 NAK3O=LoadImage (".\Bilder\NAK3O.jpg")
 
 
-
 MaskImage Uebersicht1a,0,0,255
 MaskImage Uebersicht2a,0,0,255
 MaskImage Uebersicht3a,0,0,255
@@ -555,17 +730,18 @@ DrawImage Anfang, 0,0
 Print "Ich bedanke mich herzlich, dass Sie mein Lernprogramm installiert haben!"
 Print ""
 Print "Bei Problemen schreiben Sie mir einfach unter nico@bosshome.ch ein E-Mail."
+Print "Zum Weiterkommen drücken Sie bitte jeweils ENTER"
 Print "Viel Spass beim Lernen mit meinem Lernprogramm!"
 Input()
 Cls
 Locate 1,1
-DrawImage Anfang, 0,0
+If Not Grafik4$="3" Then
 gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
 SetBuffer BackBuffer()
-WarnungF$="Sehen Sie die 4 grünen Rechtecke?"
+WarnungF$="Sehen Sie die 3 grünen Rechtecke?"
 GTJNEP=1
 NNWA=1
 WarnungA
@@ -574,13 +750,12 @@ NNWA=0
 If JaO=1 Then
 Goto AnfangN
 Else
-SetFont Schrift1
-Anfang=LoadImage (".\Bilder\Sonnenuntergang.jpg")
-DrawImage Anfang, 0,0
-Print "Da die Grafik zu gross ist, werden sie mit einem Druck auf Enter"
-Print "zu dem imformations und Auswahklfede der Grafuk umgeleitet!"
-Goto Grafik
+fileout = WriteFile(".\Grafik.txt")
+WriteLine fileout,"Grafik: 1280,1024,0,3"
+CloseFile fileout
 EndIf
+EndIf
+Goto PStart
 End
 
 
@@ -590,6 +765,7 @@ End
 
 
 .AnfangN
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
 Schrift = LoadFont ("Arial",60,True)
 SchriftF = LoadFont ("Arial",50,True)
@@ -724,8 +900,10 @@ End
 If Spielfigur$="" Then
 ClsVB
 TFormFilter 0
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Gletscher.jpg")
 DrawImage HGrundH, 0,0
 Fig1=LoadImage (".\Bilder\Figur1.bmp")
@@ -845,6 +1023,7 @@ If Schwierigkeitsstufe=0 Then AuswahOBL=0 SWZH=1 Goto SchwierikeitsstufeW
 
 
 .Auswahl
+NANJN=1
 Protokoll$=""
 FlushKeys
 FlushMouse
@@ -882,6 +1061,7 @@ EndIf
 UebersichtA=0
 
 .AuswahOB
+NANJN=1
 Auswahl=LoadImage (".\Bilder\Gletscher.jpg")
 AuswahOBL=0
 ;Wichtig!
@@ -993,6 +1173,7 @@ img = CreateImage (1280,1024)
 SetBuffer ImageBuffer (img)
 TB=LoadImage(".\Bilder\Titelbild.jpg")
 TileBlock TB
+FreeFont Schrift
 Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
@@ -1086,6 +1267,8 @@ Uebersicht18=Uebersicht18a
 Uebersicht19=Uebersicht19a
 Uebersicht20=Uebersicht20a
 Uebersicht21=Uebersicht21a
+
+
 Repeat
 NNEZKAW=0
 circleX=MouseX()
@@ -1235,7 +1418,7 @@ End
 
 .Protokoll
 ClsVB
-PROAZOZ=20
+PROAZOZ=50
 hfjdvbkvsl=0
 PSeiten=1
 filein = ReadFile(Name$+".txt")
@@ -1247,7 +1430,7 @@ For i=1 To 1499
 RST$(i)=ReadLine$(filein)
 If RST$(i+1)="" Then Exit
 hfjdvbkvsl=hfjdvbkvsl+1
-If hfjdvbkvsl=29 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
+If hfjdvbkvsl=30 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
 Next
 CloseFile filein
 
@@ -1262,9 +1445,9 @@ Text 640,10,"Protokoll Seite "+PSeitenA+"/"+PSeiten,1
 Schrift30 = LoadFont ("Arial",30,True)
 SetFont Schrift30
 Text 640,970,"Weiter mit beliebiger Taste",1
-SchriftN = LoadFont ("Arial",30)
+SchriftN = LoadFont ("Arial",29)
 SetFont SchriftN
-SchriftF = LoadFont ("Arial",30,True)
+SchriftF = LoadFont ("Arial",29,True)
 SchriftD = LoadFont ("Arial",35,True)
 filein = ReadFile(Name$+".txt")
 ReadLine$(filein)
@@ -1278,11 +1461,11 @@ RST$(i)=ReadLine$(filein)
 If RST$(i)="Plusrechnen" Or RST$(i)="Wörterdiktat" Or RST$(i)="Textverständnis (Der Standhafte Zinnsoldat)" Or RST$(i)="Nomen" Or RST$(i)="Labyrinth (Mit Hilfe der Lösung)" Or RST$(i)="Labyrinth" Or RST$(i)="Verben" Or RST$(i)="Wörter erraten" Or RST$(i)="Zeitverstänbtnis" Or RST$(i)="Witze" Or RST$(i)="Artikel" Or RST$(i)="Zahlen erraten" Or RST$(i)="Tennis" Or RST$(i)="Wortfeld Sagen" Or RST$(i)="Lotto" Or RST$(i)="Wörter merken" Or RST$(i)="Rechenspiel" Or RST$(i)="Schnellrechnen" Or RST$(i)="Adjektive" Or RST$(i)="Pronomen" Or RST$(i)="Letzte Aufgabe" Then SetFont SchriftF Else SetFont SchriftN
 PDatK1$=Mid$(RST$(i),3,3)
 PDatK2$=Mid$(RST$(i),4,3)
-If PDatK1="Jan" Or PDatK1="Feb" Or PDatK1="Mär" Or PDatK1="Apr" Or PDatK1="Mai" Or PDatK1="Jun" Or PDatK1="Jul" Or PDatK1="Aug" Or PDatK1="Sep" Or PDatK1="Okt" Or PDatK1="Nov" Or PDatK1="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+7
-If PDatK2="Jan" Or PDatK2="Feb" Or PDatK2="Mär" Or PDatK2="Apr" Or PDatK2="Mai" Or PDatK2="Jun" Or PDatK2="Jul" Or PDatK2="Aug" Or PDatK2="Sep" Or PDatK2="Okt" Or PDatK2="Nov" Or PDatK2="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+7
-Text 640,((NUESSCH*30)+PROAZOZ)+PDBEGA,RST$(i),1
+If PDatK1="Jan" Or PDatK1="Feb" Or PDatK1="Mär" Or PDatK1="Apr" Or PDatK1="Mai" Or PDatK1="Jun" Or PDatK1="Jul" Or PDatK1="Aug" Or PDatK1="Sep" Or PDatK1="Okt" Or PDatK1="Nov" Or PDatK1="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+1
+If PDatK2="Jan" Or PDatK2="Feb" Or PDatK2="Mär" Or PDatK2="Apr" Or PDatK2="Mai" Or PDatK2="Jun" Or PDatK2="Jul" Or PDatK2="Aug" Or PDatK2="Sep" Or PDatK2="Okt" Or PDatK2="Nov" Or PDatK2="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+1
+Text 640,((NUESSCH*29)+PROAZOZ)+PDBEGA,RST$(i),1
 If RST$(i)="" Then Exit
-If NUESSCH=29 And RST$(i+1)<>"" Then
+If NUESSCH=30 And RST$(i+1)<>"" Then
 WaitKey
 Cls
 PROAZOZ=50
@@ -1313,8 +1496,10 @@ Cls
 FlushKeys
 FlushMouse
 TFormFilter 0
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Gletscher.jpg")
 DrawImage HGrundH, 0,0
 Fig1=LoadImage (".\Bilder\Figur1.bmp")
@@ -1544,7 +1729,9 @@ SpielstandKopierenA=0
 ;Wichtig!
 ASDREFGHHGHUJK=1
 CLSVB
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
+FreeFont Schrift
 Schrift = LoadFont ("Arial",60,True)
 TileBlock HGrundH
 Color 253,243,0
@@ -1568,7 +1755,9 @@ WarnungF$="Willst du wirklich deinen Spielstand mit der letzten Sicherungsdatei 
 WarnungA
 If JaO=1 Then
 CLSVB
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
+FreeFont Schrift
 Schrift = LoadFont ("Arial",60,True)
 TileBlock HGrundH
 Color 253,243,0
@@ -1606,25 +1795,40 @@ EndIf
 If ImageRectOverlap (gfxCircle,circleX,circleY,340,412,600,100) And NNEZKAW=0 Then
 If MouseDown(1) And (JetztZeit-StartZeit > ZeitMaxSK) Then
 ClsVB
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
 DrawImage HGrundH, 0,0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Lava.jpg")
 TileBlock HGrundH
 FlushKeys
+FreeFont Schrift
 Schrift = LoadFont ("Arial",35,True)
 SetFont Schrift
+Color 0,255,0
 Print "Gib bitte den Namen ein, dessen Spielstand du auf deinen Spielstand kopieren willst."
 NameS$ = Input()
-filename$=NameS$
+filename$=NameS$+".txt"
 If FileType(filename$)=1 Then
 quellpfad$ = ".\"+NameS$+".txt"
 zielpfad$ = ".\"+Name$+".txt"
 CopyFile quellpfad$, zielpfad$
 
-
-
-Schwierigkeitsstufe=SFFFFF
-SpielstandKopierenA=0
+CLSVB
+FreeImage HGrundH
+HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
+FreeFont Schrift
+Schrift = LoadFont ("Arial",60,True)
+TileBlock HGrundH
+Color 253,243,0
+Rect 72,64,1153,195,1
+SetFont Schrift
+Color 0,0,0
+ClsColor 2,12,255
+Text 640,130,"Spielstand wurde erfolgreich überschrieben!",1
+VWait
+Delay 1500
+SpielstandS
 ;Wichtig!
 ;Wichtig!
 ;Wichtig!
@@ -1634,6 +1838,9 @@ Else
 Goto Fehler
 EndIf
 EndIf
+
+
+;Teil der Auswahl Spielstand Kopieren
 SPKA3=SPK3O
 NNEZKAW=1
 Else
@@ -1665,7 +1872,8 @@ Forever
 
 .Fehler
 ClsVB
-Schrift = LoadFont ("Arial",45,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",45,True)
 SetFont Schrift
 ClsColor 253,202,13
 Cls
@@ -1685,9 +1893,11 @@ ClsVB
 GWITGV=0
 ClsColor 255,201,14
 Cls
+FreeFont Schrift
 Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Print "Grafik"
+FreeFont Schrift
 Schrift = LoadFont ("Arial",29,True)
 SetFont Schrift
 Print ""
@@ -1774,7 +1984,8 @@ WarnungF$="Willst du wirklich deinen Spielstand mit allen Sicherungsdateien umbe
 WarnungA
 If JaO=1 Then
 ClsVB
-Schrift = LoadFont ("Arial",40,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Color 0,255,0
 Lava=LoadImage (".\Bilder\Lava.jpg")
@@ -1821,10 +2032,11 @@ End
 
 ;Programmstart
 .Programmstart
-If Protokoll$="" Or Aufgaben=100 Then NAJN=0 Else NAJN=1
+If NANJN=1 Or Aufgaben=100 Then NAJN=0 NANJN=0 Else NAJN=1
 Protokoll$=""
 FreeSound Game
 ResumeChannel HGM
+
 SpielstandS
 
 ;Sachen=0
@@ -1855,6 +2067,7 @@ FlushMouse
 CLSVB
 
 Const ZeitMaxNA=1000  ; 1 Sekunden
+
 If NAJN=1 Then
 NAKA1=NAK1
 NAKA2=NAK2
@@ -1866,7 +2079,6 @@ Repeat
 circleX=MouseX()
 circleY=MouseY()
 NNEZKAW=0
-Cls
 DrawImage NA, 1,0
 DrawImage NAKA1, 240,362
 DrawImage NAKA2, 240,462
@@ -2559,6 +2771,7 @@ End
 
 .Teil18
 ClsVB
+FreeFont Schrift
 Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 FY=950
@@ -2611,6 +2824,7 @@ EndIf
 Forever
 SetBuffer FrontBuffer()
 Flip
+FreeFont Schrift
 Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Color 0,255,0
@@ -2619,6 +2833,7 @@ Text 640,60,"Achtung: Vor deinem Haus wartet schon dein Feind",1
 Text 640,110,"auf dich!",1
 Text 640,160,"Ich war ihm begegnet,  konnte mich aber zum Glück noch",1
 Text 640,210,"ganz knapp in diesem hohlen Baumstamm verstecken!",1
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,201)
 SetFont Schrift
 Text 640,970,"Weiter mit beliebiger Taste",1
@@ -2692,12 +2907,17 @@ End
 
 .Aufgabe1
 ClsVB
+PauseChannel HGM
+Protokoll$="Plusrechnen" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 ClsColor 253,202,13
 Cls
-Schrift = LoadFont ("Arial",100,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",100,True)
 SetFont Schrift
 Print "Plusrechnen"
-Schrift = LoadFont ("Arial",40,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Print ""
 Print "Rechne die folgenden Rechnungen aus."
@@ -2705,35 +2925,29 @@ Print "Du musst mindestens 17 von zwanzig Rechnungen richtig lösen,"
 Print "damit du weiter zur nächsten Aufgabe kommst."
 Print ""
 Print "Viel Glück!"
+FreeImage HGrundH
+SeedRnd MilliSecs()
+WBA1=Rand (7,7)
+If WBA1=1 Then HGrundH=LoadImage (".\Bilder\Wald.jpg")
+If WBA1=2 Then HGrundH=LoadImage (".\Bilder\Regenbogen.jpg")
+If WBA1=3 Then HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
+If WBA1=4 Then HGrundH=LoadImage (".\Bilder\Schmetterling.jpg")
+If WBA1=5 Then HGrundH=LoadImage (".\Bilder\Bach.jpg")
+If WBA1=6 Then HGrundH=LoadImage (".\Bilder\Meergn.jpg")
+If WBA1=7 Then HGrundH=LoadImage (".\Bilder\ZugerseeP.jpg")
+If WBA1=8 Then HGrundH=LoadImage (".\Bilder\Gletscher.jpg")
+If WBA1=9 Then HGrundH=LoadImage (".\Bilder\BrückeP.jpg")
 Input()
+ClsColor 0,0,0
+Cls
 StartZeit = MilliSecs()
 Richtig=0
 Falsch=0
 Aufgabe=0
-ClsVB
-HGrund1=LoadImage (".\Bilder\Wald1.jpg")
-HGrund2=LoadImage (".\Bilder\Wald2.jpg")
-HGrund3=LoadImage (".\Bilder\Wald3.jpg")
-HGrund4=LoadImage (".\Bilder\Wald4.jpg")
-HGrund5=LoadImage (".\Bilder\Wald5.jpg")
-HGrund6=LoadImage (".\Bilder\Wald6.jpg")
-HGrund7=LoadImage (".\Bilder\Wald7.jpg")
-HGrund8=LoadImage (".\Bilder\Wald8.jpg")
-HGrund9=LoadImage (".\Bilder\Wald9.jpg")
-HGrund10=LoadImage (".\Bilder\Wald10.jpg")
-HGrund11=LoadImage (".\Bilder\Wald11.jpg")
-HGrund12=LoadImage (".\Bilder\Wald12.jpg")
-HGrund13=LoadImage (".\Bilder\Wald13.jpg")
-HGrund14=LoadImage (".\Bilder\Wald14.jpg")
-HGrund15=LoadImage (".\Bilder\Wald15.jpg")
-HGrund16=LoadImage (".\Bilder\Wald16.jpg")
-HGrund17=LoadImage (".\Bilder\Wald17.jpg")
-HGrund18=LoadImage (".\Bilder\Wald18.jpg")
-HGrund19=LoadImage (".\Bilder\Wald19.jpg")
-HGrund20=LoadImage (".\Bilder\Wald20.jpg")
-
-PauseChannel HGM
+Cls
+Locate 1,1
 FlushKeys
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Color 255,255,255
@@ -2743,8 +2957,6 @@ SeedRnd MilliSecs()
 Falsch=0
 Richtig=0
 Aufgabe=0
-;Hier wird dei Spielfigur für Teil1a oder Teil1S gelagden!
-rocket = LoadImage (".\Bilder\"+Name+"bmp")
 
 Repeat
 Color 255,255,255
@@ -2757,7 +2969,7 @@ If Schwierigkeitsstufe=4 Then Goto W4
 
 
 .W1
-If Schwierigkeitsstufe=1 Then Zahl1= Rand(0,10) Zahl2= Rand(0,10)
+If Schwierigkeitsstufe=1 Then Zahl1= Rand(0,50) Zahl2= Rand(0,50)
 Goto Aufgabe1a
 End
 
@@ -2781,57 +2993,39 @@ End
 .Aufgabe1a
 FlushKeys
 FlushMouse
+Origin 200,0
 Repeat
-Ergebnis=Input(Zahl1 +"+"+Zahl2 + "=" ) 
-If Ergebnis=Zahl1+Zahl2 Then Print "Richtig!" Richtig=Richtig+1  RichtigR=1
+Ergebnis=Input(Zahl1 +"+"+Zahl2 + "=" )
+If Ergebnis=Zahl1+Zahl2 Then Print "Richtig!" Richtig=Richtig+1 RichtigR=1
 If Ergebnis<>Zahl1+Zahl2 Then
 Print "Falsch!"
 Falsch=Falsch+1
 EndIf
 FlushKeys
-Delay 1500
+Delay 1000
 Cls
 Locate 1,1
-If Richtig =1 Then DrawImage HGrund1, 200,0
-If Richtig =2 Then DrawImage HGrund2, 416,0
-If Richtig =3 Then DrawImage HGrund3, 632,0
-If Richtig =4 Then DrawImage HGrund4, 848,0
-If Richtig =5 Then DrawImage HGrund5, 1064,0
-If Richtig =6 Then DrawImage HGrund6, 200,256
-If Richtig =7 Then DrawImage HGrund7, 416,256
-If Richtig =8 Then DrawImage HGrund8, 632,256
-If Richtig =9 Then DrawImage HGrund9, 848,256
-If Richtig =10 Then DrawImage HGrund10, 1064,256
-If Richtig =11 Then DrawImage HGrund11, 200,512
-If Richtig =12 Then DrawImage HGrund12, 416,512
-If Richtig =13 Then DrawImage HGrund13, 632,512
-If Richtig =14 Then DrawImage HGrund14, 848,512
-If Richtig =15 Then DrawImage HGrund15, 1064,512
-If Richtig =16 Then DrawImage HGrund16, 200,768
-If Richtig =17 Then DrawImage HGrund17, 416,768
-If Richtig =18 Then DrawImage HGrund18, 632,768
-If Richtig =19 Then DrawImage HGrund19, 848,768
-If Richtig =1 Then DrawImage HGrund1, 200,0
-If Richtig >1 Then DrawImage HGrund1, 200,0
-If Richtig >2 Then DrawImage HGrund2, 416,0
-If Richtig >3 Then DrawImage HGrund3, 632,0
-If Richtig >4 Then DrawImage HGrund4, 848,0
-If Richtig >5 Then DrawImage HGrund5, 1064,0
-If Richtig >6 Then DrawImage HGrund6, 200,256
-If Richtig >7 Then DrawImage HGrund7, 416,256
-If Richtig >8 Then DrawImage HGrund8, 632,256
-If Richtig >9 Then DrawImage HGrund9, 848,256
-If Richtig >10 Then DrawImage HGrund10, 1064,256
-If Richtig >11 Then DrawImage HGrund11, 200,512
-If Richtig >12 Then DrawImage HGrund12, 416,512
-If Richtig >13 Then DrawImage HGrund13, 632,512
-If Richtig >14 Then DrawImage HGrund14, 848,512
-If Richtig >15 Then DrawImage HGrund15, 1064,512
-If Richtig >16 Then DrawImage HGrund16, 200,768
-If Richtig >17 Then DrawImage HGrund17, 416,768
-If Richtig >18 Then DrawImage HGrund18, 632,768
-If Richtig >19 Then DrawImage HGrund19, 848,768
-If Richtig =20 Then DrawImage HGrund20, 1064,768 Delay 3000 Goto Aufgabe1b
+If Richtig=1 Or Richtig>1 Then DrawImageRect HGrundH,0,0,0,0,216,256
+If Richtig=2 Or Richtig>2 Then DrawImageRect HGrundH,216,0,216,0,216,256
+If Richtig=3 Or Richtig>3 Then DrawImageRect HGrundH,432,0,432,0,216,256
+If Richtig=4 Or Richtig>4 Then DrawImageRect HGrundH,648,0,648,0,216,256
+If Richtig=5 Or Richtig>5 Then DrawImageRect HGrundH,864,0,864,0,216,256
+If Richtig=6 Or Richtig>6 Then DrawImageRect HGrundH,0,256,0,256,216,256
+If Richtig=7 Or Richtig>7 Then DrawImageRect HGrundH,216,256,216,256,216,256
+If Richtig=8 Or Richtig>8 Then DrawImageRect HGrundH,432,256,432,256,216,256
+If Richtig=9 Or Richtig>9 Then DrawImageRect HGrundH,648,256,648,256,216,256
+If Richtig=10 Or Richtig>10 Then DrawImageRect HGrundH,864,256,864,256,216,256
+If Richtig=11 Or Richtig>11 Then DrawImageRect HGrundH,0,512,0,512,216,256
+If Richtig=12 Or Richtig>12 Then DrawImageRect HGrundH,216,512,216,512,216,256
+If Richtig=13 Or Richtig>13 Then DrawImageRect HGrundH,432,512,432,512,216,256
+If Richtig=14 Or Richtig>14 Then DrawImageRect HGrundH,648,512,648,512,216,256
+If Richtig=15 Or Richtig>15 Then DrawImageRect HGrundH,864,512,864,512,216,256
+If Richtig=16 Or Richtig>16 Then DrawImageRect HGrundH,0,768,0,768,216,256
+If Richtig=17 Or Richtig>17 Then DrawImageRect HGrundH,216,768,216,768,216,256
+If Richtig=18 Or Richtig>18 Then DrawImageRect HGrundH,432,768,432,768,216,256
+If Richtig=19 Or Richtig>19 Then DrawImageRect HGrundH,648,768,648,768,216,256
+If Richtig=20 Then DrawImageRect HGrundH,864,768,864,768,216,256 Delay 2000
+VWait
 Until RichtigR=1
 RichtigR=0
 Aufgabe=Aufgabe+1
@@ -2839,17 +3033,21 @@ Until Aufgabe=20
 
 
 .Aufgabe1b
+Origin 0,0
 Cls
 Locate 1,1
 FlushKeys
 FlushMouse
+ClsColor 253,202,13
+Cls
+Color 1,1,1
 Print "Du hast "+(20-Falsch)+"/20 Aufgaben richtig gelöst!"
-Input()
-Protokoll$="Plusrechnen" SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+(20-Falsch)+"/20" SpielstandS
 Gosub PZeit
-If 20-Falsch<17 Then Print "Du hast zu viele Fehler, versuche die Aufgabe nochmals!" Delay 4000 SpielstandS Goto Aufgabe1
+If 20-Falsch<17 Then Print "Du hast zu viele Fehler, versuche die Aufgabe nochmals!" Input() : SpielstandS : Goto Aufgabe1
 SpielstandS
+Input()
 If UebersichtA=1 Then Goto Uebersicht3
 ;Spielstandsicherung
 Aufgaben=Aufgaben+1
@@ -2862,13 +3060,17 @@ End
 
 .Aufgabe2
 ClsVB
+Protokoll$="Wörterdiktat" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 ClsColor 253,202,13
 Cls
-Schrift = LoadFont ("Arial",100,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",100,True)
 SetFont Schrift
 Print "Wörterdiktat"
-Schrift = LoadFont ("Arial",40,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Print ""
 Print "Zuerst wird ein Wort je nach Schwierigkeitsstufe"
@@ -2876,31 +3078,23 @@ Print "0.75 bis 3 Sekunden lang gezeigt, dann wird es gelöscht."
 Print "Du musst es dann fehlerfrei schreiben (und Enter drücken)."
 Print ""
 Print "Viel Glück!"
-HGrundH=LoadImage (".\Bilder\Waldsw.jpg")
-HGrund1=LoadImage (".\Bilder\Wald1.jpg")
-HGrund2=LoadImage (".\Bilder\Wald2.jpg")
-HGrund3=LoadImage (".\Bilder\Wald3.jpg")
-HGrund4=LoadImage (".\Bilder\Wald4.jpg")
-HGrund5=LoadImage (".\Bilder\Wald5.jpg")
-HGrund6=LoadImage (".\Bilder\Wald6.jpg")
-HGrund7=LoadImage (".\Bilder\Wald7.jpg")
-HGrund8=LoadImage (".\Bilder\Wald8.jpg")
-HGrund9=LoadImage (".\Bilder\Wald9.jpg")
-HGrund10=LoadImage (".\Bilder\Wald10.jpg")
-HGrund11=LoadImage (".\Bilder\Wald11.jpg")
-HGrund12=LoadImage (".\Bilder\Wald12.jpg")
-HGrund13=LoadImage (".\Bilder\Wald13.jpg")
-HGrund14=LoadImage (".\Bilder\Wald14.jpg")
-HGrund15=LoadImage (".\Bilder\Wald15.jpg")
-HGrund16=LoadImage (".\Bilder\Wald16.jpg")
-HGrund17=LoadImage (".\Bilder\Wald17.jpg")
-HGrund18=LoadImage (".\Bilder\Wald18.jpg")
-HGrund19=LoadImage (".\Bilder\Wald19.jpg")
-HGrund20=LoadImage (".\Bilder\Wald20.jpg")
+FreeImage HGrundH
+SeedRnd MilliSecs()
+WBA1=Rand (1,9)
+If WBA1=1 Then HGrundH=LoadImage (".\Bilder\Wald.jpg")
+If WBA1=2 Then HGrundH=LoadImage (".\Bilder\Regenbogen.jpg")
+If WBA1=3 Then HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
+If WBA1=4 Then HGrundH=LoadImage (".\Bilder\Schmetterling.jpg")
+If WBA1=5 Then HGrundH=LoadImage (".\Bilder\Bach.jpg")
+If WBA1=6 Then HGrundH=LoadImage (".\Bilder\Meergn.jpg")
+If WBA1=7 Then HGrundH=LoadImage (".\Bilder\ZugerseeP.jpg")
+If WBA1=8 Then HGrundH=LoadImage (".\Bilder\Gletscher.jpg")
+If WBA1=9 Then HGrundH=LoadImage (".\Bilder\BrückeP.jpg")
 Input()
 StartZeit = MilliSecs()
 Cls
-Locate 1,1
+Locate 3,3
+FreeFont Schrift
 Schrift = LoadFont ("Arial",24)
 SetFont Schrift
 Falsch=0 : Richtig=0 : Aufgabe=0
@@ -2914,10 +3108,6 @@ Cls
 Color 255,255,255
 
 .Woerter2
-
-
-DrawImage HGrundH, 200,0
-
 Data "ihm", "ihn", "ihr", "ihnen", "riechen", "fernsehen", "bezahlen"
 Data "ruhig", "mehr", "mehrere", "wohnen", "während", "stehen", "schief"
 Data "sehr", "nehmen", "ehrlich", "fröhlich", "allmählich", "fahren", "tief"
@@ -2951,50 +3141,53 @@ Repeat
 
 
 
-
+;FlushKeys
+FlushMouse
 Repeat
-Print Zufall
+Text 3,3,Zufall
 
 If Schwierigkeitsstufe=1 Then Delay 3000
-If Schwierigkeitsstufe=2 Then Delay 750 Delay 750 Delay 750
-If Schwierigkeitsstufe=3 Then Delay 750 Delay 750
+If Schwierigkeitsstufe=2 Then Delay 2250
+If Schwierigkeitsstufe=3 Then Delay 1500
 If Schwierigkeitsstufe=4 Then Delay 750
 
 Color 0,0,0
 Rect 0,0,200,1024
 Color 255,255,255
-Locate 1,1
+Locate 3,3
 Ratwort$ = Input()
 
 If Ratwort$ = Zufall$ Then
-  Print "Richtig!" Worteraten = Worteraten +1
+  Text 3,30,"Richtig!" Worteraten = Worteraten +1
   WortRichtig=1
 Else
-  Print "War wohl nix"
+  Text 3,30,"War wohl nix"
 EndIf
-;Cls
-Locate 1,1
-DrawImage HGrundH, 200,0
-If Worteraten =1 Then DrawImage HGrund1, 200,0
-If Worteraten =2 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0
-If Worteraten =3 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0
-If Worteraten =4 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0
-If Worteraten =5 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0
-If Worteraten =6 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256
-If Worteraten =7 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256
-If Worteraten =8 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256
-If Worteraten =9 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256
-If Worteraten =10 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256
-If Worteraten =11 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512
-If Worteraten =12 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512
-If Worteraten =13 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512
-If Worteraten =14 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512
-If Worteraten =15 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512
-If Worteraten =16 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512 DrawImage HGrund16, 200,768
-If Worteraten =17 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512 DrawImage HGrund16, 200,768 DrawImage HGrund17, 416,768
-If Worteraten =18 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512 DrawImage HGrund16, 200,768 DrawImage HGrund17, 416,768 DrawImage HGrund18, 632,768
-If Worteraten =19 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512 DrawImage HGrund16, 200,768 DrawImage HGrund17, 416,768 DrawImage HGrund18, 632,768 DrawImage HGrund19, 848,768
-If Worteraten =20 Then DrawImage HGrund1, 200,0 DrawImage HGrund2, 416,0 DrawImage HGrund3, 632,0 DrawImage HGrund4, 848,0 DrawImage HGrund5, 1064,0 DrawImage HGrund6, 200,256 DrawImage HGrund7, 416,256 DrawImage HGrund8, 632,256 DrawImage HGrund9, 848,256 DrawImage HGrund10, 1064,256 DrawImage HGrund11, 200,512 DrawImage HGrund12, 416,512 DrawImage HGrund13, 632,512 DrawImage HGrund14, 848,512 DrawImage HGrund15, 1064,512 DrawImage HGrund16, 200,768 DrawImage HGrund17, 416,768 DrawImage HGrund18, 632,768 DrawImage HGrund19, 848,768 DrawImage HGrund20, 1064,768
+Origin 200,0
+If Worteraten=1 Or Worteraten>1 Then DrawImageRect HGrundH,0,0,0,0,216,256
+If Worteraten=2 Or Worteraten>2 Then DrawImageRect HGrundH,216,0,216,0,216,256
+If Worteraten=3 Or Worteraten>3 Then DrawImageRect HGrundH,432,0,432,0,216,256
+If Worteraten=4 Or Worteraten>4 Then DrawImageRect HGrundH,648,0,648,0,216,256
+If Worteraten=5 Or Worteraten>5 Then DrawImageRect HGrundH,864,0,864,0,216,256
+
+If Worteraten=6 Or Worteraten>6 Then DrawImageRect HGrundH,0,256,0,256,216,256
+If Worteraten=7 Or Worteraten>7 Then DrawImageRect HGrundH,216,256,216,256,216,256
+If Worteraten=8 Or Worteraten>8 Then DrawImageRect HGrundH,432,256,432,256,216,256
+If Worteraten=9 Or Worteraten>9 Then DrawImageRect HGrundH,648,256,648,256,216,256
+If Worteraten=10 Or Worteraten>10 Then DrawImageRect HGrundH,864,256,864,256,216,256
+
+If Worteraten=11 Or Worteraten>11 Then DrawImageRect HGrundH,0,512,0,512,216,256
+If Worteraten=12 Or Worteraten>12 Then DrawImageRect HGrundH,216,512,216,512,216,256
+If Worteraten=13 Or Worteraten>13 Then DrawImageRect HGrundH,432,512,432,512,216,256
+If Worteraten=14 Or Worteraten>14 Then DrawImageRect HGrundH,648,512,648,512,216,256
+If Worteraten=15 Or Worteraten>15 Then DrawImageRect HGrundH,864,512,864,512,216,256
+
+If Worteraten=16 Or Worteraten>16 Then DrawImageRect HGrundH,0,768,0,768,216,256
+If Worteraten=17 Or Worteraten>17 Then DrawImageRect HGrundH,216,768,216,768,216,256
+If Worteraten=18 Or Worteraten>18 Then DrawImageRect HGrundH,432,768,432,768,216,256
+If Worteraten=19 Or Worteraten>19 Then DrawImageRect HGrundH,648,768,648,768,216,256
+If Worteraten=20 Then DrawImageRect HGrundH,864,768,864,768,216,256 Origin 0,0 : Delay 2000
+Origin 0,0
 Delay 1000
 Color 0,0,0
 Rect 0,0,200,1024
@@ -3005,10 +3198,24 @@ WortRichtig=0
 FlushKeys
 FlushMouse
 Until Worteraten = 20
+
+
+
 ;Spielstandsicherung
+Origin 0,0
+Cls
+Locate 1,1
 FlushKeys
 FlushMouse
-Protokoll$="Wörterdiktat" SpielstandS
+ClsColor 253,202,13
+Cls
+Color 0,0,0
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
+SetFont Schrift
+Print "Du hast "+(20-WDRVP)+"/20 Aufgaben richtig gelöst!"
+Input()
+SpielstandSLR
 Protokoll$="Punkte: "+(20-WDRVP)+"/20" SpielstandS
 Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
@@ -3023,329 +3230,108 @@ End
 
 
 
-
 .Aufgabe3
-Goto Zinn
-End
-
-
-.Zinn
+Protokoll$="Zahlen erraten" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
+VSJBL=0
+Versuche=0
+Zahl=0
 ClsVB
-PauseChannel HGM
-FlushKeys
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
+SetFont Schrift
+FreeImage HGrundH
+HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
+DrawImage HGrundH, 0,0
+SeedRnd MilliSecs() 
+If Schwierigkeitsstufe=1 Then ZufallZZ = Rand (1,100)
+If Schwierigkeitsstufe=2 Then ZufallZZ = Rand (1,100)
+If Schwierigkeitsstufe=3 Then ZufallZZ = Rand (1,1000)
+If Schwierigkeitsstufe=4 Then ZufallZZ = Rand (1,10000)
+Versuche = 0
+If Schwierigkeitsstufe=1 Or Schwierigkeitsstufe=2 Then Print "Ich denke mir eine Zahl zwischen 1 und 100, errate sie!"
+If Schwierigkeitsstufe=1 Or Schwierigkeitsstufe=2 Then Print "Das Ziel ist, die Zahl in 10 Versuchen herauszufinden."
+If Schwierigkeitsstufe=3 Then Print "Ich denke mir eine Zahl zwischen 1 und 1000, errate sie!"
+If Schwierigkeitsstufe=3 Then Print "Das Ziel ist, die Zahl in 15 Versuchen herauszufinden."
+If Schwierigkeitsstufe=4 Then Print "Ich denke mir eine Zahl zwischen 1 und 10000, errate sie!"
+If Schwierigkeitsstufe=4 Then Print "Das Ziel ist, die Zahl in 20 Versuchen herauszufinden."
+Print ""
+Print "Viel Glück!"
+Input()
+StartZeit = MilliSecs()
+Cls
+Locate 1,1
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 60,True)
-SetFont Schrift
-Text 9,1,"Der Standhafte Zinnsoldat"
-Locate 1,70
-Schrift = LoadFont ("Arial", 23,True)
-SetFont Schrift
-Textverstentnis=0
-Print "  Es waren einmal fünfundzwanzig Zinnsoldaten, die waren alle Brüder, denn sie waren aus"
-Print "  einem alten zinnernen Löffel gemacht worden. Das Gewehr hielten sie"
-Print "  im Arm und das Gesicht geradeaus; rot und blau, überaus herrlich war die Uniform; das"
-Print "  allererste, was sie in dieser Welt hörten, als der Deckel von der"
-Print "  Schachtel genommen wurde, in der sie lagen, war das Wort Zinnsoldaten. Das rief ein"
-Print "  kleiner Knabe und klatschte in die Hände; er hatte sie erhalten, denn es" 
-Print "  war sein Geburtstag, und er stellte sie nun auf dem Tische auf. Der eine Soldat"
-Print "  glich dem andern leibhaft, nur ein einziger war etwas anders; er hatte nur ein Bein,"
-Print "  denn er war zuletzt gegossen worden, und da war nicht mehr Zinn genug da; doch stand"
-Print "  er ebenso fest auf seinem einen Bein wie die andern auf ihren zweien, und"
-Print "  gerade er war es, der sich bemerkbar machte. "
-Print
-Print
-Print
-Print "  Seite 1 von 7"
-WaitKey ()
+Repeat
+Zahl=0
+  Zahl = Input("Rate mal: ")
+  Versuche = Versuche + 1
+  If Zahl < ZufallZZ Then Print "Zu klein!"
+  If Zahl > ZufallZZ Then Print "Zu gross!"
+VSJBL=VSJBL+1
+If VSJBL=16 Then
+VSJBL=0
+Delay 500
 Cls
 Locate 1,1
 DrawImage HGrundH, 0,0
-Print "  Auf dem Tisch, auf dem sie aufgestellt wurden, stand vieles andere Spielzeug; aber"
-Print "  das, was am meisten in die Augen fiel, war ein niedliches Schloss von Papier;"
-Print "  durch die kleinen Fenster konnte man gerade in die Säle hineinsehen. Draußen vor ihm"
-Print "  standen kleine Bäume rings um einen kleinen Spiegel, der wie ein kleiner"
-Print "  See aussehen sollte. Schwäne von Wachs schwammen darauf und spiegelten sich. Das war"
-Print "  alles niedlich, aber das niedlichste war doch ein kleines Mädchen, das"
-Print "  mitten in der offenen Schlosstür stand; sie war auch aus Papier ausgeschnitten, aber"
-Print "  sie hatte ein schönes Kleid und ein kleines, schmales, blaues Band über den"
-Print "  Schultern, gerade wie ein Schärpe; mitten in diesem saß ein glänzender Stern, gerade"
-Print "  so groß wir ihr Gesicht."
-Print "  Das kleine Mädchen streckte seine beiden Arme aus, denn es war eine Tänzerin, und dann"
-Print "  hob es das eine Bein so hoch empor, dass der Zinnsoldat es durchaus"
-Print "  nicht finden konnte und glaubte, dass es gerade wie er nur ein Bein habe." 
-Print " ,Das wäre eine Frau für mich', dachte er, aber sie ist etwas vornehm, sie wohnt in"
-Print "  einem Schlosse, ich habe nur eine Schachtel, und da sind wir fünfundzwanzig"
-Print "  darin, das ist kein Ort für sie, doch ich muss suchen, Bekanntschaft mit ihr anzuknüpfen!'"
-Print
-Print
-Print
-Print "  Seite 2 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "  Und dann legte er sich, so lang er war, hinter eine Schnupftabaksdose,"
-Print "  die auf dem Tische stand. Da konnte er recht die kleine, feine Dame betrachten, die fortfuhr"
-Print "  auf einem Bein zu stehen, ohne umzufallen." 
-Print "  Als es Abend wurde, kamen alle die andern Zinnsoldaten in ihre Schachtel, und die Leute im"
-Print "  Hause gingen zu Bette. Nun fing das Spielzeug an zu spielen,"
-Print "  sowohl ,Es kommt Besuch!' als auch ,Krieg führen' und ,Ball geben'; die Zinnsoldaten"
-Print "  rasselten in der Schachtel, denn sie wollten mit dabei sein, aber sie"
-Print "  konnten den Deckel nicht aufheben. Der Nussknacker schoss Purzelbäume, und der Griffel"
-Print "  belustigte sich auf der Tafel; es war ein Lärm, dass der Kanarienvogel"
-Print "  davon erwachte und anfing mitzusprechen, und zwar in Versen. Die beiden einzigen, die"
-Print "  sich nicht von der Stelle bewegten, waren der Zinnsoldat und die Tänzerin;"
-Print "  sie hielt sich gerade auf der Zehenspitze und beide Arme ausgestreckt; er war ebenso"
-Print "  standhaft auf seinem einen Bein; seine Augen wandte er keinen Augenblick"
-Print "  von ihr weg."
-Print "  Nun schlug die Uhr zwölf, und klatsch, da sprang der Deckel von der Schnupftabaksdose"
-Print "  auf, aber da war kein Tabak darin, nein, sondern ein kleiner, schwarzer"
-Print "  Kobold." 
-Print "  Das war ein Kunststück!" 
-Print "  Zinnsoldat sagte der Kobold, halte deine Augen im Zaum! Aber der Zinnsoldat"
-Print
-Print
-Print
-Print "  Seite 3 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "  tat, als ob er es nicht hörte." 
-Print "  Ja, warte nur bis morgen! sagte der Kobold." 
-Print "  Als es nun Morgen wurde und die Kinder aufstanden, wurde der Zinnsoldat in das"
-Print "  Fenster gestellt, und war es nun der Kobold oder der Zugwind, auf einmal flog"
-Print "  das Fenster zu, und der Soldat stürzte drei Stockwerke tief hinunter." 
-Print "  Das war eine erschreckliche Fahrt. Er streckte das Bein gerade in die Höhe und"
-Print "  blieb auf der Helmspitze mit dem Bajonett abwärts zwischen den Pflastersteinen"
-Print "  stecken."
-Print "  Das Dienstmädchen und der kleine Knabe kamen sogleich hinunter, um zu suchen; aber"
-Print "  obgleich sie nahe daran waren, auf ihn zu treten, so konnten sie ihn doch"
-Print "  nicht erblicken. Hätte der Zinnsoldat gerufen: Hier Bin ich!, so hätten sie ihn wohl"
-Print "  gefunden, aber er fand es nicht passend, laut zu schreien, weil er in Uniform"
-Print "  war." 
-Print "  Nun fing es an zu regnen; die Tropfen fielen immer dichter, es ward ein ordentlicher"
-Print "  Platzregen; als der zu Ende war, kamen zwei Straßenjungen vorbei."
-Print "  Sieh du! sagte der eine, da liegt ein Zinnsoldat! Der soll hinaus und segeln!" 
-Print "  Sie machten ein Boot aus einer Zeitung, setzten den Soldaten mitten hinein, und nun"
-Print "  segelte er den Rinnstein hinunter; beide Knaben liefen nebenher und"
-Print "  klatschten in die Hände. Was schlugen da für Wellen in dem Rinnstein, und welcher Strom"
-Print
-Print
-Print
-Print "  Seite 4 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "  war da! Ja, der Regen hatte aber auch geströmt. Das Papierboot"
-Print "  schaukelte auf und nieder, mitunter drehte es sich so geschwind, dass der"
-Print "  Zinnsoldat bebte; aber er blieb standhaft, verzog keine Miene, sah geradeaus und hielt"
-Print "  das Gewehr im Arm." 
-Print "  Mit einem Male trieb das Boot unter eine lange Rinnsteinbrücke; da wurde es"
-Print "  gerade so dunkel, als wäre er in seiner Schachtel." 
-Print "  ,Wohin mag ich nun kommen?' dachte er. Ja, Ja, das ist des Kobolds Schuld! Ach, säße"
-Print "  doch das kleine Mädchen hier im Boote, da könnte es meinetwegen noch"
-Print "  einmal so dunkel sein!' "
-Print "  Da kam plötzlich eine große Wasserratte, die unter der Rinnsteinbrücke wohnte. "
-Print "  Hast du einen Pass? fragte die Ratte. Her mit dem Passe!" 
-Print "  Aber der Zinnsoldat schwieg still und hielt das Gewehr noch fester."
-Print "  Das Boot fuhr davon und die Ratte hinterher. Hu, wie fletschte sie die Zähne und"
-Print "  rief den Holzspänen und dem Stroh zu: Halt auf! Halt auf! Er hat keinen Zoll"
-Print "  bezahlt; er hat den Pass nicht gezeigt!" 
-Print "  Aber die Strömung wurde stärker und stärker! Der Zinnsoldat konnte schon da, wo"
-Print "  das Brett aufhörte, den hellen Tag erblicken, aber er hörte auch einen"
-Print "  brausenden Ton, der wohl einen tapfern Mann erschrecken konnte." 
-Print "  Denkt nur, der Rinnstein stürzte, wo die Brücke endete, geradehinaus in einen"
-Print "  großen Kanal; das würde für den armen Zinnsoldaten ebenso gefährlich gewesen"
-Print "  Nun war er schon so nahe dabei, dass er nicht mehr anhalten konnte. Das Boot fuhr"
-Print
-Print
-Print
-Print "  Seite 5 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "  hinaus, der Zinnsoldat hielt sich so steif, wie er konnte; niemand sollte ihm"
-Print "  nachsagen, dass er mit den Augen blinke. Das Boot schnurrte drei-, viermal herum und"
-Print "  war bis zum Rande mit Wasser gefüllt, es musste sinken. Der Zinnsoldat"
-Print "  stand bis zum Halse im Wasser, und tiefer und tiefer sank das Boot, mehr und mehr löste"
-Print "  das Papier sich auf; nun ging das Wasser über des Soldaten Kopf. Da"
-Print "  dachte er an die kleine, niedliche Tänzerin, die er nie mehr zu Gesicht bekommen"
-Print "  sollte, und es klang vor des Zinnsoldaten Ohren das Lied:" 
-Print "  ,Fahre, fahre Kriegsmann!"
-Print "  Den Tod musst du erleiden!'"
-Print "  Nun ging das Papier entzwei, und der Zinnsoldat stürzte hindurch, wurde aber"
-Print "  augenblicklich von einem großen Fisch verschlungen." 
-Print "  Wie war es dunkel da drinnen!"
-Print "  Da war es noch schlimmer als unter der Rinnsteinbrücke, und dann war es so sehr"
-Print "  eng; aber der Zinnsoldat war standhaft und lag, so lang er war, mit dem"
-Print "  Gewehr im Arm."
-Print "  Der Fisch fuhr umher, er machte die allerschrecklichsten Bewegungen; endlich"
-Print "  wurde er ganz still, es fuhr wie ein Blitzstrahl durch ihn hin. Das Licht schien ganz"
-Print "  klar, und jemand rief laut: Der Zinnsoldat! Der Fisch war gefangen worden, auf den"
-Print "  Markt gebracht, verkauft und in die Küche hinaufgekommen, wo die"
-Print "  Köchin ihn mit einem großen Messer aufschnitt. Sie nahm mit zwei Fingern den Soldaten"
-Print
-Print
-Print
-Print "  Seite 6 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "  mitten um den Leib und trug ihn in die Stube hinein, wo alle den"
-Print "  merkwürdigen Mann sehen wollten, der im Magen eines Fisches herumgereist war; aber der"
-Print "  Zinnsoldat war gar nicht stolz. Sie stellten ihn auf den Tisch und"
-Print "  da - wie sonderbar kann es doch in der Welt zugehen! Der Zinnsoldat war in derselben"
-Print "  Stube, in der er früher gewesen war, er sah dieselben Kinder, und das"
-Print "  gleiche Spielzeug stand auf dem Tische, das herrliche Schloss mit der"
-Print "  niedlichen, kleinen Tänzerin. Die hielt sich noch auf dem einen Bein und hatte das andere"
-Print "  hoch in der Luft, sie war auch standhaft. Das rührte den Zinnsoldaten, er war nahe"
-Print "  daran, Zinn zu weinen, aber es schickte sich nicht. Er sah sie an, aber sie"
-Print "  sagten gar nichts." 
-Print "  da nahm der eine der kleinen Knaben den Soldaten und warf ihn gerade in den Ofen,"
-Print "  obwohl er gar keinen Grund dafür hatte; es war sicher der Kobold in der"
-Print "  Dose, der schuld daran war." 
-Print "  Der Zinnsoldat stand ganz beleuchtet da und fühlte eine Hitze, die erschrecklich"
-Print "  war; aber ob sie von dem wirklichen Feuer oder von der Liebe herrührte, das"
-Print "  wusste er nicht. Die Farben waren ganz von ihm abgegangen - ob das auf der Reise"
-Print "  geschehen oder ob der Kummer daran schuld war, konnte niemand sagen."
-Print "  Er sah das kleine Mädchen an, sie blickte ihn an, und er fühlte, dass er schmelze,"
-Print "  aber noch stand er standhaft mit dem Gewehre im Arm. Da ging eine Tür auf,"
-Print "  der Wind ergriff die Tänzerin, und sie flog, einer Sylphide gleich, gerade in den"
-Print "  Ofen zum Zinnsoldaten, loderte in Flammen auf und war verschwunden."
-Print "  Da schmolz der Zinnsoldat zu einem Klumpen, und als das Mädchen am folgenden Tage"
-Print "  die Asche herausnahm, fand sie ihn als ein kleines Zinnherz; von der"
-Print "  Tänzerin hingegen war nur der Stern noch da, und der war kohlschwarz gebrannt." 
-Print
-Print
-Print
-Print "  Seite 7 von 7"
-WaitKey ()
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "In wen war der Zinnsoldat mit nur einem Bein verliebt?"
-Zinnsoldat1$ = Input()
-If Zinnsoldat1$ = "In die Tänzerin"Then Print "Richtig 2P" Textverstentnis=2 Goto ZinnB
-If Zinnsoldat1$ = "In die Tenzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
-If Zinnsoldat1$ = "Täntzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
-If Zinnsoldat1$ = "In die Täntzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
-If Zinnsoldat1$ = "Tenzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
-If Zinnsoldat1$ = "Tänzerin"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
-If Zinnsoldat1$ = "In die Ballerina"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
-If Zinnsoldat1$ = "Ballerina"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
-Print "Falsch!"
-Delay 3000
-Goto ZinnB 
-End
-.ZinnB
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "Wie viele Zinnsoldaten hatte der Junge in seinem Zinner?"
-Zinnsoldat2$ = Input()
-If Zinnsoldat2$ = "50" Then Print "Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto ZinnC
-If Zinnsoldat2$ = "Fünfzig" Then Print "Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto ZinnC
-If Zinnsoldat2$ = "fünfzig" Then Print "Richtig 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnC
-Print "Falsch"
-Goto ZinnC
-End
-.ZinnC
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "Was dachte der Zinnsoldaten als das Boot unterging?"
-Zinnsoldat3$ = Input()
-If Zinnsoldat3$ = "Er dachte, dass er die Täntzerin nie wieder sehen würde" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
-If Zinnsoldat3$ = "Er dachte an die Tänzerin" Then Print " Fast Richtig aber die Rechtschreibung nicht 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich1
-If Zinnsoldat3$ = "Er dachte dass er die Tentzerin nie wieder sehen würde" Then Print"Richtig aber die Rechtschreibung nicht 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich1
-If Zinnsoldat3$ = "dass er die Täntzerin nie wieder sehen würde" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
-If Zinnsoldat3$ = "An die Tänzerin"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
-If Zinnsoldat3$ = "Tänzerin"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
-Print "Falsch!"
-Goto Zinnvergleich1 
-End
-.Zinnvergleich1
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-If Textverstentnis = 0 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 1 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 2 Then Goto ZinnD
-If Textverstentnis = 3 Then Goto ZinnD
-If Textverstentnis = 4 Then Goto ZinnD
-If Textverstentnis = 5 Then Goto ZinnD
-If Textverstentnis = 6 Then Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
-End
-.ZinnD
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "Wie viele Beine hat der Zinnsoldaten der sehr oft in der Geschichte vorkommt?"
-Zinnsoldat4$ = Input()
-If Zinnsoldat4$ = "1" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
-If Zinnsoldat4$ = "eins" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
-If Zinnsoldat4$ = "Eins" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
-If Zinnsoldat4$ = "Er hatte ein Bein" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
-Print "Falsch!"
-Goto Zinnvergleich2 
-End
-.Zinnvergleich2
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-If Textverstentnis = 2 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 3 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 4 Then Goto ZinnE
-If Textverstentnis = 5 Then Goto ZinnE
-If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
-If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
-End
-.ZinnE
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-Print "Wie heisst der Titel dieser Geschichte?
-Zinnsoldat5$ = Input()
-If Zinnsoldat5$ = "Der Standhafte Zinnsoldat"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich3
-If Zinnsoldat5$ = "Der standhafte Zinnsoldat"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
-If Zinnsoldat5$ = "der Standhafte Zinnsoldat"Then Print"Richtig 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
-If Zinnsoldat5$ = "der standhafte Zinnsoldat"Then Print"Richtig 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
-Print "Falsch"
-Goto Zinnvergleich3
-End
-.Zinnvergleich3
-Locate 1,1
-Cls
-DrawImage HGrundH, 0,0
-If Textverstentnis = 4 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 5 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-If Textverstentnis = 6 Then Print "Du hast die Geschichte gut gelesen!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
-If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut gelesen!" Delay 3000 Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS Goto PunkteZinn
-Goto Programmstart
-End
+EndIf
 
-.PunkteZinn
+Until Zahl = ZufallZZ
+
+
+
+
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+Print "Richtig!"
+Print "Du hast " + Versuche + " Mal geraten."
+SpielstandSLR
+Protokoll$="Versuche: "+Versuche SpielstandS
+Gosub PZeit
+If Versuche=<10 And Schwierigkeitsstufe=1 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
+If Versuche=<10 And Schwierigkeitsstufe=2 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
+If Versuche=<15 And Schwierigkeitsstufe=3 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
+If Versuche=<20 And Schwierigkeitsstufe=4 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
+If Versuche>10 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe nochmals." Input() : Goto Aufgabe3
+If Versuche>10 And Schwierigkeitsstufe=2 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe nochmals." Input() : Goto Aufgabe3
+If Versuche>15 And Schwierigkeitsstufe=3 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe nochmals." Input() : Goto Aufgabe3
+If Versuche>20 And Schwierigkeitsstufe=4 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe nochmals." Input() : Goto Aufgabe3
+
+Versuche=0
+Zahl=0
+Input()
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
 Smeili=1
+FlushKeys
+FlushMouse
 Goto Programmstart
 End
+Return
 
 
+
+
+
+
+	
 .Aufgabe4
 ClsVB
+Protokoll$="Nomen" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 StartZeit = MilliSecs()
 FlushKeys
 Nomen = 0   Nomen1 = 0    Nomen2 = 0 
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 
@@ -3362,7 +3348,7 @@ Else
   Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Satz"
 
 Print "Welcher Artikel hat das Nomen?"
@@ -3376,7 +3362,7 @@ Else
 Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "der"
 
 Print
@@ -3390,13 +3376,14 @@ Else
 Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Sätze" Or Ratwort1$ = "Saetze"
 Print
 
 ;Brief
 Cls 
 Locate 1,10
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH, 0,0
 Nomen = 0   Nomen1 = 0    Nomen2 = 0   
@@ -3406,13 +3393,13 @@ Print
 Print "Ich schreibe dir einen Brief."
 Repeat
 Ratwort1$ = Input()
-If Ratwort1$ = "  Brief" Then
+If Ratwort1$ = "Brief" Then
   Print "Richtig!" 
 Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1 
 PlayMusic (".\Sounds\Door1.mp3")
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Brief"
 
 Print
@@ -3420,13 +3407,13 @@ Print "Welcher Artikel hat das Nomen?"
 Print"Schreibe der, die oder das und drücke Enter"
 Repeat
 Ratwort1$ = Input()
-If Ratwort1$ = "  der" Then
+If Ratwort1$ = "der" Then
   Print "Richtig!" 
 Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "der"
 
 Print
@@ -3439,13 +3426,14 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Briefe"
 Print
 
 ;Tagebuch
 Cls 
 Locate 1,1
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH, 0,0
 Nomen = 0   Nomen1 = 0    Nomen2 = 0 
@@ -3462,7 +3450,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Tagebuch"
 
 Print
@@ -3476,7 +3464,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "das"
 
 Print
@@ -3489,13 +3477,14 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Tagebücher" Or Ratwort1$ = "Tagebuecher"
 Print
 
 ;Dorf
 Cls 
 Locate 1,1
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\SElba.jpg")
 DrawImage HGrundH, 0,0
 Nomen = 0   Nomen1 = 0    Nomen2 = 0 
@@ -3512,7 +3501,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen = Nomen +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Dorf"
 
 Print
@@ -3526,7 +3515,7 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen1 = Nomen1 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "das"
 
 Print
@@ -3539,23 +3528,23 @@ Else
   Print "War wohl nix, bitte nochmal versuchen!"Nomen2 = Nomen2 +1
 PlayMusic (".\Sounds\Door1.mp3") 
 EndIf
-If Nomen=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Nomen=4 Then Goto NVAP
 Until Ratwort1$ = "Dörfer" Or Ratwort1$ = "Doerfer"
-Print
+SpielstandSLR
+Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
-Protokoll$="Nomen"
-Gosub PZeit
 Goto Programmstart
 End
 
 
 
 
-
-
 .Aufgabe5
 ClsVB
+Protokoll$="Labyrinth" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
+LPfeilSF=255*$10000 + 255*$100
 Global Looo
 .maze_endofintro
 
@@ -4055,7 +4044,8 @@ Function Maze_Load.maze(filename$)
 
 End Function
 
-Schrift = LoadFont ("Arial",27,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",27,True)
 SetFont Schrift
 Aus=1
 	maze_startup(".\Bilder\mazeblocks.png",16,16)
@@ -4152,12 +4142,26 @@ Aus=1
 	Text 810,180,"5 = Gesichertes Labyrinth laden"
 	Text 810,210,"6 = Labyrinth exportieren (ohne Lösung)"
 	Text 810,240,"7 = Labyrinth exportieren (mit Lösung)"
+	Color 255,255,0
+	Rect 815,790,20,3,1
+	Rect 814,782,1,19,1
+	Rect 813,783,1,17,1
+	Rect 812,784,1,15,1
+	Rect 811,785,1,13,1
+	Rect 810,786,1,11,1
+	Rect 809,787,1,9,1
+	Rect 808,788,1,7,1
+	Rect 807,789,1,5,1
+	Rect 806,790,1,3,1
+	WritePixel 805,791,LPfeilSF
+	Text 843,790,"Ziel",0,1
+    Color 255,255,255
 	Flip
 
 
 If x=49 And y=49 Then
-If LabLA=1 Then Protokoll$="Labyrinth (Mit Hilfe der Lösung)" Else Protokoll$="Labyrinth"
-SpielstandS
+SpielstandSLR
+If LabLA=1 Then Protokoll$="Mit Hilfe der Lösung gelöst!" SpielstandS
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
 FlushKeys
@@ -4167,17 +4171,20 @@ EndIf
 		k = WaitKey()
 		a$ = Lower$(Chr$(k))
 	Wend
-		
 
+	
 
 
 
 .Aufgabe6
 ClsVB
+Protokoll$="Wörter erraten" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 Versuche=0
 SGBS$=0
 PauseChannel HGM
 FlushKeys
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,100)
 SetFont Schrift
 HGrundH1=LoadImage (".\Bilder\SElba.jpg")
@@ -4283,7 +4290,7 @@ Print "Das Wort wäre "+Zufall$+" gewesen!"
 Print ""
 Print "Du hast das Wort leider nicht in 10 Versuchen herausgefunden."
 Print "Versuche die Aufgabe erneut."
-Protokoll$="Wörter erraten" SpielstandS
+SpielstandSLR
 Protokoll$="Versuche: "+Versuche SpielstandS
 Input()
 Goto Aufgabe6
@@ -4300,12 +4307,16 @@ Return
 
 .Aufgabe7
 ClsVB
+Protokoll$="Verben" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 FlushKeys
 Verben = 0   Verben1 = 0    Verben2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Flugzeug.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Verb in dem folgenden Satz."
@@ -4322,7 +4333,7 @@ Else
 Verben = Verben +1
 PlayMusic (".\Sounds\Door1.mp3")
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Goto NVAP
 Until Ratwort1$ = "fährt" Or Ratwort1$ = "faehrt"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -4334,7 +4345,7 @@ If Ratwort1$ = "fahren" Then
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Goto NVAP
 Until Ratwort1$ = "fahren"
 Print
 Print "Und wie heisst das Verb im Präteritum (Vergangenheit)?"
@@ -4347,7 +4358,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Goto NVAP
 Until Ratwort1$ = "fuhr" Or Ratwort1$ = "faehrt"
 Print
 
@@ -4356,9 +4367,11 @@ Print
 Cls 
 Locate 1,1
 Verben = 0   Verben1 = 0    Verben2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Flugzeug.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Verb in dem folgenden Satz."
@@ -4375,7 +4388,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Goto NVAP
 Until Ratwort1$ = "zeichne"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -4388,7 +4401,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Goto NVAP
 Until Ratwort1$ = "zeichnen"
 Print
 Print "Und wie heisst das Verb im Präteritum (Vergangenheit)?"
@@ -4401,7 +4414,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Goto NVAP
 Until Ratwort1$ = "zeichnete"
 Print
 
@@ -4410,9 +4423,11 @@ Print
 Cls 
 Locate 1,1
 Verben = 0   Verben1 = 0    Verben2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Flugzeug.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Verb in dem folgenden Satz."
@@ -4429,7 +4444,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Goto NVAP
 Until Ratwort1$ = "kennst"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -4442,7 +4457,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Goto NVAP
 Until Ratwort1$ = "kennen"
 Print
 Print "Und wie heisst das Verb im Präteritum (Vergangenheit)?"
@@ -4455,7 +4470,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben3=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben3=4 Then Goto NVAP
 Until Ratwort1$ = "kannte" Or Ratwort1$ = "kanntest"
 Print
 
@@ -4463,9 +4478,11 @@ Print
 Cls 
 Locate 1,1
 Verben = 0   Verben1 = 0    Verben2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Flugzeug.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Verb in dem folgenden Satz."
@@ -4482,7 +4499,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" SpielstandSLR : Protokoll$="Zu viele Fehler" SpielstandS 
 Until Ratwort1$ = "heisst"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -4495,7 +4512,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Goto NVAP
 
 Until Ratwort1$ = "heissen"
 Print
@@ -4509,15 +4526,17 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Goto NVAP
 Until Ratwort1$ = "hiess"
 
 Cls 
 Locate 1,1
 Verben = 0   Verben1 = 0    Verben2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Flugzeug.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Verb in dem folgenden Satz."
@@ -4534,7 +4553,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben = Verben +1
 EndIf
-If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben=4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" SpielstandSLR : Protokoll$="Zu viele Fehler" SpielstandS 
 Until Ratwort1$ = "fängt" Or Ratwort1$ = "faengt"
 Print
 Print "Wie heisst das Verb in der Grundform?"
@@ -4547,7 +4566,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben1 = Verben1 +1
 EndIf
-If Verben1=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben1=4 Then Goto NVAP
 
 Until Ratwort1$ = "fangen"
 Print
@@ -4561,10 +4580,9 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Verben2 = Verben2 +1
 EndIf
-If Verben2=4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Verben2=4 Then Goto NVAP
 Until Ratwort1$ = "fieng"
-
-Protokoll$="Verben" SpielstandS
+SpielstandSLR
 Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=Aufgaben+1
@@ -4575,15 +4593,19 @@ End
 
 .Aufgabe8
 ClsVB
+Protokoll$="Zeitverständnis" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 Cls 
 Locate 1,1
 Color 1,1,1
 ClsColor 253,202,13
 Cls
+FreeFont Schrift
 Schrift = LoadFont ("Arial",45,201)
 SetFont Schrift
 Print "Beschrieb"
+FreeFont Schrift
 Schrift = LoadFont ("Arial",24)
 SetFont Schrift
 Print "Nachdem du Enter drückst hörst du ein Lied."
@@ -4734,7 +4756,6 @@ Locate 1,1
 ClsColor 253,202,13
 Cls
 Print "Du hast "+ RichtigLZ+" Aufgaben richtig gelöst!"
-Protokoll$="Zeitverständnis" SpielstandS
 Protokoll$="Punkte: "+RichtigLZ+"/10" SpielstandS
 Input()
 ResumeChannel kamelpianoP
@@ -4752,16 +4773,20 @@ End
 
 
 .Aufgabe9
+Protokoll$="Witze" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 ClsVB
 Witze=0
 Color 0,255,255 
-Schrift = LoadFont ("Arial",45,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",45,True)
 SetFont Schrift
 FlushKeys
 FlushMouse
 Color 255,0,0
 Print "Witze"
+FreeFont Schrift
 Schrift = LoadFont ("Arial",24,True)
 SetFont Schrift
 Print "Diese Aufgabe ist zum Entspannen gedacht."
@@ -4773,6 +4798,7 @@ ClsColor 255,0,0
 Cls
 Color 0,0,0
 Locate 1,10
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Aufgabe=0
@@ -5132,8 +5158,11 @@ Print "  70 Kilometer in der Stunde zu fahren?"+Chr$(34)
 Print "  "+Chr$(34)+"Unmöglich, ich Bin ja erst zehn Minuten unterwegs!"+Chr$(34)
 EndIf
 
-
-Input()
+;ClsColor 255,255,255
+;Input("  ")
+Text 0,970,"  Weiter mit beliebiger Taste"
+WaitKey
+ClsColor 255,0,0
 Cls
 Locate 1,10
 FlushKeys
@@ -5144,7 +5173,7 @@ Until Witze = 10
 ;Spielstandsicherung
 FlushKeys
 FlushMouse
-Protokoll$="Witze" SpielstandS
+SpielstandSLR
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=9
 FlushKeys
@@ -5156,17 +5185,21 @@ End
 
 
 .Aufgabe10
+Protokoll$="Artikel" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 ClsVB
 Fa=0
 Art=0
 ARichtig=0
-Schrift = LoadFont ("Arial",45,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",45,True)
 SetFont Schrift
 FlushKeys
 FlushMouse
 Color 255,0,0
 Print "Beschrieb"
+FreeFont Schrift
 Schrift = LoadFont ("Arial",24)
 SetFont Schrift
 Print "Bei dieser Aufgabe muss man den Artikel anklicken der"
@@ -5251,7 +5284,8 @@ hotY2=316
 hotW2=400
 hotH2=108
 
-Schrift = LoadFont ("Arial",90,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",90,True)
 SetFont Schrift
 
 
@@ -5335,7 +5369,7 @@ Delay 1000
 Art=Art+1
 Until Art=20
 
-Protokoll$="Artikel" SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+ARichtig+"/20" SpielstandS
 If Fa=4 Or Fa>4 And UebersichtA=1 Then Goto Uebersicht3
 If Fa=4 Or Fa>4 Then Goto Aufgabe10
@@ -5354,90 +5388,335 @@ End
 
 
 
-
 .Aufgabe11
-VSJBL=0
-Versuche=0
 ClsVB
-Schrift = LoadFont ("Arial",30,201)
-SetFont Schrift
-HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
-DrawImage HGrundH, 0,0
-SeedRnd MilliSecs() 
-If Schwierigkeitsstufe=1 Then ZufallZZ = Rand (1,100)
-If Schwierigkeitsstufe=2 Then ZufallZZ = Rand (1,1000)
-If Schwierigkeitsstufe=4 Then ZufallZZ = Rand (1,10000)
-Versuche = 0
-If Schwierigkeitsstufe=1 Then Print "Ich denke mir eine Zahl zwischen 1 und 100, errate sie!"
-If Schwierigkeitsstufe=1 Then Print "Das Ziel ist, die Zahl in 10 Versuchen herauszufinden."
-If Schwierigkeitsstufe=2 Then Print "Ich denke mir eine Zahl zwischen 1 und 100, errate sie!"
-If Schwierigkeitsstufe=2 Then Print "Das Ziel ist, die Zahl in 10 Versuchen herauszufinden."
-If Schwierigkeitsstufe=3 Then Print "Ich denke mir eine Zahl zwischen 1 und 1000, errate sie!"
-If Schwierigkeitsstufe=3 Then Print "Das Ziel ist, die Zahl in 15 Versuchen herauszufinden."
-If Schwierigkeitsstufe=4 Then Print "Ich denke mir eine Zahl zwischen 1 und 10000, errate sie!"
-If Schwierigkeitsstufe=4 Then Print "Das Ziel ist, die Zahl in 20 Versuchen herauszufinden."
-Print ""
-Print "Wenn du die Zahl einfach nicht herausfindest,"
-Print "dann kommst du mit Enter wieder zum Spiel oder zur Übersicht."
-Print ""
-Print "Viel Glück!"
-Input()
-StartZeit = MilliSecs()
-Cls
-Locate 1,1
+Protokoll$="Textverständnis (Der Standhafte Zinnsoldat)" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Repeat
-Zahl=0
-  Zahl = Input("Rate mal: ")
-  Versuche = Versuche + 1
-  If Zahl < ZufallZZ Then Print "Zu klein!"
-  If Zahl > ZufallZZ Then Print "Zu gross!"
-VSJBL=VSJBL+1
-If VSJBL=16 Then
-VSJBL=0
-Delay 500
-Cls
-Locate 1,1
-DrawImage HGrundH, 0,0
-EndIf
-
-Until Zahl = ZufallZZ
-
-
-
-
-Cls
-Locate 1,1
-DrawImage HGrundH, 0,0
-Print "Richtig!"
-Print "Du hast " + Versuche + " Mal geraten."
-Protokoll$="Zahlen erraten" SpielstandS
-Protokoll$="Versuche: "+Versuche SpielstandS
-Gosub PZeit
-If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=1 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
-If Versuche>10 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
-If Versuche>10 And Schwierigkeitsstufe=1 Then Input()
-If Versuche=10 Or Versuche<10 And Schwierigkeitsstufe=2 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
-If Versuche>10 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
-If Versuche>10 And Schwierigkeitsstufe=1 Then Input()
-If Versuche=15 Or Versuche<15 And Schwierigkeitsstufe=3 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
-If Versuche>15 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
-If Versuche>15 And Schwierigkeitsstufe=1 Then Input()
-If Versuche=20 Or Versuche<20 And Schwierigkeitsstufe=4 Then Print "Herzlichen Glückwunsch, du hast das Ziel erreicht!"
-If Versuche>20 And Schwierigkeitsstufe=1 Then Print "Du hast das Ziel nicht erreicht, versuche die Aufgabe später nochmals."
-If Versuche>20 And Schwierigkeitsstufe=1 Then Input()
-Versuche=0
-Zahl=0
+PauseChannel HGM
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 60,True)
+SetFont Schrift
+Print "Textverständnis"
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 40,True)
+SetFont Schrift
+Print ""
+Print "Mit einem Druck auf Enter erscheint ein Text."
+Print "Lese ihn gründlich durch und beantworte dann die folgenden Fragen."
+Print "Da ich nicht alle möglichen Antwortsätze eingeben konnte,"
+Print "habe ich nur Stichworte und kurze Sätze als richtige Lösungen eingegeben."
 Input()
-If UebersichtA=1 Then Goto Uebersicht3
-Aufgaben=11
-Smeili=1
-FlushKeys
-FlushMouse
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 60,True)
+SetFont Schrift
+Text 9,1,"Der Standhafte Zinnsoldat"
+Locate 1,70
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 23,True)
+SetFont Schrift
+Textverstentnis=0
+Print "  Es waren einmal fünfundzwanzig Zinnsoldaten, die waren alle Brüder, denn sie waren aus"
+Print "  einem alten zinnernen Löffel gemacht worden. Das Gewehr hielten sie"
+Print "  im Arm und das Gesicht geradeaus; rot und blau, überaus herrlich war die Uniform; das"
+Print "  allererste, was sie in dieser Welt hörten, als der Deckel von der"
+Print "  Schachtel genommen wurde, in der sie lagen, war das Wort Zinnsoldaten. Das rief ein"
+Print "  kleiner Knabe und klatschte in die Hände; er hatte sie erhalten, denn es" 
+Print "  war sein Geburtstag, und er stellte sie nun auf dem Tische auf. Der eine Soldat"
+Print "  glich dem andern leibhaft, nur ein einziger war etwas anders; er hatte nur ein Bein,"
+Print "  denn er war zuletzt gegossen worden, und da war nicht mehr Zinn genug da; doch stand"
+Print "  er ebenso fest auf seinem einen Bein wie die andern auf ihren zweien, und"
+Print "  gerade er war es, der sich bemerkbar machte."
+Print
+Print
+Print
+Print "  Seite 1 von 7"
+WaitKey ()
+Cls
+Locate 1,1
+DrawImage HGrundH, 0,0
+Print "  Auf dem Tisch, auf dem sie aufgestellt wurden, stand vieles andere Spielzeug; aber"
+Print "  das, was am meisten in die Augen fiel, war ein niedliches Schloss von Papier;"
+Print "  durch die kleinen Fenster konnte man gerade in die Säle hineinsehen. Draußen vor ihm"
+Print "  standen kleine Bäume rings um einen kleinen Spiegel, der wie ein kleiner"
+Print "  See aussehen sollte. Schwäne von Wachs schwammen darauf und spiegelten sich. Das war"
+Print "  alles niedlich, aber das niedlichste war doch ein kleines Mädchen, das"
+Print "  mitten in der offenen Schlosstür stand; sie war auch aus Papier ausgeschnitten, aber"
+Print "  sie hatte ein schönes Kleid und ein kleines, schmales, blaues Band über den"
+Print "  Schultern, gerade wie ein Schärpe; mitten in diesem saß ein glänzender Stern, gerade"
+Print "  so groß wir ihr Gesicht."
+Print "  Das kleine Mädchen streckte seine beiden Arme aus, denn es war eine Tänzerin, und dann"
+Print "  hob es das eine Bein so hoch empor, dass der Zinnsoldat es durchaus"
+Print "  nicht finden konnte und glaubte, dass es gerade wie er nur ein Bein habe." 
+Print " ,Das wäre eine Frau für mich', dachte er, aber sie ist etwas vornehm, sie wohnt in"
+Print "  einem Schlosse, ich habe nur eine Schachtel, und da sind wir fünfundzwanzig"
+Print "  darin, das ist kein Ort für sie, doch ich muss suchen, Bekanntschaft mit ihr anzuknüpfen!'"
+Print
+Print
+Print
+Print "  Seite 2 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "  Und dann legte er sich, so lang er war, hinter eine Schnupftabaksdose,"
+Print "  die auf dem Tische stand. Da konnte er recht die kleine, feine Dame betrachten, die fortfuhr"
+Print "  auf einem Bein zu stehen, ohne umzufallen." 
+Print "  Als es Abend wurde, kamen alle die andern Zinnsoldaten in ihre Schachtel, und die Leute im"
+Print "  Hause gingen zu Bette. Nun fing das Spielzeug an zu spielen,"
+Print "  sowohl ,Es kommt Besuch!' als auch ,Krieg führen' und ,Ball geben'; die Zinnsoldaten"
+Print "  rasselten in der Schachtel, denn sie wollten mit dabei sein, aber sie"
+Print "  konnten den Deckel nicht aufheben. Der Nussknacker schoss Purzelbäume, und der Griffel"
+Print "  belustigte sich auf der Tafel; es war ein Lärm, dass der Kanarienvogel"
+Print "  davon erwachte und anfing mitzusprechen, und zwar in Versen. Die beiden einzigen, die"
+Print "  sich nicht von der Stelle bewegten, waren der Zinnsoldat und die Tänzerin;"
+Print "  sie hielt sich gerade auf der Zehenspitze und beide Arme ausgestreckt; er war ebenso"
+Print "  standhaft auf seinem einen Bein; seine Augen wandte er keinen Augenblick"
+Print "  von ihr weg."
+Print "  Nun schlug die Uhr zwölf, und klatsch, da sprang der Deckel von der Schnupftabaksdose"
+Print "  auf, aber da war kein Tabak darin, nein, sondern ein kleiner, schwarzer"
+Print "  Kobold." 
+Print "  Das war ein Kunststück!" 
+Print "  Zinnsoldat sagte der Kobold, halte deine Augen im Zaum! Aber der Zinnsoldat"
+Print
+Print
+Print
+Print "  Seite 3 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "  tat, als ob er es nicht hörte." 
+Print "  Ja, warte nur bis morgen! sagte der Kobold." 
+Print "  Als es nun Morgen wurde und die Kinder aufstanden, wurde der Zinnsoldat in das"
+Print "  Fenster gestellt, und war es nun der Kobold oder der Zugwind, auf einmal flog"
+Print "  das Fenster zu, und der Soldat stürzte drei Stockwerke tief hinunter." 
+Print "  Das war eine erschreckliche Fahrt. Er streckte das Bein gerade in die Höhe und"
+Print "  blieb auf der Helmspitze mit dem Bajonett abwärts zwischen den Pflastersteinen"
+Print "  stecken."
+Print "  Das Dienstmädchen und der kleine Knabe kamen sogleich hinunter, um zu suchen; aber"
+Print "  obgleich sie nahe daran waren, auf ihn zu treten, so konnten sie ihn doch"
+Print "  nicht erblicken. Hätte der Zinnsoldat gerufen: Hier Bin ich!, so hätten sie ihn wohl"
+Print "  gefunden, aber er fand es nicht passend, laut zu schreien, weil er in Uniform"
+Print "  war." 
+Print "  Nun fing es an zu regnen; die Tropfen fielen immer dichter, es ward ein ordentlicher"
+Print "  Platzregen; als der zu Ende war, kamen zwei Straßenjungen vorbei."
+Print "  Sieh du! sagte der eine, da liegt ein Zinnsoldat! Der soll hinaus und segeln!" 
+Print "  Sie machten ein Boot aus einer Zeitung, setzten den Soldaten mitten hinein, und nun"
+Print "  segelte er den Rinnstein hinunter; beide Knaben liefen nebenher und"
+Print "  klatschten in die Hände. Was schlugen da für Wellen in dem Rinnstein, und welcher Strom"
+Print
+Print
+Print
+Print "  Seite 4 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "  war da! Ja, der Regen hatte aber auch geströmt. Das Papierboot"
+Print "  schaukelte auf und nieder, mitunter drehte es sich so geschwind, dass der"
+Print "  Zinnsoldat bebte; aber er blieb standhaft, verzog keine Miene, sah geradeaus und hielt"
+Print "  das Gewehr im Arm." 
+Print "  Mit einem Male trieb das Boot unter eine lange Rinnsteinbrücke; da wurde es"
+Print "  gerade so dunkel, als wäre er in seiner Schachtel." 
+Print "  ,Wohin mag ich nun kommen?' dachte er. Ja, Ja, das ist des Kobolds Schuld! Ach, säße"
+Print "  doch das kleine Mädchen hier im Boote, da könnte es meinetwegen noch"
+Print "  einmal so dunkel sein!' "
+Print "  Da kam plötzlich eine große Wasserratte, die unter der Rinnsteinbrücke wohnte. "
+Print "  Hast du einen Pass? fragte die Ratte. Her mit dem Passe!" 
+Print "  Aber der Zinnsoldat schwieg still und hielt das Gewehr noch fester."
+Print "  Das Boot fuhr davon und die Ratte hinterher. Hu, wie fletschte sie die Zähne und"
+Print "  rief den Holzspänen und dem Stroh zu: Halt auf! Halt auf! Er hat keinen Zoll"
+Print "  bezahlt; er hat den Pass nicht gezeigt!" 
+Print "  Aber die Strömung wurde stärker und stärker! Der Zinnsoldat konnte schon da, wo"
+Print "  das Brett aufhörte, den hellen Tag erblicken, aber er hörte auch einen"
+Print "  brausenden Ton, der wohl einen tapfern Mann erschrecken konnte." 
+Print "  Denkt nur, der Rinnstein stürzte, wo die Brücke endete, geradehinaus in einen"
+Print "  großen Kanal; das würde für den armen Zinnsoldaten ebenso gefährlich gewesen"
+Print "  Nun war er schon so nahe dabei, dass er nicht mehr anhalten konnte. Das Boot fuhr"
+Print
+Print
+Print
+Print "  Seite 5 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "  hinaus, der Zinnsoldat hielt sich so steif, wie er konnte; niemand sollte ihm"
+Print "  nachsagen, dass er mit den Augen blinke. Das Boot schnurrte drei-, viermal herum und"
+Print "  war bis zum Rande mit Wasser gefüllt, es musste sinken. Der Zinnsoldat"
+Print "  stand bis zum Halse im Wasser, und tiefer und tiefer sank das Boot, mehr und mehr löste"
+Print "  das Papier sich auf; nun ging das Wasser über des Soldaten Kopf. Da"
+Print "  dachte er an die kleine, niedliche Tänzerin, die er nie mehr zu Gesicht bekommen"
+Print "  sollte, und es klang vor des Zinnsoldaten Ohren das Lied:" 
+Print "  ,Fahre, fahre Kriegsmann!"
+Print "  Den Tod musst du erleiden!'"
+Print "  Nun ging das Papier entzwei, und der Zinnsoldat stürzte hindurch, wurde aber"
+Print "  augenblicklich von einem großen Fisch verschlungen." 
+Print "  Wie war es dunkel da drinnen!"
+Print "  Da war es noch schlimmer als unter der Rinnsteinbrücke, und dann war es so sehr"
+Print "  eng; aber der Zinnsoldat war standhaft und lag, so lang er war, mit dem"
+Print "  Gewehr im Arm."
+Print "  Der Fisch fuhr umher, er machte die allerschrecklichsten Bewegungen; endlich"
+Print "  wurde er ganz still, es fuhr wie ein Blitzstrahl durch ihn hin. Das Licht schien ganz"
+Print "  klar, und jemand rief laut: Der Zinnsoldat! Der Fisch war gefangen worden, auf den"
+Print "  Markt gebracht, verkauft und in die Küche hinaufgekommen, wo die"
+Print "  Köchin ihn mit einem großen Messer aufschnitt. Sie nahm mit zwei Fingern den Soldaten"
+Print
+Print
+Print
+Print "  Seite 6 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "  mitten um den Leib und trug ihn in die Stube hinein, wo alle den"
+Print "  merkwürdigen Mann sehen wollten, der im Magen eines Fisches herumgereist war; aber der"
+Print "  Zinnsoldat war gar nicht stolz. Sie stellten ihn auf den Tisch und"
+Print "  da - wie sonderbar kann es doch in der Welt zugehen! Der Zinnsoldat war in derselben"
+Print "  Stube, in der er früher gewesen war, er sah dieselben Kinder, und das"
+Print "  gleiche Spielzeug stand auf dem Tische, das herrliche Schloss mit der"
+Print "  niedlichen, kleinen Tänzerin. Die hielt sich noch auf dem einen Bein und hatte das andere"
+Print "  hoch in der Luft, sie war auch standhaft. Das rührte den Zinnsoldaten, er war nahe"
+Print "  daran, Zinn zu weinen, aber es schickte sich nicht. Er sah sie an, aber sie"
+Print "  sagten gar nichts." 
+Print "  da nahm der eine der kleinen Knaben den Soldaten und warf ihn gerade in den Ofen,"
+Print "  obwohl er gar keinen Grund dafür hatte; es war sicher der Kobold in der"
+Print "  Dose, der schuld daran war." 
+Print "  Der Zinnsoldat stand ganz beleuchtet da und fühlte eine Hitze, die erschrecklich"
+Print "  war; aber ob sie von dem wirklichen Feuer oder von der Liebe herrührte, das"
+Print "  wusste er nicht. Die Farben waren ganz von ihm abgegangen - ob das auf der Reise"
+Print "  geschehen oder ob der Kummer daran schuld war, konnte niemand sagen."
+Print "  Er sah das kleine Mädchen an, sie blickte ihn an, und er fühlte, dass er schmelze,"
+Print "  aber noch stand er standhaft mit dem Gewehre im Arm. Da ging eine Tür auf,"
+Print "  der Wind ergriff die Tänzerin, und sie flog, einer Sylphide gleich, gerade in den"
+Print "  Ofen zum Zinnsoldaten, loderte in Flammen auf und war verschwunden."
+Print "  Da schmolz der Zinnsoldat zu einem Klumpen, und als das Mädchen am folgenden Tage"
+Print "  die Asche herausnahm, fand sie ihn als ein kleines Zinnherz; von der"
+Print "  Tänzerin hingegen war nur der Stern noch da, und der war kohlschwarz gebrannt." 
+Print
+Print
+Print
+Print "  Seite 7 von 7"
+WaitKey ()
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "In wen war der Zinnsoldat mit nur einem Bein verliebt?"
+Zinnsoldat1$ = Input()
+If Zinnsoldat1$ = "In die Tänzerin"Then Print "Richtig 2P" Textverstentnis=2 Goto ZinnB
+If Zinnsoldat1$ = "In die Tenzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
+If Zinnsoldat1$ = "Täntzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
+If Zinnsoldat1$ = "In die Täntzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
+If Zinnsoldat1$ = "Tenzerin"Then Print "Richtig aber die Rechtschreibung nicht! 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto ZinnB
+If Zinnsoldat1$ = "Tänzerin"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
+If Zinnsoldat1$ = "In die Ballerina"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
+If Zinnsoldat1$ = "Ballerina"Then Print "Richtig 2P" Delay 3000 Textverstentnis =2 Goto ZinnB
+Print "Falsch!"
+Delay 3000
+Goto ZinnB 
+End
+.ZinnB
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "Wie viele Zinnsoldaten hatte der Junge in seinem Zinner?"
+Zinnsoldat2$ = Input()
+If Zinnsoldat2$ = "50" Then Print "Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto ZinnC
+If Zinnsoldat2$ = "Fünfzig" Then Print "Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto ZinnC
+If Zinnsoldat2$ = "fünfzig" Then Print "Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto ZinnC
+Print "Falsch"
+Goto ZinnC
+End
+.ZinnC
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "Was dachte der Zinnsoldaten als das Boot unterging?"
+Zinnsoldat3$ = Input()
+If Zinnsoldat3$ = "Er dachte, dass er die Täntzerin nie wieder sehen würde" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
+If Zinnsoldat3$ = "Er dachte an die Tänzerin" Then Print " Fast Richtig aber die Rechtschreibung nicht 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich1
+If Zinnsoldat3$ = "Er dachte dass er die Tentzerin nie wieder sehen würde" Then Print"Richtig aber die Rechtschreibung nicht 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich1
+If Zinnsoldat3$ = "dass er die Täntzerin nie wieder sehen würde" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
+If Zinnsoldat3$ = "An die Tänzerin"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
+If Zinnsoldat3$ = "Tänzerin"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich1
+Print "Falsch!"
+Goto Zinnvergleich1 
+End
+.Zinnvergleich1
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+If Textverstentnis = 0 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 1 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 2 Then Goto ZinnD
+If Textverstentnis = 3 Then Goto ZinnD
+If Textverstentnis = 4 Then Goto ZinnD
+If Textverstentnis = 5 Then Goto ZinnD
+If Textverstentnis = 6 Then Print "Du hast die Geschichte sehr gut verstanden!" Delay 3000 SpielstandSLR : Protokoll$="Text sehr gut verstanden!" SpielstandS Goto PunkteZinn
+End
+.ZinnD
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "Wie viele Beine hat der Zinnsoldaten der sehr oft in der Geschichte vorkommt?"
+Zinnsoldat4$ = Input()
+If Zinnsoldat4$ = "1" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
+If Zinnsoldat4$ = "ein" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
+If Zinnsoldat4$ = "Ein" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
+If Zinnsoldat4$ = "Er hatte ein Bein" Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich2
+Print "Falsch!"
+Goto Zinnvergleich2 
+End
+.Zinnvergleich2
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+If Textverstentnis = 2 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000  SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 3 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 4 Then Goto ZinnE
+If Textverstentnis = 5 Then Goto ZinnE
+If Textverstentnis = 6 Then Print "Du hast die Geschichte gut verstanden!" Delay 3000 SpielstandSLR : Protokoll$="Text gut verstanden!" SpielstandS Goto PunkteZinn
+If Textverstentnis = 7 Then Print "Du hast die Geschichte sehr gut verstanden!" Delay 3000 SpielstandSLR : Protokoll$="Text sehr gut verstanden!" SpielstandS Goto PunkteZinn
+End
+.ZinnE
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+Print "Wie heisst der Titel dieser Geschichte?
+Zinnsoldat5$ = Input()
+If Zinnsoldat5$ = "Der Standhafte Zinnsoldat"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +2 Goto Zinnvergleich3
+If Zinnsoldat5$ = "Der standhafte Zinnsoldat"Then Print"Richtig 2P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
+If Zinnsoldat5$ = "der Standhafte Zinnsoldat"Then Print"Richtig 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
+If Zinnsoldat5$ = "der standhafte Zinnsoldat"Then Print"Richtig 1P" Delay 3000 Textverstentnis=Textverstentnis +1 Goto Zinnvergleich3
+Print "Falsch"
+Goto Zinnvergleich3
+End
+.Zinnvergleich3
+Locate 1,1
+Cls
+DrawImage HGrundH, 0,0
+If Textverstentnis = 4 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 5 Then Print "Lese bitte die Geschichte bitte später noch einmal etwas genauer!" Delay 3000 SpielstandSLR : Protokoll$="Text schlecht verstanden!" SpielstandS If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Textverstentnis = 6 Then Print "Du hast die Geschichte gut verstanden!" Delay 3000 SpielstandSLR : Protokoll$="Text gut verstanden!" SpielstandS Goto PunkteZinn
+If Textverstentnis = 7 Then Print "Du hast die Geschichte gut verstanden!" Delay 3000 SpielstandSLR : Protokoll$="Text gut verstanden!" SpielstandS Goto PunkteZinn
 Goto Programmstart
 End
-Return
+
+.PunkteZinn
+If UebersichtA=1 Then Goto Uebersicht3
+Aufgaben=Aufgaben+1
+Smeili=1
+SpielstandS
+Goto Programmstart
+End
+
+
 
 
 
@@ -5446,6 +5725,8 @@ Return
 
 
 .Aufgabe12
+Protokoll$="Tennis" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 FehlerD=0
 score=0
@@ -5454,7 +5735,6 @@ bat1=0
 bat2=0
 ball=0
 AAAB=0
-TSGESCH=22000
 ClsVB
 JetztZeit = MilliSecs()
 If (JetztZeit-StartZeit > ZeitMaxX) Then Goto Ende
@@ -5462,6 +5742,7 @@ If FileType("Tennis.txt") = 0 Then
 fileout = WriteFile("Tennis.txt")
 CloseFile fileout
 EndIf
+FreeFont Schrift
 Schrift = LoadFont ("Arial",60,True)
 SetFont Schrift
 FlushKeys
@@ -5470,6 +5751,7 @@ Color 1,1,1
 ClsColor 253,202,13
 Cls
 Print "Tennis"
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Print ""
@@ -5571,8 +5853,7 @@ If ballx#<0
 If score>high Then high=score : save=WriteFile("Tennis.txt") : WriteLine save,high : CloseFile save
 ballx#=width/2 : bally#=height/2 : ballmovx#=10 : ballmovy#=10 : once=2
 If score=>20 And UebersichtA=1 Then
-Protokoll$="Tennis"
-SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+score
 SpielstandS
 Protokoll$="Versuche: "+(FehlerD+1)
@@ -5583,8 +5864,7 @@ Goto Uebersicht3
 EndIf
 
 If score=>20 Then
-Protokoll$="Tennis"
-SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+score
 SpielstandS
 Protokoll$="Versuche: "+(FehlerD+1)
@@ -5603,8 +5883,7 @@ If ballx#>width-16
 If score>high Then high=score : save=WriteFile("Tennis.txt") : WriteLine save,high : CloseFile save
 ballx#=width/2 : bally#=height/2 : ballmovx#=TTempo : ballmovy#=TTempo : once=2
 If score=>20 And UebersichtA=1 Then
-Protokoll$="Tennis"
-SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+score
 SpielstandS
 Protokoll$="Versuche: "+(FehlerD+1)
@@ -5615,8 +5894,7 @@ Goto Uebersicht3
 EndIf
 
 If score=>20 Then
-Protokoll$="Tennis"
-SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+score
 SpielstandS
 Protokoll$="Versuche: "+(FehlerD+1)
@@ -5640,6 +5918,8 @@ Forever
 
 
 .Aufgabe13
+Protokoll$="Wortfeld Sagen" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 
 .WSRStart
@@ -5653,12 +5933,14 @@ WSF=0
 Ziffer=0
 ClsColor 253,202,13
 Cls
-Schrift = LoadFont ("Arial",130,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 1,1,1
 Locate 200,1
 Print "Wortfeld Sagen"
-Schrift = LoadFont ("Arial",60,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",60,True)
 SetFont Schrift
 Color 1,1,1
 ClsColor 255,255,255
@@ -5679,7 +5961,7 @@ Input()
 
 ;Zeit!
 StartZeit = MilliSecs()
-Const ZeitMax = 1800  ;180 Sekunden
+Const ZeitMax = 180000  ;180 Sekunden
 
 
 EGWFSY=100
@@ -5705,12 +5987,14 @@ Next
 Function NEGFWFS()
 Cls
 TileBlock BildSagen
-Schrift = LoadFont ("Arial",70,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",70,True)
 SetFont Schrift
 Color 1,1,1
 Locate 420,1
 Print "Wortfeld Sagen"
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 End Function
 
@@ -5719,17 +6003,21 @@ End Function
 ClsVB
 HGrundH=LoadImage(".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",70,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",70,True)
 SetFont Schrift
 Color 1,1,1
 Text 640,1,"Wortfeld Sagen",1
-Schrift = LoadFont ("Arial",55,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Text 640,70,"Liste deiner Wörter",1
-Schrift = LoadFont ("Arial",40,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Text 640,950,"weiter mit beliebiger Taste",1
-Schrift = LoadFont ("Arial",51,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",51,True)
 SetFont Schrift
 WAKX=250
 WAKY=150
@@ -5758,17 +6046,21 @@ WaitKey()
 Cls
 HGrundH=LoadImage(".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",70,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",70,True)
 SetFont Schrift
 Color 1,1,1
 Text 640,1,"Wortfeld Sagen",1
-Schrift = LoadFont ("Arial",55,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Text 640,70,"Liste aller Synonymen",1
-Schrift = LoadFont ("Arial",40,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Text 640,950,"weiter mit beliebiger Taste",1
-Schrift = LoadFont ("Arial",32,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",32,True)
 SetFont Schrift
 Color 0,0,0
 WAKX=125
@@ -5811,21 +6103,24 @@ WaitKey()
 Cls
 HGrundH=LoadImage(".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",70,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",70,True)
 SetFont Schrift
 Color 1,1,1
 Text 640,1,"Wortfeld Sagen",1
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 If WSR=0 Or WSR>1 Text 640,80,"Du hast "+WSR+" richtige Wörter zum Wortfeld Sagen",1 Else Text 640,80,"Du hast "+WSR+" richtiges Wort zum Wortfeld Sagen",1
 Text 640,130,"in drei Minuten aufgeschrieben!!!",1
 If WSR>15 Or WSR=15 Then Text 640,180,"Ziel erreicht!",1
 If WSR<15 Then Text 640,180,"Ziel nicht erreicht!",1
 If WSR<15 Then Text 640,230,"Versuche die Aufgabe nochmals!",1
-Schrift = LoadFont ("Arial",40,201)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Text 640,950,"weiter mit beliebeger Taste",1
-Protokoll$="Wortfeld Sagen" SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+WSR SpielstandS
 WaitKey()
 If WSR<15 Then Goto WSRStart
@@ -5846,14 +6141,18 @@ End
 
 .Aufgabe14
 ClsVB
+Protokoll$="Lotto" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 Game= LoadSound (".\Sounds\0001Geame.mp3")
 LoopSound Game
 GameP=PlaySound(Game)
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Zugersee.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,70)
-SchriftL = LoadFont ("Arial", 50,70)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
+SchriftL = LoadFont ("Arial", 50,True)
 SetFont Schrift
 Color 0,0,0
 Locate 1,1
@@ -5870,6 +6169,7 @@ End
 .Lotoschein
 ClsColor 0,0,0
 SetFont SchriftL
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 Richtig = 0
 DrawImage HGrundH, 0,0
@@ -5981,7 +6281,7 @@ If ZahlE6=Zahl3 Then Richtig=Richtig+1
 If ZahlE6=Zahl4 Then Richtig=Richtig+1
 If ZahlE6=Zahl5 Then Richtig=Richtig+1
 If ZahlE6=Zahl6 Then Richtig=Richtig+1
-Protokoll$="Lotto" SpielstandS
+SpielstandSLR
 If Richtig=0 Then Print "Du hast 5 Fr. verloren!" Protokoll$="5 Fr. verloren" SpielstandS
 If Richtig=1 Then Print "Du hast 0 Fr. gewonnen!" Protokoll$="0 Fr. gewonnen" SpielstandS
 If Richtig=2 Then Print "Du hast 10 Fr. gewonnen!" Protokoll$="10 Fr. gewonnen" SpielstandS
@@ -5991,10 +6291,14 @@ If Richtig=5 Then Print "Du hast 100'000 Fr. gewonnen!" Protokoll$="100'000 Fr. 
 If Richtig=6 Then Print "Du hast 1'000'000 Fr. gewonnen!" Protokoll$="1'000'000 Fr. gewonnen" SpielstandS
 Input()
 NNWA=1
-WarnungF$="Wilst du nochmals Lotto speilen?"
+WarnungF$="Willst du nochmals Lotto spielen?"
 WarnungA
 NNWA=0
-If JaO=1 Then Goto Lotoschein
+If JaO=1 Then
+Protokoll$="Lotto" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
+Goto Lotoschein
+EndIf
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=14
 Smeili=1
@@ -6004,7 +6308,7 @@ Goto Programmstart
 End
 
 .Fehler3
-Print "Schreibe bitte nie 2 gleiche Zahlen auf den Lottoschein !!!"
+Print "Schreibe bitte nie 2 gleiche Zahlen auf den Lottoschein!"
 Delay 1000
 FlushKeys
 FlushMouse
@@ -6020,20 +6324,25 @@ End
 
 
 .Aufgabe15
+Protokoll$="Wörter merken" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 WMP#=0
 AWM=0
 WMAZZWL=0
 SeedRnd MilliSecs()
 ClsVB
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",55,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Color 0,0,0
 Print "Wörter merken"
 Print ""
-Schrift = LoadFont ("Arial",42,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",42,True)
 SetFont Schrift
 Print "Mit enem Druck auf Enter erscheinen 20 Wörter."
 Print "Merke dir so viele wie möglich."
@@ -6069,12 +6378,14 @@ Next
 
 
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial",55,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Color 0,0,0
 WMAZZWL=0
 Text 640,10,"Wörter merken",1
-Schrift = LoadFont ("Arial",42,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",42,True)
 SetFont Schrift
 
 Repeat
@@ -6098,16 +6409,20 @@ Locate 1,1
 DrawImage HGrundH, 0,0
 
 
-Schrift = LoadFont ("Arial",55,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",55,True)
 SetFont Schrift
 Text 640,10,"Korrigierte Wörter",1
-Schrift = LoadFont ("Arial",30,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Text 640,70,"(grün richtig, orange richtig aber an falscher Stelle, rot Falsch)",1
-Schrift = LoadFont ("Arial",30,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Text 640,970,"Weiter mit beliebiger Taste",1
-Schrift = LoadFont ("Arial",42,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",42,True)
 SetFont Schrift
 Repeat
 BSCHTWM=0
@@ -6152,7 +6467,8 @@ Locate 1,1
 DrawImage HGrundH, 0,0
 
 
-Schrift = LoadFont ("Arial",50,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 Color 0,0,0
 Text 640,487,"Du hast "+WMP#+" von 20 Punkten erreicht!",1,1
@@ -6160,10 +6476,11 @@ If WMP#<10 Then Text 640,537,"Ziel nicht erreicht!",1,1
 If WMP#>=10 And WMP#<15 Then Text 640,537,"Ziel erreicht!",1,1
 If WMP#>=15 And WMP#<18 Then Text 640,537,"Ziel gut erreicht!",1,1
 If WMP#>=18 Then Text 640,537,"Ziel sehr gut erreicht!",1,1
-Schrift = LoadFont ("Arial",30,101)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Text 640,970,"Weiter mit beliebiger Taste",1
-Protokoll$="Wörter merken" SpielstandS
+SpielstandSLR
 Protokoll$="Punkte: "+WMP#+"/20" SpielstandS
 Gosub PZeit
 WaitKey
@@ -6229,18 +6546,20 @@ SetBuffer FrontBuffer()
 
 rocket=SFRXP(1)
 
-Schrift = LoadFont ("Arial",90,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",90,True)
 SetFont Schrift
 Color 0,0,0
 ClsColor 253,202,13
 Cls
 Print "Beschrieb"
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 Print ""
-Print "Nach einem Klick auf Enter erscheinem viele
+Print "Nach einem Klick auf Enter erscheinen viele"
 Print "hinabfallende Zahlen."
-Print "Wenn deine Spielfigur eine der Zahlen
+Print "Wenn deine Spielfigur eine der Zahlen"
 Print "berührt, dann wird sie bei der nächsten"
 Print "Ziffer der Rechnung eingetragen."
 Print "das Ziel ist, so eine Rechnumg mit dem korrekten"
@@ -6250,7 +6569,13 @@ Print "deine Spielfigur am unteren Bildrand ankommt."
 Print "Es sind 7 Aufgaben richtig zu lösen."
 Print ""
 Print "Viel Glück!"
+Protokoll$="Rechenspiel" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 StartZeit = MilliSecs()
+If Schwierigkeitsstufe=1 Then SchwierigkeitsstufeRST=Schwierigkeitsstufe
+If Schwierigkeitsstufe=2 Then SchwierigkeitsstufeRST=Schwierigkeitsstufe : Schwierigkeitsstufe=1
+If Schwierigkeitsstufe=3 Then SchwierigkeitsstufeRST=Schwierigkeitsstufe : Schwierigkeitsstufe=2
+If Schwierigkeitsstufe=4 Then SchwierigkeitsstufeRST=Schwierigkeitsstufe : Schwierigkeitsstufe=2
 Input()
 StartZeitP = MilliSecs()
 hfdujkhbgjgjuvkhuj16=1
@@ -6300,8 +6625,9 @@ kgbvhknvgknjmkmh=0
 hnjugbjbhujmbg16=0
 NulP16=0
 hfdujkhbgjgjuvkhuj16=0
-Protokoll$="Rechenspiel" SpielstandS
+SpielstandSLR
 StartZeit=StartZeitP
+Schwierigkeitsstufe=SchwierigkeitsstufeRST
 Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=16
@@ -6355,7 +6681,8 @@ PauseChannel MXP
 Cls
 Locate 1,1
 ClsVB
-Schrift = LoadFont ("Arial",90,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",90,True)
 SetFont Schrift
 Color 255,255,155
 B1= LoadImage (".\Bilder\1.bmp")
@@ -6443,9 +6770,7 @@ GetroffenS(6)=0
 
 DrawImage HGrundH, 0,0
 If Schwierigkeitsstufe=2 Then Text 100,1,A14Z(0)+""+A14Z(1)+"+"+A14Z(2)+"="+A14Z(3)+A14Z(4)+A14Z(5)
-If Schwierigkeitsstufe=3 Then Text 100,1,A14Z(0)+""+A14Z(1)+"+"+A14Z(2)+""+A14Z(3)+"="+A14Z(4)+A14Z(5)+A14Z(6)
 If Schwierigkeitsstufe=1 Then Text 100,1,A14Z(0)+"*"+A14Z(1)+"="+A14Z(2)+A14Z(3)
-If Schwierigkeitsstufe=4 Then Text 100,1,A14Z(0)+""+A14Z(1)+"*"+A14Z(2)+"="+A14Z(3)+A14Z(4)+A14Z(5)
 
 If A14Z(0)>0 And Schwierigkeitsstufe=2 And A14Z(0)*10+A14Z(1)+A14Z(2)=A14Z(3)*100+A14Z(4)*10+A14Z(5) Then
 Cls
@@ -6455,20 +6780,6 @@ Delay 2000
 RichtigA16=RichtigA16+1
 Goto Aufgabe16
 ElseIf A14Z(0)>0 And Schwierigkeitsstufe=2 And A14Z(0)*10+A14Z(1)+A14Z(2)=A14Z(3)*10+A14Z(4) Then
-Cls
-Locate 1,1
-Print "Richtig"
-Delay 2000
-RichtigA16=RichtigA16+1
-Goto Aufgabe16
-ElseIf A14Z(0)>0 And Schwierigkeitsstufe=3 And A14Z(0)*10+A14Z(1)+A14Z(2)*10+A14Z(3)=A14Z(4)*100+A14Z(5)*10+A14Z(6) Then
-Cls
-Locate 1,1
-Print "Richtig"
-Delay 2000
-RichtigA16=RichtigA16+1
-Goto Aufgabe16
-ElseIf A14Z(0)>0 And Schwierigkeitsstufe=3 And A14Z(0)*10+A14Z(1)+A14Z(2)*10+A14Z(3)=A14Z(4)*10+A14Z(5) Then
 Cls
 Locate 1,1
 Print "Richtig"
@@ -6489,28 +6800,7 @@ Print "Richtig"
 Delay 2000
 RichtigA16=RichtigA16+1
 Goto Aufgabe16
-ElseIf A14Z(2)=1 Or A14Z(2)>1 And Schwierigkeitsstufe=4 And (A14Z(0)*10+A14Z(1))*A14Z(3)=(A14Z(2)*100)+(A14Z(3)*10)+A14Z(4) Then
-Cls
-Locate 1,1
-Print "Richtig"
-Delay 2000
-RichtigA16=RichtigA16+1
-Goto Aufgabe16
-ElseIf A14Z(2)=1 Or A14Z(2)>1 And Schwierigkeitsstufe=4 And (A14Z(0)*10+A14Z(1))*A14Z(2)=(A14Z(3)*10)+A14Z(4) Then
-Cls
-Locate 1,1
-Print "Richtig"
-Delay 2000
-RichtigA16=RichtigA16+1
-Goto Aufgabe16
-ElseIf A14Z(2)=1 Or A14Z(2)>1 And Schwierigkeitsstufe=4 And (A14Z(0)*10+A14Z(1))*A14Z(3)=A14Z(2) Then
-Cls
-Locate 1,1
-Print "Richtig"
-Delay 2000
-RichtigA16=RichtigA16+1
-Goto Aufgabe16
-ElseIf Schwierigkeitsstufe=2 Or Schwierigkeitsstufe=4 And A14Z(0)>0 And A14Z(1)>0 And A14Z(2)>0 And A14Z(3)>0 And A14Z(4)>0 And A14Z(5)>0 Then
+ElseIf Schwierigkeitsstufe=2 And A14Z(0)>0 And A14Z(1)>0 And A14Z(2)>0 And A14Z(3)>0 And A14Z(4)>0 And A14Z(5)>0 Then
 Cls
 Locate 1,1
 Print "Falsch"
@@ -6518,13 +6808,6 @@ Delay 2000
 FalschA16=FalschA16+1
 Goto Aufgabe16
 ElseIf Schwierigkeitsstufe=1 And A14Z(0)>0 And A14Z(1)>0 And A14Z(2)>0 And A14Z(3)>0 Then
-Cls
-Locate 1,1
-Print "Falsch"
-Delay 2000
-FalschA16=FalschA16+1
-Goto Aufgabe16
-ElseIf Schwierigkeitsstufe=3 And A14Z(0)>0 And A14Z(1)>0 And A14Z(2)>0 And A14Z(3)>0 And A14Z(4)>0 And A14Z(5)>0 And A14Z(6)>0 Then
 Cls
 Locate 1,1
 Print "Falsch"
@@ -6680,16 +6963,19 @@ End
 
 
 .Aufgabe17
+Protokoll$="Schnellrechnen" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel MXP
 ClsVB
-Schrift = LoadFont ("Arial",40,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Color 1,1,1
 ClsColor 1,255,1
 Cls
 Print "Beschrieb:"
 Print "Mit einem Klick auf Enter erscheint eine"
-Print "+,-,* oder : Rechnumg."
+Print "+,-,* oder : Rechnung."
 Print "Du hast 10 Sekunden Zeit um die Rechnung"
 Print "zu lösen."
 Print ""
@@ -6783,12 +7069,12 @@ End
 .SRVE
 Cls
 Locate 1,1
-Print "Du hast "+Richtg+"/30 Aufgaben"
+Print "Du hast "+Richtig+"/30 Aufgaben"
 Print "Richtig und in angemesenem Tempo gelöst."
 Print ""
 If Richtig=>25 Then
 Print "Ziel erreicht!"
-Protokoll$="Schnellrechnen" SpielstandS
+SpielstandSLR
 Protokoll$="Richtig: "+Richtg+"/30" SpielstandS
 Input()
 Aufgabe=0
@@ -6805,7 +7091,7 @@ Goto Programmstart
 Else
 Print "Ziel nicht erreicht!"
 Print "Versuche die Aufgabe erneut!"
-Protokoll$="Schnellrechnen" SpielstandS
+SpielstandSLR
 Protokoll$="Richtig: "+Richtg+"/30" SpielstandS
 StartZeit=StartZeitP
 Gosub PZeit
@@ -6826,13 +7112,17 @@ EndIf
 
 
 .Aufgabe18
-PauseChannel MXP
+Protokoll$="Adjektive" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
+PauseChannel HGM
 ClsVB
 Adjektiv = 0   Adjektiv1 = 0    Adjektiv2 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
 StartZeit = MilliSecs()
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Adjektiv in dem folgenden Satz."
@@ -6848,7 +7138,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4  Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4  Then Goto NVAP
 Until Ratwort1$ = "gut"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -6861,7 +7151,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Goto NVAP
 Until Ratwort1$ = "besser"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6874,7 +7164,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Goto NVAP
 Until Ratwort1$ = "am besten"
 Print
 
@@ -6898,7 +7188,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4 Then Goto NVAP
 Until Ratwort1$ = "vergnügt"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -6911,7 +7201,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Goto NVAP
 Until Ratwort1$ = "vergnügter"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6924,7 +7214,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Goto NVAP
 Until Ratwort1$ = "am vergnügtesten"
 Print
 
@@ -6948,7 +7238,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv =4 Then Goto NVAP
 Until Ratwort1$ = "toll"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
@@ -6961,7 +7251,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Goto NVAP
 Until Ratwort1$ = "toller"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -6974,7 +7264,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Goto NVAP
 Until Ratwort1$ = "am tollsten"
 Print
 
@@ -6999,8 +7289,8 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv = Adjektiv +1
 EndIf
-If Adjektiv =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
-Until Ratwort1$ = "süss"
+If Adjektiv =4 Then Goto NVAP
+Until Ratwort1$ = "süss" Or Ratwort1$ = "süsse"
 Print
 Print "Steigere das Adjektiv einmal z.B. (gelber).
 Repeat
@@ -7012,7 +7302,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv1 = Adjektiv1 +1
 EndIf
-If Adjektiv1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv1 =4 Then Goto NVAP
 Until Ratwort1$ = "süsser"
 Print
 Print "Und jetzt steigere das Adjektiv zweimal z.B. (am gelbsten).
@@ -7025,9 +7315,9 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Adjektiv2 = Adjektiv2 +1
 EndIf
-If Adjektiv2 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Adjektiv2 =4 Then Goto NVAP
 Until Ratwort1$ = "am süssesten"
-Protokoll$="Adjektive" SpielstandS
+SpielstandSLR
 Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=18
@@ -7037,14 +7327,23 @@ End
 
 
 
+
+
+
+
+
 .Aufgabe19
+Protokoll$="Pronomen" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 PauseChannel HGM
 ClsVB
 Pronomen = 0   Pronomen1 = 0
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Meergn.jpg")
 DrawImage HGrundH, 0,0
 StartZeit = MilliSecs()
-Schrift = LoadFont ("Arial", 30,110)
+FreeFont Schrift
+Schrift = LoadFont ("Arial", 30,True)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Pronomen in dem folgenden Satz."
@@ -7060,7 +7359,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Goto NVAP
 Until Ratwort1$ = "mein"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -7073,17 +7372,15 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Goto NVAP
 Until Ratwort1$ = "das"
 Print
-
 
 
 Cls 
 Locate 1,1
 Pronomen = 0   Pronomen1 = 0
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Pronomen in dem folgenden Satz."
@@ -7099,7 +7396,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Goto NVAP
 Until Ratwort1$ = "eine"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -7112,10 +7409,9 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Goto NVAP
 Until Ratwort1$ = "die"
 Print
-
 
 
 
@@ -7123,7 +7419,6 @@ Cls
 Locate 1,1
 Pronomen = 0   Pronomen1 = 0
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Pronomen in dem folgenden Satz."
@@ -7139,7 +7434,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Print "Du hast zuviele Fehler versuche die Aufgabe später nochmals!" SpielstandSLR : Protokoll$="Zu viele Fehler" SpielstandS 
 Until Ratwort1$ = "die"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -7152,10 +7447,9 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Goto NVAP
 Until Ratwort1$ = "die"
 Print
-
 
 
 
@@ -7163,7 +7457,6 @@ Cls
 Locate 1,1
 Pronomen = 0   Pronomen1 = 0
 DrawImage HGrundH, 0,0
-Schrift = LoadFont ("Arial", 30,110)
 SetFont Schrift
 Color 0,0,0
 Print"Erkenne das Pronomen in dem folgenden Satz."
@@ -7179,7 +7472,7 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen = Pronomen +1
 EndIf
-If Pronomen =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen =4 Then Goto NVAP
 Until Ratwort1$ = "zehn"
 Print
 Print "Ersetze das Pronomen durch den passenden Artikel.
@@ -7192,9 +7485,9 @@ Else
 PlayMusic (".\Sounds\Door1.mp3")
 Pronomen1 = Pronomen1 +1
 EndIf
-If Pronomen1 =4 Then Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!" Delay 2000 If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+If Pronomen1 =4 Then Goto NVAP
 Until Ratwort1$ = "die"
-Protokoll$="Pronomen"
+SpielstandSLR
 Gosub PZeit
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=19
@@ -7203,16 +7496,23 @@ Goto Programmstart
 End
 
 
+
+
+
+
+
 .LAufgabe
-If Not Aufgaben=100 Then
-Schrift = LoadFont ("Arial",60,20100)
+If Not Aufgaben=100 Or Aufgaben=19 Then
+FreeFont Schrift
+Schrift = LoadFont ("Arial",60,True)
 SetFont Schrift
 ClsVB
 ClsColor 1,255,1
 Cls
-Text 640,10,"Du kannst die lerzte Aufabe erst machen,",1
+Text 640,10,"Du kannst die letzte Aufabe erst machen,",1
 Text 640,70,"wenn deine Spielfigur wieder in ihrem Haus ist!",1
-Schrift = LoadFont ("Arial",30,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Text 640,970,"Weiter mit beliebiger Taste",1
 WaitKey
@@ -7220,12 +7520,15 @@ Goto Uebersicht3
 EndIf
 ClsVB
 LAufgabeVer=1
+Protokoll$="Letzte Aufgabe" SpielstandS
+Protokoll$="Aufgabe abgebrochen" SpielstandS
 ClsColor 1,255,1
 Cls
-Schrift = LoadFont ("Arial",40,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",40,True)
 SetFont Schrift
 Color 0,0,0
-Print "Letzte Aufgabe!
+Print "Letzte Aufgabe!"
 Print "Dein Feind, der dich am Amfang vom"
 Print "Spiel entführt hat, will dich fangen!"
 Print "Leider hat er dich auch noch als kleines Smiley"
@@ -7233,7 +7536,7 @@ Print "verwandelt, damit du, wenn er dich fängt, keine"
 Print "Chance hast gegen ihn zu kämpfen"
 Print "Noch ein paar Tipps:"
 Print "Der Feind wird immer schneller."
-Print "Auf dem blauen Feld sind beide schneller und auf dem
+Print "Auf dem blauen Feld sind beide schneller und auf dem"
 Print "grünen beide langsamer."
 Print ""
 Print "Wenn du es nicht im ersten Versuch schaffst, ist es"
@@ -7244,12 +7547,10 @@ Print "Viel Glück!"
 Input()
 ClsVB
 SetBuffer BackBuffer ()
-;rocket = LoadImage (".\Bilder\FEnd.bmp")
 rocket = LoadImage (".\Bilder\FEnd.bmp")
 MaskImage rocket, 255,255,255
 x = 1000
 y = 380
-;ClsColor 1,1,1
 HGrundH= LoadImage (".\Bilder\Letzte Aufgabe.jpg")
 monster= LoadImage (".\Bilder\Monster1.bmp")
 MaskImage monster, 255,255,255
@@ -7270,7 +7571,8 @@ xS#=435
 TGESCHWINDIKEIT=4
 HINTERNISVZ=2000
 
-Schrift = LoadFont ("Arial",130,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 
 
@@ -7400,7 +7702,7 @@ EndIf
 Flip
 Cls
 JetztZeit = MilliSecs()
-If (JetztZeit-StartZeit > ZeitMaxX) Then Protokoll$="Letzte Aufgabe" SpielstandS : Protokoll$="Versuche: "+LAufgabeVer SpielstandS Goto Ende
+If (JetztZeit-StartZeit > ZeitMaxX) Then SpielstandSLR : Protokoll$="Versuche: "+LAufgabeVer SpielstandS Goto Ende
 F2GE#=F2GE#+0.0003
 Goto LA1
 End
@@ -7419,7 +7721,8 @@ HGrundSF=LoadImage (".\Bilder\14.jpg")
 SYP
 If UebersichtA=0 Then
 ClsVB
-Schrift = LoadFont ("Arial",50,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 Color 0,0,0
 ClsColor 253,202,13
@@ -7428,8 +7731,9 @@ Text 640,410,"Herzlichen Glückwunsch:",1,1
 Text 640,460,"du bist am Ende meines Lernprogramms angelangt!",1,1
 Text 640,510,"Natürlich kannst du auch weiterhin alle",1,1
 Text 640,560,"Aufgaben unter der Übersicht lösen.",1,1
-Text 640,610,"Auch weiterhin Viel Spass!",1,1
-Schrift = LoadFont ("Arial",30,20100)
+Text 640,610,"Auch weiterhin viel Spass!",1,1
+FreeFont Schrift
+Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Text 640,970,"Weiter mit beliebiger Taste.",1,1
 WaitKey
@@ -7478,16 +7782,17 @@ EZWTSAW=0
 AAAER=0
 ETNFMB=0
 ClsVB
-Schrift = LoadFont ("Arial",50,20100)
-SchriftSW = LoadFont ("Arial",100,20100)
+FreeFont Schrift
+Schrift = LoadFont ("Arial",50,True)
+SchriftSW = LoadFont ("Arial",100,True)
 Color 0,0,0
 SetBuffer BackBuffer()
 backdrop=LoadImage(".\Bilder\Titelbild.jpg")
 scroll_y=0
 AAAER=1045
-While Not EZWTSAW=3600
+While Not EZWTSAW=1800
 	TileBlock backdrop,0,scroll_y
-	scroll_y=scroll_y-1
+	scroll_y=scroll_y-2
 	If scroll_y=ImageHeight(backdrop) Then scroll_y=0
 EZWTSAW=EZWTSAW+1
 ETNFMB=0
@@ -7543,8 +7848,6 @@ Text 640,AAAER,"Aurelia (0.25%)",1
 AAAER=AAAER+65 ETNFMB=ETNFMB+1
 Text 640,AAAER,"Programmierfehler gesucht",1
 AAAER=AAAER+65 ETNFMB=ETNFMB+1
-Text 640,AAAER,"Programmierfehler verbessert",1
-AAAER=AAAER+65 ETNFMB=ETNFMB+1
 Text 640,AAAER,"",1
 AAAER=AAAER+65 ETNFMB=ETNFMB+1
 Text 640,AAAER,"Musik (Harfe):",1
@@ -7567,20 +7870,22 @@ Text 640,AAAER,"",1
 AAAER=AAAER+65 ETNFMB=ETNFMB+1
 Text 640,AAAER,"Ich hoffe, dass dir mein Programm gefallen hat.",1
 AAAER=AAAER+65 ETNFMB=ETNFMB+1
+Text 640,AAAER,"",1
+AAAER=AAAER+65 ETNFMB=ETNFMB+1
 AAAER=AAAER-((ETNFMB*65)+100)
 	VWait
 	Flip
 	Cls
-AAAER=AAAER-1
+AAAER=AAAER-2
 Wend
 ClsVB
+FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
+FreeFont Schrift
 Schrift = LoadFont ("Arial",200)
 SetFont Schrift
-Print
-Print
-Print "        Ende"
+Text 640,512,"Ende",1,1
 Delay 3000
 If UebersichtA=1 Then Goto Uebersicht3
 Aufgaben=100
@@ -7716,6 +8021,7 @@ Until VFFBSF=650
 ClsVB
 ClsColor 1,255,1
 Cls
+FreeFont Schrift
 Schrift = LoadFont ("Arial",30,True)
 SetFont Schrift
 Color 1,1,1
@@ -7925,6 +8231,15 @@ FY=FY-4*SFG#
 End Function
 
 
+.NVAP
+Print "Du hast zuviele Fehler, versuche die Aufgabe später nochmals!"
+SpielstandSLR
+Protokoll$="Zu viele Fehler" SpielstandS
+Delay 2000
+If UebersichtA=1 Then Goto Uebersicht3 Else Goto Programmstart
+End
+
+
 .PZeit
 JetztZeit = MilliSecs()
 If (JetztZeit-StartZeit)/60000<>1 And ((JetztZeit-StartZeit)/1000)-((JetztZeit-StartZeit)/60000)*60<>1 Then Protokoll$="Zeit: "+(JetztZeit-StartZeit)/60000+" Minuten "+(((JetztZeit-StartZeit)/1000)-((JetztZeit-StartZeit)/60000)*60)+" Sekunden"
@@ -7933,6 +8248,33 @@ If (JetztZeit-StartZeit)/60000<>1 And ((JetztZeit-StartZeit)/1000)-((JetztZeit-S
 If (JetztZeit-StartZeit)/60000=1 And ((JetztZeit-StartZeit)/1000)-((JetztZeit-StartZeit)/60000)*60=1 Then Protokoll$="Zeit: "+(JetztZeit-StartZeit)/60000+" Minute "+(((JetztZeit-StartZeit)/1000)-((JetztZeit-StartZeit)/60000)*60)+" Sekunde"
 SpielstandS
 Return
+
+
+Function SpielstandSLR()
+If Aufgaben>100 Then Aufgaben=100
+filein = ReadFile(Name$+".txt")
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+ReadLine$(filein)
+For i=1 To 1499
+RST$(i)=ReadLine$(filein)
+Next
+CloseFile filein
+fileout = WriteFile(Name$+".txt")
+WriteLine fileout, "Aufgaben="+Aufgaben
+WriteLine fileout, "Schwierigkeitsstufe="+Schwierigkeitsstufe
+WriteLine fileout, "Spielfigur="+Spielfigur$
+WriteLine fileout, "Protokoll="
+Repeat
+zwfzdpi=zwfzdpi+1
+If RST$(zwfzdpi+1)="" Then Exit
+WriteLine fileout, RST$(zwfzdpi)
+Forever
+WriteLine fileout, ""
+CloseFile fileout
+End Function
+
 
 
 Function SpielstandS()
@@ -7946,9 +8288,6 @@ For i=1 To 1499
 RST$(i)=ReadLine$(filein)
 Next
 CloseFile filein
-
-
-
 fileout = WriteFile(Name$+".txt")
 WriteLine fileout, "Aufgaben="+Aufgaben
 WriteLine fileout, "Schwierigkeitsstufe="+Schwierigkeitsstufe
@@ -8001,39 +8340,47 @@ K2B=K2
 ClsColor 255,201,14
 Cls
 SetBuffer BackBuffer()
+
 Repeat
 JaO=0
 NeinO=0
 circleX=MouseX()
 circleY=MouseY()
 Cls
+If GTJNEP=1 Then
 Color 0,255,0
-Rect 0,0,50,50,1
 Rect 0,974,50,50,1
 Rect 1230,0,50,50,1
 Rect 1230,974,50,50,1
 Color 0,0,0
+EndIf
 If NNWA=0 Then
 Text 640,1,"Warnung:",1
 Text 640,35,WarnungF$,1
-ElseIf GTJNEP=1
-Text 640,1,"Grafiktest:",1
-Text 640,45,WarnungF$,1
+EndIf
+If GTJNEP=1 Then
+Text 325,1,"Grafiktest:",1
+Text 325,45,WarnungF$,1
 Else
 Text 640,20,WarnungF$,1
 EndIf
 
 
-
-
-
-
-DrawImage K1B, 300,362
-DrawImage K2B, 300,512
+If GTJNEP=1 Then 
+DrawImage K1B,25,162
+DrawImage K2B,25,312
 DrawImage gfxCircle,circleX,circleY
 Flip
-If  ImageRectOverlap (gfxCircle,circleX,circleY,300,362,600,150) Then K1B=K1O JaO=1 Else K1B=K1
-If  ImageRectOverlap (gfxCircle,circleX,circleY,300,511,600,150) And JaO=0 Then K2B=K2O NeinO=1 Else K2B=K2
+If ImageRectOverlap (gfxCircle,circleX,circleY,25,162,600,150) Then K1B=K1O JaO=1 Else K1B=K1
+If ImageRectOverlap (gfxCircle,circleX,circleY,25,311,600,150) And JaO=0 Then K2B=K2O NeinO=1 Else K2B=K2
+Else
+DrawImage K1B, 340,362
+DrawImage K2B, 340,512
+DrawImage gfxCircle,circleX,circleY
+Flip
+If ImageRectOverlap (gfxCircle,circleX,circleY,340,362,600,150) Then K1B=K1O JaO=1 Else K1B=K1
+If ImageRectOverlap (gfxCircle,circleX,circleY,340,511,600,150) And JaO=0 Then K2B=K2O NeinO=1 Else K2B=K2
+EndIf
 Delay 50
 
 If MouseDown(1) And JaO=1 Then Exit

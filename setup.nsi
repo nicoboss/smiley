@@ -8,15 +8,25 @@
 ;--------------------------------
 
 ;zhtu
-AutoCloseWindow True
+; Disable compression
+SetCompressor LZMA
+
+
 ;MSetShellVarContext current
 
-
+AutoCloseWindow True
 ; The name of the installer
 Name "Lernen mit Smiley 1.0"
 
-; Disable compression
-SetCompressor LZMA
+MiscButtonText "Zurück""Weiter""Abbrechen""Beenden"
+DetailsButtonText "Details anzeigen"
+CompletedText	 "Installation abgeschlossen"
+InstallButtonText "Installieren"
+UninstallButtonText "Deinstallieren"
+SpaceTexts "Grösse: ""Verfügbarer Speicherplatz: "
+XPStyle on
+ShowInstDetails show
+BrandingText " "
 
 ; The file to write
 OutFile "Setup.exe"
@@ -37,7 +47,7 @@ Page components
 Page directory
 Page instfiles
 
-
+ComponentText "Überprüfen Sie die Komponenten, die Sie installieren möchten, und deaktivieren Sie die Komponenten, die Sie nicht installieren möchten.$\nWenn Sie nicht viel von Computer verstehen, drücken sie auf Weiter.""""Zu installierenden Komponenten:"
 Section "Links für alle Benutzer" g1o1
 SetShellVarContext all
 SectionEnd
@@ -62,15 +72,13 @@ SectionEnd
 
 ; The stuff to install
 Section "" ;No components page, name is not important
-
-
-
 ; Set output path to the installation directory.
 SetOutPath $INSTDIR
 
 
 
 RMDir /r $INSTDIR\Bilder
+RMDir /r $INSTDIR\Sounds
 RMDir /r `$SMPROGRAMS\Nico Bosshard`
 ; Put file there
 File /r /x *.bb* /x *.info /x *.db /x *.Mid /x "" ".\Lernen mit Smiley 1.0\"
@@ -97,10 +105,10 @@ CreateShortCut "$DESKTOP\Lernen mit Smiley.lnk" "$INSTDIR\Lernen mit Smiley.exe"
 WriteRegStr HKLM "Software\Nico Bosshard\Lernen mit Smiley" "Install Path" "$INSTDIR"
 
 MessageBox MB_YESNO "Die Installation wurde erfolgreich abgeschlossen!$\nWollen Sie mein Lernprogramm jetzt starten?" IDYES True IDNO False
-true:
+True:
   Exec '"$INSTDIR\Lernen mit Smiley.exe"'
   GoTo next
-false:
+False:
 next:
 
 SectionEnd ; end the section
