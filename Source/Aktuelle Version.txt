@@ -1,2 +1,4 @@
 Aktuelle Version:
 Lernen mit Smiley 1.0
+
+Version wurde extra nicht auf 1.1 aktualisiert, da es sonst immer eine Updatemeldung gibt.

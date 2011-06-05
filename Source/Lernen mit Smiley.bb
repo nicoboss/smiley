@@ -1,6 +1,9 @@
 AppTitle "Lernen mit Smiley"
 Global filename$
+Global TB
 Global ESPS
+Global PROZ
+Global LPro#
 
 .PStart
 
@@ -45,12 +48,20 @@ Graphics Grafik1$,Grafik2$,Grafik3$,Grafik4$
 
 
 TB=LoadImage(".\Bilder\Titelbild.jpg")
+SchriftLMSS = LoadFont ("Arial",120,True)
 TileBlock TB
-SchriftLMSS = LoadFont ("Arial",130,True)
 SetFont SchriftLMSS
 Color 0,0,0
-Text 170,400,"Lernen mit Smiley"
+Text 640,400,"Lernen mit Smiley",1
 VWait
+Viewport 0,518,1280,90
+
+Function LProA()
+TileBlock TB
+Text 640,500,Left (LPro#,Instr(LPro#,".")-1)+"%",1
+LPro#=LPro#+1.15;1.14943
+VWait
+End Function
 
 StartZeit = MilliSecs()
 Const ZeitMaxSLMS = 1500  ; 1.5 Sekunden
@@ -64,7 +75,6 @@ Const frames=25
 Const choice=total/frames
 Const fps=25
 Const ZeitMaxRS = 50  ; 0.1 Sekunden
-
 HidePointer
 
 Global NZWNDGBA12
@@ -106,7 +116,6 @@ Global HERHZ
 Global NameS$
 Global NameN$
 Global SpielstandLA
-Global ASDREFGHHGHUJK
 Global roket
 ;Global L
 ;Global A
@@ -145,17 +154,13 @@ Dim infoNE$(999)
 DeleteFile ".\Setup.exe"
 DeleteFile ".\info.txt"
 Delay 100
-
 ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
-
 Color 0,0,0
 Dateiname$="info.txt"
 rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/info.txt")
 Dateiname$="Neuste_Version.txt"
 rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Neuste_Version.txt")
-
-
 
     Flip
 zielpfad$=ZPFN$
@@ -197,9 +202,7 @@ DATTEX$=webFile$
         EndIf
     EndIf
     www = OpenTCPStream (webHost$, 80)
-
     If www
-    
         WriteLine www, "GET " + webFile$ + " HTTP/1.1"
         WriteLine www, "Host: " + webHost$
         WriteLine www, "User-Agent: BlitzGet Deluxe"
@@ -261,7 +264,7 @@ If bynpb$="" Then bynpb$=totalBytes/1000000 + ","+ Right$(totalBytes/100000,1)+"
     If posByte>=100000000 And posByte<1000000000 Then Text 20, 100, Left(posByte,3)+","+Mid(posByte,4,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
     If posByte>=1000000000 Then Text 20, 100, Left(posByte,4)+","+Mid(posByte,3,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
 VWait
-  EndIf
+EndIf
 End Function
 
 Function Percent (part#, total#)
@@ -543,100 +546,103 @@ EndIf
 
 
 .KINVB2
-
 a$="n"
-Auswahl=LoadImage (".\Bilder\Gletscher.jpg")
-Auswahl1a=LoadImage (".\Bilder\Spiel starten.jpg")
-Auswahl1b=LoadImage (".\Bilder\Spiel startenO.jpg")
-Auswahl2a=LoadImage (".\Bilder\Übersicht.jpg")
-Auswahl2b=LoadImage (".\Bilder\ÜbersichtO.jpg")
-Auswahl3a=LoadImage (".\Bilder\Protokoll.jpg")
-Auswahl3b=LoadImage (".\Bilder\ProtokollO.jpg")
-Auswahl4a=LoadImage (".\Bilder\Spielfigur wählen.jpg")
-Auswahl4b=LoadImage (".\Bilder\Spielfigur wählenO.jpg")
-Auswahl5a=LoadImage (".\Bilder\Schwierigkeitsstufe wählen.jpg")
-Auswahl5b=LoadImage (".\Bilder\Schwierigkeitsstufe wählenO.jpg")
-Auswahl6a=LoadImage (".\Bilder\Spielstandoptionen.jpg")
-Auswahl6b=LoadImage (".\Bilder\SpielstandoptionenO.jpg")
-Auswahl7a=LoadImage (".\Bilder\Grafik.jpg")
-Auswahl7b=LoadImage (".\Bilder\GrafikO.jpg")
-Auswahl8a=LoadImage (".\Bilder\Programm beenden.jpg")
-Auswahl8b=LoadImage (".\Bilder\Programm beendenO.jpg")
+LProA
+Auswahl=LoadImage (".\Bilder\Gletscher.jpg") LProA
+Auswahl1a=LoadImage (".\Bilder\Spiel starten.jpg") LProA
+Auswahl1b=LoadImage (".\Bilder\Spiel startenO.jpg") LProA
+Auswahl2a=LoadImage (".\Bilder\Übersicht.jpg") LProA
+Auswahl2b=LoadImage (".\Bilder\ÜbersichtO.jpg") LProA
+Auswahl3a=LoadImage (".\Bilder\Protokoll.jpg") LProA
+Auswahl3b=LoadImage (".\Bilder\ProtokollO.jpg") LProA
+Auswahl4a=LoadImage (".\Bilder\Spielfigur wählen.jpg") LProA
+Auswahl4b=LoadImage (".\Bilder\Spielfigur wählenO.jpg") LProA
+Auswahl5a=LoadImage (".\Bilder\Schwierigkeitsstufe wählen.jpg") LProA
+Auswahl5b=LoadImage (".\Bilder\Schwierigkeitsstufe wählenO.jpg") LProA
+Auswahl6a=LoadImage (".\Bilder\Spielstandoptionen.jpg") LProA
+Auswahl6b=LoadImage (".\Bilder\SpielstandoptionenO.jpg") LProA
+Auswahl7a=LoadImage (".\Bilder\Grafik.jpg") LProA
+Auswahl7b=LoadImage (".\Bilder\GrafikO.jpg") LProA
+Auswahl8a=LoadImage (".\Bilder\Programm beenden.jpg") LProA
+Auswahl8b=LoadImage (".\Bilder\Programm beendenO.jpg") LProA
 SW=Auswahl;LoadImage (".\Bilder\Gletscher.jpg")
-SWK1=LoadImage (".\Bilder\SchwierigkeitsstufeK1.jpg")
-SWK2=LoadImage (".\Bilder\SchwierigkeitsstufeK2.jpg")
-SWK3=LoadImage (".\Bilder\SchwierigkeitsstufeK3.jpg")
-SWK4=LoadImage (".\Bilder\SchwierigkeitsstufeK4.jpg")
-SWK5=LoadImage (".\Bilder\SchwierigkeitsstufeK5.jpg")
-SWK1O=LoadImage (".\Bilder\SchwierigkeitsstufeK1O.jpg")
-SWK2O=LoadImage (".\Bilder\SchwierigkeitsstufeK2O.jpg")
-SWK3O=LoadImage (".\Bilder\SchwierigkeitsstufeK3O.jpg")
-SWK4O=LoadImage (".\Bilder\SchwierigkeitsstufeK4O.jpg")
-SWK5O=LoadImage (".\Bilder\SchwierigkeitsstufeK5O.jpg")
+SWK1=LoadImage (".\Bilder\SchwierigkeitsstufeK1.jpg") LProA
+SWK2=LoadImage (".\Bilder\SchwierigkeitsstufeK2.jpg") LProA
+SWK3=LoadImage (".\Bilder\SchwierigkeitsstufeK3.jpg") LProA
+SWK4=LoadImage (".\Bilder\SchwierigkeitsstufeK4.jpg") LProA
+SWK5=LoadImage (".\Bilder\SchwierigkeitsstufeK5.jpg") LProA
+SWK1O=LoadImage (".\Bilder\SchwierigkeitsstufeK1O.jpg") LProA
+SWK2O=LoadImage (".\Bilder\SchwierigkeitsstufeK2O.jpg") LProA
+SWK3O=LoadImage (".\Bilder\SchwierigkeitsstufeK3O.jpg") LProA
+SWK4O=LoadImage (".\Bilder\SchwierigkeitsstufeK4O.jpg") LProA
+SWK5O=LoadImage (".\Bilder\SchwierigkeitsstufeK5O.jpg") LProA
 Uebersicht=Auswahl;LoadImage (".\Bilder\Gletscher.jpg")
-Uebersicht1a=LoadImage (".\Bilder\Übersicht1a.jpg")
-Uebersicht2a=LoadImage (".\Bilder\Übersicht2a.jpg")
-Uebersicht3a=LoadImage (".\Bilder\Übersicht3a.jpg")
-Uebersicht4a=LoadImage (".\Bilder\Übersicht4a.jpg")
-Uebersicht5a=LoadImage (".\Bilder\Übersicht5a.jpg")
-Uebersicht6a=LoadImage (".\Bilder\Übersicht6a.jpg")
-Uebersicht7a=LoadImage (".\Bilder\Übersicht7a.jpg")
-Uebersicht8a=LoadImage (".\Bilder\Übersicht8a.jpg")
-Uebersicht9a=LoadImage (".\Bilder\Übersicht9a.jpg")
-Uebersicht10a=LoadImage (".\Bilder\Übersicht10a.jpg")
-Uebersicht11a=LoadImage (".\Bilder\Übersicht11a.jpg")
-Uebersicht12a=LoadImage (".\Bilder\Übersicht12a.jpg")
-Uebersicht13a=LoadImage (".\Bilder\Übersicht13a.jpg")
-Uebersicht14a=LoadImage (".\Bilder\Übersicht14a.jpg")
-Uebersicht15a=LoadImage (".\Bilder\Übersicht15a.jpg")
-Uebersicht16a=LoadImage (".\Bilder\Übersicht16a.jpg")
-Uebersicht17a=LoadImage (".\Bilder\Übersicht17a.jpg")
-Uebersicht18a=LoadImage (".\Bilder\Übersicht18a.jpg")
-Uebersicht19a=LoadImage (".\Bilder\Übersicht19a.jpg")
-Uebersicht20a=LoadImage (".\Bilder\Übersicht20a.jpg")
-Uebersicht21a=LoadImage (".\Bilder\Übersicht21a.jpg")
-Uebersicht1b=LoadImage (".\Bilder\Übersicht1b.jpg")
-Uebersicht2b=LoadImage (".\Bilder\Übersicht2b.jpg")
-Uebersicht3b=LoadImage (".\Bilder\Übersicht3b.jpg")
-Uebersicht4b=LoadImage (".\Bilder\Übersicht4b.jpg")
-Uebersicht5b=LoadImage (".\Bilder\Übersicht5b.jpg")
-Uebersicht6b=LoadImage (".\Bilder\Übersicht6b.jpg")
-Uebersicht7b=LoadImage (".\Bilder\Übersicht7b.jpg")
-Uebersicht8b=LoadImage (".\Bilder\Übersicht8b.jpg")
-Uebersicht9b=LoadImage (".\Bilder\Übersicht9b.jpg")
-Uebersicht10b=LoadImage (".\Bilder\Übersicht10b.jpg")
-Uebersicht11b=LoadImage (".\Bilder\Übersicht11b.jpg")
-Uebersicht12b=LoadImage (".\Bilder\Übersicht12b.jpg")
-Uebersicht13b=LoadImage (".\Bilder\Übersicht13b.jpg")
-Uebersicht14b=LoadImage (".\Bilder\Übersicht14b.jpg")
-Uebersicht15b=LoadImage (".\Bilder\Übersicht15b.jpg")
-Uebersicht16b=LoadImage (".\Bilder\Übersicht16b.jpg")
-Uebersicht17b=LoadImage (".\Bilder\Übersicht17b.jpg")
-Uebersicht18b=LoadImage (".\Bilder\Übersicht18b.jpg")
-Uebersicht19b=LoadImage (".\Bilder\Übersicht19b.jpg")
-Uebersicht20b=LoadImage (".\Bilder\Übersicht20b.jpg")
-Uebersicht21b=LoadImage (".\Bilder\Übersicht21b.jpg")
+Uebersicht1a=LoadImage (".\Bilder\Übersicht1a.jpg") LProA
+Uebersicht2a=LoadImage (".\Bilder\Übersicht2a.jpg") LProA
+Uebersicht3a=LoadImage (".\Bilder\Übersicht3a.jpg") LProA
+Uebersicht4a=LoadImage (".\Bilder\Übersicht4a.jpg") LProA
+Uebersicht5a=LoadImage (".\Bilder\Übersicht5a.jpg") LProA
+Uebersicht6a=LoadImage (".\Bilder\Übersicht6a.jpg") LProA
+Uebersicht7a=LoadImage (".\Bilder\Übersicht7a.jpg") LProA
+Uebersicht8a=LoadImage (".\Bilder\Übersicht8a.jpg") LProA
+Uebersicht9a=LoadImage (".\Bilder\Übersicht9a.jpg") LProA
+Uebersicht10a=LoadImage (".\Bilder\Übersicht10a.jpg") LProA
+Uebersicht11a=LoadImage (".\Bilder\Übersicht11a.jpg") LProA
+Uebersicht12a=LoadImage (".\Bilder\Übersicht12a.jpg") LProA
+Uebersicht13a=LoadImage (".\Bilder\Übersicht13a.jpg") LProA
+Uebersicht14a=LoadImage (".\Bilder\Übersicht14a.jpg") LProA
+Uebersicht15a=LoadImage (".\Bilder\Übersicht15a.jpg") LProA
+Uebersicht16a=LoadImage (".\Bilder\Übersicht16a.jpg") LProA
+Uebersicht17a=LoadImage (".\Bilder\Übersicht17a.jpg") LProA
+Uebersicht18a=LoadImage (".\Bilder\Übersicht18a.jpg") LProA
+Uebersicht19a=LoadImage (".\Bilder\Übersicht19a.jpg") LProA
+Uebersicht20a=LoadImage (".\Bilder\Übersicht20a.jpg") LProA
+Uebersicht21a=LoadImage (".\Bilder\Übersicht21a.jpg") LProA
+Uebersicht1b=LoadImage (".\Bilder\Übersicht1b.jpg") LProA
+Uebersicht2b=LoadImage (".\Bilder\Übersicht2b.jpg") LProA
+Uebersicht3b=LoadImage (".\Bilder\Übersicht3b.jpg") LProA
+Uebersicht4b=LoadImage (".\Bilder\Übersicht4b.jpg") LProA
+Uebersicht5b=LoadImage (".\Bilder\Übersicht5b.jpg") LProA
+Uebersicht6b=LoadImage (".\Bilder\Übersicht6b.jpg") LProA
+Uebersicht7b=LoadImage (".\Bilder\Übersicht7b.jpg") LProA
+Uebersicht8b=LoadImage (".\Bilder\Übersicht8b.jpg") LProA
+Uebersicht9b=LoadImage (".\Bilder\Übersicht9b.jpg") LProA
+Uebersicht10b=LoadImage (".\Bilder\Übersicht10b.jpg") LProA
+Uebersicht11b=LoadImage (".\Bilder\Übersicht11b.jpg") LProA
+Uebersicht12b=LoadImage (".\Bilder\Übersicht12b.jpg") LProA
+Uebersicht13b=LoadImage (".\Bilder\Übersicht13b.jpg") LProA
+Uebersicht14b=LoadImage (".\Bilder\Übersicht14b.jpg") LProA
+Uebersicht15b=LoadImage (".\Bilder\Übersicht15b.jpg") LProA
+Uebersicht16b=LoadImage (".\Bilder\Übersicht16b.jpg") LProA
+Uebersicht17b=LoadImage (".\Bilder\Übersicht17b.jpg") LProA
+Uebersicht18b=LoadImage (".\Bilder\Übersicht18b.jpg") LProA
+Uebersicht19b=LoadImage (".\Bilder\Übersicht19b.jpg") LProA
+Uebersicht20b=LoadImage (".\Bilder\Übersicht20b.jpg") LProA
+Uebersicht21b=LoadImage (".\Bilder\Übersicht21b.jpg") LProA
 SPK=Auswahl;LoadImage (".\Bilder\Gletscher.jpg")
-SPK1=LoadImage (".\Bilder\SpielstandoptionenK1.jpg")
-SPK2=LoadImage (".\Bilder\SpielstandoptionenK2.jpg")
-SPK3=LoadImage (".\Bilder\SpielstandoptionenK3.jpg")
-SPK4=LoadImage (".\Bilder\SpielstandoptionenK4.jpg")
-SPK5=LoadImage (".\Bilder\SpielstandoptionenK5.jpg")
-SPK6=LoadImage (".\Bilder\SpielstandoptionenK6.jpg")
-SPK1O=LoadImage (".\Bilder\SpielstandoptionenK1O.jpg")
-SPK2O=LoadImage (".\Bilder\SpielstandoptionenK2O.jpg")
-SPK3O=LoadImage (".\Bilder\SpielstandoptionenK3O.jpg")
-SPK4O=LoadImage (".\Bilder\SpielstandoptionenK4O.jpg")
-SPK5O=LoadImage (".\Bilder\SpielstandoptionenK5O.jpg")
-SPK6O=LoadImage (".\Bilder\SpielstandoptionenK6O.jpg")
+SPK1=LoadImage (".\Bilder\SpielstandoptionenK1.jpg") LProA
+SPK2=LoadImage (".\Bilder\SpielstandoptionenK2.jpg") LProA
+SPK3=LoadImage (".\Bilder\SpielstandoptionenK3.jpg") LProA
+SPK4=LoadImage (".\Bilder\SpielstandoptionenK4.jpg") LProA
+SPK5=LoadImage (".\Bilder\SpielstandoptionenK5.jpg") LProA
+SPK6=LoadImage (".\Bilder\SpielstandoptionenK6.jpg") LProA
+SPK1O=LoadImage (".\Bilder\SpielstandoptionenK1O.jpg") LProA
+SPK2O=LoadImage (".\Bilder\SpielstandoptionenK2O.jpg") LProA
+SPK3O=LoadImage (".\Bilder\SpielstandoptionenK3O.jpg") LProA
+SPK4O=LoadImage (".\Bilder\SpielstandoptionenK4O.jpg") LProA
+SPK5O=LoadImage (".\Bilder\SpielstandoptionenK5O.jpg") LProA
+SPK6O=LoadImage (".\Bilder\SpielstandoptionenK6O.jpg") LProA
 NA=Auswahl;LoadImage (".\Bilder\Gletscher.jpg")
-NAK1=LoadImage (".\Bilder\NAK1.jpg")
-NAK2=LoadImage (".\Bilder\NAK2.jpg")
-NAK3=LoadImage (".\Bilder\NAK3.jpg")
-NAK1O=LoadImage (".\Bilder\NAK1O.jpg")
-NAK2O=LoadImage (".\Bilder\NAK2O.jpg")
-NAK3O=LoadImage (".\Bilder\NAK3O.jpg")
+NAK1=LoadImage (".\Bilder\NAK1.jpg") LProA
+NAK2=LoadImage (".\Bilder\NAK2.jpg") LProA
+NAK3=LoadImage (".\Bilder\NAK3.jpg") LProA
+NAK1O=LoadImage (".\Bilder\NAK1O.jpg") LProA
+NAK2O=LoadImage (".\Bilder\NAK2O.jpg") LProA
+NAK3O=LoadImage (".\Bilder\NAK3O.jpg") LProA
+LPro#=0
+gfxCircle=CreateImage(20,20)
 
+Viewport 0,0,1280,1024
 
 MaskImage Uebersicht1a,0,0,255
 MaskImage Uebersicht2a,0,0,255
@@ -709,6 +715,9 @@ MaskImage SWK3O,0,0,255
 MaskImage SWK4O,0,0,255
 MaskImage SWK5O,0,0,255
 
+TileImage TB
+
+
 AuswahOBL=1
 If KeyHit(57) Then ESPS=1
 FlushKeys
@@ -736,7 +745,6 @@ Input()
 Cls
 Locate 1,1
 If Not Grafik4$="3" Then
-gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
@@ -766,7 +774,7 @@ End
 
 .AnfangN
 FreeImage HGrundH
-HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
+;TB=LoadImage (".\Bilder\Titelbild.jpg")
 Schrift = LoadFont ("Arial",60,True)
 SchriftF = LoadFont ("Arial",50,True)
 Datum$=CurrentDate$()
@@ -785,12 +793,12 @@ If DATUMM$="Nov" Then DATUMM$="November"
 If DATUMM$="Dec" Then DATUMM$="Dezember"
 Protokoll1$=" "
 Protokoll2$=Left$(Datum$,2)+" "+DATUMM$+" "+Right$(Datum$,4)
-Repeat
-JetztZeit = MilliSecs()
-Delay 25
-Until JetztZeit-StartZeit >= ZeitMaxSLMS
+;Repeat
+;JetztZeit = MilliSecs()
+;Delay 25
+;Until JetztZeit-StartZeit >= ZeitMaxSLMS
 Locate 510,160
-TileBlock HGrundH
+TileBlock TB
 Color 253,243,0
 Rect 72,64,1153,195,1
 
@@ -1001,10 +1009,6 @@ VWait
 
 
 AAAB=0
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
 
 
 ;Name$=0
@@ -1023,22 +1027,22 @@ If Schwierigkeitsstufe=0 Then AuswahOBL=0 SWZH=1 Goto SchwierikeitsstufeW
 
 
 .Auswahl
+MoveMouse 400,150
 NANJN=1
 Protokoll$=""
 FlushKeys
 FlushMouse
 FreeSound GameP
 FreeSound Game
+AppTitle "Lernen mit Smiley","Wollen Sei das das Programm wirklich beenden?"+Chr(13)+"Kleine Fortschritte können verloren gehen!"
 If AuswahOBL=1 Then Goto AuswahOB
-AppTitle "Lernen mit Smiley"
-;Sachen =0
+;Variablen werden auf 0 gesetzt!
 roket=0
 x=0
 y=0
 X=0
 Y=0
 HGrundH=0
-ASDREFGHHGHUJK=0
 hotX=0
 hotY=0
 hotW=0
@@ -1062,19 +1066,12 @@ UebersichtA=0
 
 .AuswahOB
 NANJN=1
-Auswahl=LoadImage (".\Bilder\Gletscher.jpg")
 AuswahOBL=0
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
-gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
 SetBuffer BackBuffer()
 Color 0,0,255
-
 
 Auswahl1=Auswahl1a
 Auswahl2=Auswahl2a
@@ -1230,12 +1227,9 @@ End
 
 .Uebersicht
 ClsVB
+MoveMouse 420,14
 jhhfgfsSFGjsgjmsgmsztzsh=0
 AuswahOBL=0
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
 
 NNEZKAW=0
 
@@ -1596,10 +1590,7 @@ ClsVB
 Delay 10
 Cls
 
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
+
 Goto Auswahl
 End
 
@@ -1609,8 +1600,8 @@ End
 
 .SchwierikeitsstufeW
 ClsVB
+MoveMouse 185,303
 Const ZeitMaxSW=1000  ; 1 Sekunden
-gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
@@ -1686,7 +1677,7 @@ End
 
 .SpielstandKopieren
 CLSVB
-gfxCircle=CreateImage(20,20)
+MoveMouse 375,251
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
@@ -1724,10 +1715,7 @@ zielpfad$ = ".\"+Name$+"BAK.txt"
 CopyFile quellpfad$, zielpfad$
 
 SpielstandKopierenA=0
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
+
 CLSVB
 FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Titelbild.jpg")
@@ -1781,10 +1769,6 @@ EndIf
 Delay 3000
 EndIf
 SpielstandKopierenA=0
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
 Goto Auswahl
 EndIf
 SPKA2=SPK2O
@@ -1829,10 +1813,6 @@ Text 640,130,"Spielstand wurde erfolgreich überschrieben!",1
 VWait
 Delay 1500
 SpielstandS
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
 Goto Auswahl
 Else
 Goto Fehler
@@ -2020,10 +2000,6 @@ DeleteFile ".\"+Name$+"BAK.txt"
 FreeSound HM
 Goto PStart
 Else
-;Wichtig!
-;Wichtig!
-;Wichtig!
-ASDREFGHHGHUJK=1
 Goto Auswahl
 EndIf
 End
@@ -2046,7 +2022,6 @@ y=0
 X=0
 Y=0
 HGrundH=0
-ASDREFGHHGHUJK=0
 hotX=0
 hotY=0
 hotW=0
@@ -5260,7 +5235,6 @@ MaskImage ArtikelK3O,255,0,0
 SetBuffer BackBuffer ()
 
 
-gfxCircle=CreateImage(20,20)
 SetBuffer ImageBuffer(gfxCircle)
 Color 255,0,0
 Oval 0,0,20,20,1
