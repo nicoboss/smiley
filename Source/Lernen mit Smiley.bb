@@ -52,13 +52,12 @@ SchriftLMSS = LoadFont ("Arial",120,True)
 TileBlock TB
 SetFont SchriftLMSS
 Color 0,0,0
-Text 640,400,"Lernen mit Smiley",1
+Text 640,390,"Lernen mit Smiley",1
 VWait
-Viewport 0,518,1280,90
 
 Function LProA()
 TileBlock TB
-Text 640,500,Left (LPro#,Instr(LPro#,".")-1)+"%",1
+Text 640,525,Left (LPro#,Instr(LPro#,".")-1)+"%",1
 LPro#=LPro#+1.15;1.14943
 VWait
 End Function
@@ -77,6 +76,10 @@ Const fps=25
 Const ZeitMaxRS = 50  ; 0.1 Sekunden
 HidePointer
 
+Global NWTUDS
+Global UptImgHL
+Global UpdImg
+Global UpdateB
 Global NZWNDGBA12
 Global GTJNEP
 Global NNWA
@@ -137,6 +140,8 @@ Global Nomen
 Global Nomen1
 Global Nomen2
 Global Smeili
+Dim mDayPerMonth( 12 ) 
+Dim mWeekDays$( 7 )
 Dim RST$(1499)
 Dim DVGHJFHMHJG(8)
 Dim SteinK(8)
@@ -153,7 +158,11 @@ Dim NZDGW(30)
 Dim infoNE$(999)
 DeleteFile ".\Setup.exe"
 DeleteFile ".\info.txt"
-Delay 100
+DeleteFile ".\Update.jpg"
+;TileBlock TB
+;Text 640,500,"Uptates...",1
+VWait
+;Delay 100
 ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
 Color 0,0,0
@@ -162,17 +171,14 @@ rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/info.txt")
 Dateiname$="Neuste_Version.txt"
 rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Neuste_Version.txt")
 
-    Flip
-zielpfad$=ZPFN$
-ExecFile DateiLMS$
+;    Flip
+;zielpfad$=ZPFN$
+;ExecFile DateiLMS$
 
 
 Function LoadWebImage (webFile$)
 DA=DA-1
-    If BlitzGet (webFile$, CurrentDir (), Dateiname$)
-        image = LoadImage (Dateiname$)
-    EndIf
-    Return image
+BlitzGet (webFile$, CurrentDir$ (), Dateiname$)
 End Function
 
 Function BlitzGet (webFile$, saveDir$, saveFile$)
@@ -226,8 +232,11 @@ DATTEX$=webFile$
             
             tReadWebFile = readWebFile
             ;Geschwindikeit
-            If tReadWebFile Mod 100000 = 0 Then BytesReceived (readWebFile, bytesToRead)
-
+			If UptImgHL=0 Then 
+            	If tReadWebFile Mod 100000 = 0 Then BytesReceived (readWebFile, bytesToRead)
+				Else
+				If tReadWebFile Mod 10000 = 0 Then BytesReceived (readWebFile, bytesToRead)
+			EndIf
         Next
         EIW$=Right (WebFile$,4)
         CloseFile save
@@ -253,16 +262,21 @@ DATTEX$=webFile$
 End Function
 
 Function BytesReceived (posByte, totalBytes)
-  If KTIBWG=1 Then
+If KTIBWG=1 Then
     Cls
-    Text 20, 20, "Dateien werden heruntergeladen, bitte warten..."
-    Text 20, 60,DATTEX$
+    Text 640,10,"Dateien werden heruntergeladen, bitte warten...",1
+If UptImgHL=1 Then
+If bynpb$="" Then bynpb$=totalBytes/1000000+" Kilobytes wurden heruntergeladen (" : If totalBytes=>100000000000 Then RuntimeError"Datei darf nicht grösser als 1 Gigabite sein!"
+Text 640,70,posByte/10000+bynpb$+Percent (posByte, totalBytes) + "%)",1
+Else
 If bynpb$="" Then bynpb$=totalBytes/1000000 + ","+ Right$(totalBytes/100000,1)+" Megabytes wurden heruntergeladen (" : If totalBytes=>100000000000 Then RuntimeError"Datei darf nicht grösser als 1 Gigabite sein!"
-    If posByte<1000000 Then Text 20, 100,"0,"+Left(posByte,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
-    If posByte>=1000000 And posByte<10000000 Then Text 20, 100, Left(posByte,1)+","+Mid(posByte,2,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
-    If posByte>=10000000 And posByte<100000000 Then Text 20, 100, Left(posByte,2)+","+Mid(posByte,3,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
-    If posByte>=100000000 And posByte<1000000000 Then Text 20, 100, Left(posByte,3)+","+Mid(posByte,4,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
-    If posByte>=1000000000 Then Text 20, 100, Left(posByte,4)+","+Mid(posByte,3,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)"
+    If posByte<1000000 Then Text 640, 70,"0,"+Left(posByte,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)",1
+    If posByte>=1000000 And posByte<10000000 Then Text 640, 70, Left(posByte,1)+","+Mid(posByte,2,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)",1
+    If posByte>=10000000 And posByte<100000000 Then Text 640, 70, Left(posByte,2)+","+Mid(posByte,3,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)",1
+    If posByte>=100000000 And posByte<1000000000 Then Text 640, 70, Left(posByte,3)+","+Mid(posByte,4,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)",1
+    If posByte>=1000000000 Then Text 640, 70, Left(posByte,4)+","+Mid(posByte,3,1)+"/" +bynpb$+Percent (posByte, totalBytes) + "%)",1
+If UpdImg=1 Then DrawImage UpdateB,640,575
+EndIf
 VWait
 EndIf
 End Function
@@ -293,13 +307,7 @@ CloseFile filein
 
 
 If FileType(".\info.txt")=1 Then
-
 filein = ReadFile("info.txt")
-SchriftN = LoadFont ("Arial",30,True)
-SetFont SchriftN
-ClsColor 253,202,13
-Cls
-Color 0,0,0
 Repeat
 DateiI$=ReadLine$(filein)
 If Left$(DateiI$,1)="#" Then
@@ -367,8 +375,15 @@ If INVA15<>0 And INVA16<>0 Then INNFEBV8$=Mid$(IDDIM$,INVA15+1,INVA16-INVA15-1)
 If INVA17<>0 And INVA18<>0 Then INNFEBV9$=Mid$(IDDIM$,INVA17+1,INVA18-INVA17-1)
 If INVA19<>0 And INVA20<>0 Then INNFEBV10$=Mid$(IDDIM$,INVA19+1,INVA20-INVA19-1)
 If INNFEBV1$=AV$ Or INNFEBV2$=AV$ Or INNFEBV3$=AV$ Or INNFEBV4$=AV$ Or INNFEBV5$=AV$ Or INNFEBV6$=AV$ Or INNFEBV7$=AV$ Or INNFEBV8$=AV$ Or INNFEBV9$=AV$ Or INNFEBV10$=AV$ Then DINMA=1 IPOISEA=1
+Else
+IPOISEA=1
 EndIf
 If IPOISEA=0 Then
+SchriftN = LoadFont ("Arial",30,True)
+SetFont SchriftN
+ClsColor 253,202,13
+Cls
+Color 0,0,0
 i=0
 Repeat
 i=i+1
@@ -376,7 +391,6 @@ If infoNE$(i)=IDDIM$ Then DINMA=1 Exit
 If i=999 Then DINMA=0 Exit
 Forever
 EndIf
-
 If FNANEWAZ=1 Then
 FNANEWAZ=0
 If DateiI$="!!!1E" Then WaitKey() : End
@@ -446,8 +460,6 @@ EndIf
 EndIf
 EndIf
 EndIf
-
-
 If DINMA=0 And DateiI$<>"???" And DateiI$<>"!!!1" And DateiI$<>"!!!2" And Left$(DateiI$,1)<>"#" And Left$(DateiI$,1)<>";" Then Print DateiI$ FNANEWAZ=1
 Until DateiI$=""
 CloseFile(filein)
@@ -455,9 +467,8 @@ CloseFile(filein)
 TileBlock TB
 SetFont SchriftLMSS
 Color 0,0,0
-Text 170,400,"Lernen mit Smiley"
+Text 640,390,"Lernen mit Smiley",1
 Delay 100
-
 EndIf
 
 
@@ -489,7 +500,7 @@ Locate 1,1
 FreeImage HGrundH
 HGrundH=LoadImage (".\Bilder\Sonnenuntergang.jpg")
 DrawImage HGrundH, 0,0
-FreeFont Schrift
+;FreeFont Schrift
 Schrift = LoadFont ("Arial",50,True)
 SetFont Schrift
 Color 0,0,0
@@ -508,13 +519,22 @@ ClsColor 255,155,255
 Cls
 Color 0,0,0
 Delay 100
+KTIBWG=1
+UptImgHL=1
 ZPFN$=zielpfad$
 zielpfad$=zielpfad$+".\"
-KTIBWG=1
-Dateiname$="Setup.html"
+Dateiname$="Update.jpg"
+rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Update.jpg")
+UptImgHL=0
+If FileType(".\Update.jpg")=1 Then
+UpdImg=1
+AutoMidHandle True
+UpdateB=LoadImage ("Update.jpg")
+MaskImage UpdateB,255,155,255
+EndIf
+Dateiname$="Setup.exe"
 rocket = LoadWebImage ("http://www.nicobosshard.ch/cgi-bin/Setup.exe")
-Datei$=".\Setup.exe"
-ExecFile Datei$
+ExecFile ".\Setup.exe"
 End
 EndIf
 If Taste=50 Then
@@ -525,7 +545,7 @@ FreeFont Schrift
 Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
-Text 170,400,"Lernen mit Smiley"
+Text 640,390,"Lernen mit Smiley",1
 Delay 100
 EndIf
 If Taste=51 Then
@@ -539,7 +559,7 @@ FreeFont Schrift
 Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
-Text 170,400,"Lernen mit Smiley"
+Text 640,390,"Lernen mit Smiley",1
 Delay 100
 EndIf
 EndIf
@@ -547,6 +567,7 @@ EndIf
 
 .KINVB2
 a$="n"
+Viewport 0,540,1280,100
 LProA
 Auswahl=LoadImage (".\Bilder\Gletscher.jpg") LProA
 Auswahl1a=LoadImage (".\Bilder\Spiel starten.jpg") LProA
@@ -714,7 +735,6 @@ MaskImage SWK2O,0,0,255
 MaskImage SWK3O,0,0,255
 MaskImage SWK4O,0,0,255
 MaskImage SWK5O,0,0,255
-
 TileImage TB
 
 
@@ -774,25 +794,27 @@ End
 
 .AnfangN
 FreeImage HGrundH
-;TB=LoadImage (".\Bilder\Titelbild.jpg")
 Schrift = LoadFont ("Arial",60,True)
 SchriftF = LoadFont ("Arial",50,True)
 Datum$=CurrentDate$()
 DATUMM$=Mid$(Datum$,4,3)
-If DATUMM$="Jan" Then DATUMM$="Januar"
-If DATUMM$="Feb" Then DATUMM$="Februar"
-If DATUMM$="Mar" Then DATUMM$="März"
-If DATUMM$="Apr" Then DATUMM$="April"
-If DATUMM$="May" Then DATUMM$="Mai"
-If DATUMM$="Jun" Then DATUMM$="Juni"
-If DATUMM$="Jul" Then DATUMM$="Juli"
-If DATUMM$="Aug" Then DATUMM$="August"
-If DATUMM$="Sep" Then DATUMM$="September"
-If DATUMM$="Oct" Then DATUMM$="Oktober"
-If DATUMM$="Nov" Then DATUMM$="November"
-If DATUMM$="Dec" Then DATUMM$="Dezember"
+If DATUMM$="Jan" Then WTBMON=1 : DATUMM$="Januar"
+If DATUMM$="Feb" Then WTBMON=2 : DATUMM$="Februar"
+If DATUMM$="Mar" Then WTBMON=3 : DATUMM$="März"
+If DATUMM$="Apr" Then WTBMON=4 : DATUMM$="April"
+If DATUMM$="May" Then WTBMON=5 : DATUMM$="Mai"
+If DATUMM$="Jun" Then WTBMON=6 : DATUMM$="Juni"
+If DATUMM$="Jul" Then WTBMON=7 : DATUMM$="Juli"
+If DATUMM$="Aug" Then WTBMON=8 : DATUMM$="August"
+If DATUMM$="Sep" Then WTBMON=9 : DATUMM$="September"
+If DATUMM$="Oct" Then WTBMON=10 : DATUMM$="Oktober"
+If DATUMM$="Nov" Then WTBMON=11 : DATUMM$="November"
+If DATUMM$="Dec" Then WTBMON=12 : DATUMM$="Dezember"
+SetBuffer BackBuffer()
+Init()
+Wochentag$=CalcDayOfWeek( Right$(Datum$,4),WTBMON, Left$(Datum$,2));Jahr,Monat,Tag
 Protokoll1$=" "
-Protokoll2$=Left$(Datum$,2)+" "+DATUMM$+" "+Right$(Datum$,4)
+Protokoll2$=Wochentag$+", "+Left$(Datum$,2)+". "+DATUMM$+" "+Right$(Datum$,4)
 ;Repeat
 ;JetztZeit = MilliSecs()
 ;Delay 25
@@ -810,7 +832,7 @@ FlushMouse
 FlushKeys
 
 Name$ = Input()
-
+NWTUDS=0
 
 If KeyHit(1)=True
 End
@@ -839,20 +861,63 @@ filein = ReadFile(Name$+".txt")
 ReadLine$(filein)
 ReadLine$(filein)
 ReadLine$(filein)
-ReadLine$(filein)
+ProtokollV$=ReadLine$(filein)
+If ProtokollV$="Protokoll (V 1.1):" Then
 For i=1 To 1499
 RST$(i)=ReadLine$(filein)
-If RST$(i)=Protokoll2$ Then Protokoll1$="" Protokoll2$="" Exit
+If RST$(i)=Protokoll2$ Then Protokoll1$="" Protokoll2$="" NWTUDS=1 Exit
+If RST$(i)="" Then Exit
+hfjdvbkvsl=hfjdvbkvsl+1
+If hfjdvbkvsl=25 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
+Next
+CloseFile filein
+Else
+ProtokollNVUE=1
+For i=1 To 1499
+RST$(i)=ReadLine$(filein)
+PDatK1$=Mid$(RST$(i),3,3)
+PDatK2$=Mid$(RST$(i),4,3)
+If PDatK1="Jan" Or PDatK2="Jan" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),1, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Januar "+Right$(RST$(i),4)
+If PDatK1="Feb" Or PDatK2="Feb" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),2, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Februar "+Right$(RST$(i),4)
+If PDatK1="Mär" Or PDatK2="Mär" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),3, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". März "+Right$(RST$(i),4)
+If PDatK1="Apr" Or PDatK2="Apr" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),4, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". April "+Right$(RST$(i),4)
+If PDatK1="Mai" Or PDatK2="Mai" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),5, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Mai "+Right$(RST$(i),4)
+If PDatK1="Jun" Or PDatK2="Jun" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),6, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Juni "+Right$(RST$(i),4)
+If PDatK1="Jul" Or PDatK2="Jul" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),7, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Juli "+Right$(RST$(i),4)
+If PDatK1="Aug" Or PDatK2="Aug" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),8, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". August "+Right$(RST$(i),4)
+If PDatK1="Sep" Or PDatK2="Sep" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),9, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". September "+Right$(RST$(i),4)
+If PDatK1="Okt" Or PDatK2="Okt" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),10, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Oktober "+Right$(RST$(i),4)
+If PDatK1="Nov" Or PDatK2="Nov" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),11, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". November "+Right$(RST$(i),4)
+If PDatK1="Dez" Or PDatK2="Dez" Then RST$(i)=CalcDayOfWeek( Right$(RST$(i),4),12, Left$(RST$(i),2))+", "+Left$(RST$(i),2)+". Dezember "+Right$(RST$(i),4)
+;Jahr,Monat,Tag
+
+If RST$(i)=Protokoll2$="" Then Protokoll1$="" Protokoll2$="" NWTUDS=1 Exit
+If RST$(i)="" Then Exit
 hfjdvbkvsl=hfjdvbkvsl+1
 If hfjdvbkvsl=25 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
 Next
 CloseFile filein
 
+fileout = WriteFile(Name$+".txt")
+WriteLine fileout, "Aufgaben="+Aufgaben
+WriteLine fileout, "Schwierigkeitsstufe="+Schwierigkeitsstufe
+WriteLine fileout, "Spielfigur="+Spielfigur$
+WriteLine fileout, "Protokoll (V 1.1):"
+For i=1 To 1499
+If RST$(i)="" Then Exit
+WriteLine fileout, RST$(i)
+Next
+If Not Protokoll$="" Then WriteLine fileout, Protokoll$
+CloseFile fileout
+EndIf
+
+If NWTUDS=0 Then
 Protokoll$=Protokoll1$
 SpielstandS
 Protokoll$=Protokoll2$
 SpielstandS
 Protokoll$=""
+EndIf
 
 SeedRnd MilliSecs()
 If Aufgaben=0 Then Sound$="Harfe 3"
@@ -1174,7 +1239,7 @@ FreeFont Schrift
 Schrift = LoadFont ("Arial",130,True)
 SetFont Schrift
 Color 0,0,0
-Text 640,375,"Lernen mit Smiley",1
+Text 640,390,"Lernen mit Smiley",1
 Text 640,525,"von Nico Bosshard",1
 VWait
 SetBuffer FrontBuffer()
@@ -1412,71 +1477,102 @@ End
 
 .Protokoll
 ClsVB
-PROAZOZ=50
+;r=251/0.5
+;g=192/0.5
+;b=0
+PROAZOZ=100
 hfjdvbkvsl=0
-PSeiten=1
+PLienie=2
 filein = ReadFile(Name$+".txt")
-ReadLine$(filein)
 ReadLine$(filein)
 ReadLine$(filein)
 ReadLine$(filein)
 For i=1 To 1499
 RST$(i)=ReadLine$(filein)
-If RST$(i+1)="" Then Exit
-hfjdvbkvsl=hfjdvbkvsl+1
-If hfjdvbkvsl=30 Then hfjdvbkvsl=0 PSeiten=PSeiten+1
+If RST$(i)="" Then Exit
+PLienie=PLienie+1
 Next
 CloseFile filein
+PLienie=PLienie-3
+If PLienie>19 Then PLienie=PLienie-19
+
+x=0
+Gosub SProtokoll
+x=72
+Gosub SProtokoll
+x=1136
+Gosub SProtokoll
+x=1208
+Gosub SProtokoll
 
 
-ClsColor 253,202,13
+Viewport 144,0,992,1024
+ClsColor 253,243,0;253,202,13
 Cls
-Color 1,1,1
-PSeitenA=1
+Color 0,0,0
 Schrift55 = LoadFont ("Arial",55,True)
 SetFont Schrift55
-Text 640,10,"Protokoll Seite "+PSeitenA+"/"+PSeiten,1
-Schrift30 = LoadFont ("Arial",30,True)
+Text 640,10,"Protokoll Siete "+(i/30)+"/"+(PLienie/30+1),1
+Schrift30 = LoadFont ("Arial",37,True)
 SetFont Schrift30
-Text 640,970,"Weiter mit beliebiger Taste",1
-SchriftN = LoadFont ("Arial",29)
+Text 640,75,"Zur Hauptauswahl mit beliebiger Taste",1
+SchriftN = LoadFont ("Arial",35)
 SetFont SchriftN
-SchriftF = LoadFont ("Arial",29,True)
-SchriftD = LoadFont ("Arial",35,True)
-filein = ReadFile(Name$+".txt")
-ReadLine$(filein)
-ReadLine$(filein)
-ReadLine$(filein)
-ReadLine$(filein)
+SchriftF = LoadFont ("Arial",35,True)
+SchriftD = LoadFont ("Arial",41,True)
 NUESSCH=0
-For i=1 To 1499
+i=PLienie
+While HJGzjtgft=0;GetKey()=0
+While Not NUESSCH*35+PROAZOZ+PDBEGA>1200
 NUESSCH=NUESSCH+1
-RST$(i)=ReadLine$(filein)
-If RST$(i)="Plusrechnen" Or RST$(i)="Wörterdiktat" Or RST$(i)="Textverständnis (Der Standhafte Zinnsoldat)" Or RST$(i)="Nomen" Or RST$(i)="Labyrinth (Mit Hilfe der Lösung)" Or RST$(i)="Labyrinth" Or RST$(i)="Verben" Or RST$(i)="Wörter erraten" Or RST$(i)="Zeitverstänbtnis" Or RST$(i)="Witze" Or RST$(i)="Artikel" Or RST$(i)="Zahlen erraten" Or RST$(i)="Tennis" Or RST$(i)="Wortfeld Sagen" Or RST$(i)="Lotto" Or RST$(i)="Wörter merken" Or RST$(i)="Rechenspiel" Or RST$(i)="Schnellrechnen" Or RST$(i)="Adjektive" Or RST$(i)="Pronomen" Or RST$(i)="Letzte Aufgabe" Then SetFont SchriftF Else SetFont SchriftN
-PDatK1$=Mid$(RST$(i),3,3)
-PDatK2$=Mid$(RST$(i),4,3)
-If PDatK1="Jan" Or PDatK1="Feb" Or PDatK1="Mär" Or PDatK1="Apr" Or PDatK1="Mai" Or PDatK1="Jun" Or PDatK1="Jul" Or PDatK1="Aug" Or PDatK1="Sep" Or PDatK1="Okt" Or PDatK1="Nov" Or PDatK1="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+1
-If PDatK2="Jan" Or PDatK2="Feb" Or PDatK2="Mär" Or PDatK2="Apr" Or PDatK2="Mai" Or PDatK2="Jun" Or PDatK2="Jul" Or PDatK2="Aug" Or PDatK2="Sep" Or PDatK2="Okt" Or PDatK2="Nov" Or PDatK2="Dez" Then SetFont SchriftD PDBEGA=PDBEGA+1
-Text 640,((NUESSCH*29)+PROAZOZ)+PDBEGA,RST$(i),1
+i=i+1
 If RST$(i)="" Then Exit
-If NUESSCH=30 And RST$(i+1)<>"" Then
-WaitKey
+If RST$(i)="Plusrechnen" Or RST$(i)="Wörterdiktat" Or RST$(i)="Textverständnis (Der Standhafte Zinnsoldat)" Or RST$(i)="Nomen" Or RST$(i)="Labyrinth (Mit Hilfe der Lösung)" Or RST$(i)="Labyrinth" Or RST$(i)="Verben" Or RST$(i)="Wörter erraten" Or RST$(i)="Zeitverstänbtnis" Or RST$(i)="Witze" Or RST$(i)="Artikel" Or RST$(i)="Zahlen erraten" Or RST$(i)="Tennis" Or RST$(i)="Wortfeld Sagen" Or RST$(i)="Lotto" Or RST$(i)="Wörter merken" Or RST$(i)="Rechenspiel" Or RST$(i)="Schnellrechnen" Or RST$(i)="Adjektive" Or RST$(i)="Pronomen" Or RST$(i)="Letzte Aufgabe" Then SetFont SchriftF : PDBEGA=PDBEGA+20 : Color 0,0,0 Else SetFont SchriftN : Color 110,110,110
+PDatK$=Left$(RST$(i),6)
+If PDatK="Montag" Or PDatK="Dienst" Or PDatK="Mittwo" Or PDatK="Donner" Or PDatK="Freita" Or PDatK="Samsta" Or PDatK="Sonnta" Then SetFont SchriftD : Color 0,0,0; PDBEGA=PDBEGA+10
+Text 640,((NUESSCH*35)+PROAZOZ)+PDBEGA,RST$(i),1
+Wend
+i=i-NUESSCH
+MZSP=0
+While MZSP=0
+MZSP=MouseZSpeed()
+;If Not GetKey()=0 Then Viewport 0,0,1280,1024 : Goto Auswahl
+If KeyDown(78)=True Then
+If KeyDown(19)=True And r<250 Then r=r+10 : Delay 100 : Goto NNN
+If KeyDown(34)=True And g<250 Then g=g+10 : Delay 100 : Goto NNN
+If KeyDown(48)=True And b<250 Then b=b+10 : Delay 100 : Goto NNN
+EndIf
+If KeyDown(74)=True Then
+If KeyDown(19)=True And r>0 Then r=r-10 : Delay 100 : Goto NNN
+If KeyDown(34)=True And g>0 Then g=g-10 : Delay 100 : Goto NNN
+If KeyDown(48)=True And b>0 Then b=b-10 : Delay 100 : Goto NNN
+EndIf
+Delay 10
+Wend
+.NNN
 Cls
-PROAZOZ=50
+MZSP=MZSP*(-1)
+i=i+MZSP
+If i>PLienie Then i=PLienie
+If i<1 Then i=1
+PROAZOZ=100
 PDBEGA=0
-PSeitenA=PSeitenA+1
 NUESSCH=0
 SetFont Schrift55
-Text 640,10,"Protokoll Seite "+PSeitenA+"/"+PSeiten,1
+Color r,g,b
+Text 640,10,"Protokoll Siete "+(i/30+1)+"/"+(PLienie/30+1),1
 SetFont Schrift30
-Text 640,970,"Weiter mit beliebiger Taste",1
-EndIf
-Next
-
-CloseFile filein
-
-
-WaitKey
+Text 640,75,"Zur Hauptauswahl mit beliebiger Taste",1
+Color 0,0,0
+;DrawImage TB,72,0
+;DrawImage TB,72*2,0
+;DrawImage TB,72*3,0
+;DrawImage TB,72*4,0
+;DrawImage TB,72,65
+;DrawImage TB,72*2,65
+;DrawImage TB,72*3,65
+Wend
+Viewport 0,0,1280,1024
 Goto Auswahl
 End
 
@@ -8239,7 +8335,7 @@ fileout = WriteFile(Name$+".txt")
 WriteLine fileout, "Aufgaben="+Aufgaben
 WriteLine fileout, "Schwierigkeitsstufe="+Schwierigkeitsstufe
 WriteLine fileout, "Spielfigur="+Spielfigur$
-WriteLine fileout, "Protokoll="
+WriteLine fileout, "Protokoll (V 1.1):"
 Repeat
 zwfzdpi=zwfzdpi+1
 If RST$(zwfzdpi+1)="" Then Exit
@@ -8254,9 +8350,14 @@ End Function
 Function SpielstandS()
 If Aufgaben>100 Then Aufgaben=100
 filein = ReadFile(Name$+".txt")
-ReadLine$(filein)
-ReadLine$(filein)
-ReadLine$(filein)
+Aufgabenst$=ReadLine$(filein)
+Aufgabenst$=Right$(Aufgabenst$,Len(Aufgabenst$)-Instr(Aufgabenst$,"="))
+Aufgaben=Aufgabenst$
+SchwierigkeitsstufeRL$=ReadLine$(filein)
+SchwierigkeitsstufeRL$=Right$(SchwierigkeitsstufeRL$,Len(SchwierigkeitsstufeRL$)-Instr(SchwierigkeitsstufeRL$,"="))
+Schwierigkeitsstufe=SchwierigkeitsstufeRL$
+Spielfigur$=ReadLine$(filein)
+Spielfigur$=Right$(Spielfigur$,Len(Spielfigur$)-Instr(Spielfigur$,"="))
 ReadLine$(filein)
 For i=1 To 1499
 RST$(i)=ReadLine$(filein)
@@ -8266,27 +8367,13 @@ fileout = WriteFile(Name$+".txt")
 WriteLine fileout, "Aufgaben="+Aufgaben
 WriteLine fileout, "Schwierigkeitsstufe="+Schwierigkeitsstufe
 WriteLine fileout, "Spielfigur="+Spielfigur$
-WriteLine fileout, "Protokoll="
-Repeat
-zwfzdpi=zwfzdpi+1
-If RST$(zwfzdpi)="" Then Exit
-WriteLine fileout, RST$(zwfzdpi)
-Forever
+WriteLine fileout, "Protokoll (V 1.1):"
+For i=1 To 1499
+If RST$(i)="" Then Exit
+WriteLine fileout, RST$(i)
+Next
 If Not Protokoll$="" Then WriteLine fileout, Protokoll$
 CloseFile fileout
-
-
-
-filein = ReadFile(Name$+".txt")
-Aufgabenst$=ReadLine$(filein)
-Aufgabenst$=Right$(Aufgabenst$,Len(Aufgabenst$)-Instr(Aufgabenst$,"="))
-Aufgaben=Aufgabenst$
-SchwierigkeitsstufeRL$=ReadLine$(filein)
-SchwierigkeitsstufeRL$=Right$(SchwierigkeitsstufeRL$,Len(SchwierigkeitsstufeRL$)-Instr(SchwierigkeitsstufeRL$,"="))
-Schwierigkeitsstufe=SchwierigkeitsstufeRL$
-Spielfigur$=ReadLine$(filein)
-Spielfigur$=Right$(Spielfigur$,Len(Spielfigur$)-Instr(Spielfigur$,"="))
-CloseFile filein
 Protokoll$=""
 End Function
 
@@ -8361,6 +8448,122 @@ If MouseDown(1) And JaO=1 Then Exit
 If MouseDown(1) And NeinO=1 Then Exit
 Forever
 End Function
+
+
+
+;Init()------------------------------------------- 
+
+Function Init()
+Restore dataSet
+
+For i = 0 To 11 : Read mDayPerMonth( i ) : Next
+For i = 0 To 7 : Read mWeekDays( i ) : Next 
+End Function
+
+;Idiv()-------------------------------------------
+
+Function idiv( nDivident, nDivisor )
+Return Floor( nDivident / nDivisor )
+End Function
+
+;LeapYear()---------------------------------------
+
+Function LeapYear( nYear )
+Return ( ( nYear And 3 ) = 0 ) And ( ( ( nYear Mod 100 ) <> 0 ) Or ( ( nYear Mod 400 ) = 0 ) )
+End Function
+
+;DaysPerMonth()-----------------------------------
+
+Function DaysPerMonth( nYear, nMonth )
+Local nResult = 0
+
+nMonth = nMonth - 1
+nResult = mDayPerMonth( nMonth )
+
+If ( nMonth = 1 ) Then
+If ( LeapYear( nYear ) ) nResult = nResult + 1
+End If
+
+Return nResult
+End Function
+
+;CheckDate----------------------------------------
+
+Function CheckDate( nYear, nMonth, nDay )
+If ( nYear < 1582 ) Return 0
+If ( nYear = 1582 ) If ( nMonth < 10 ) Return 0
+If ( nYear = 1582 ) If ( nMonth = 10 ) If ( nDay < 15 ) Return 0
+If ( ( nMonth < 1 ) Or ( nMonth > 12 ) ) Return 0
+If ( ( nDay < 1 ) Or ( nDay > DaysPerMonth( nYear, nMonth ) ) ) Return 0
+
+Return 1
+End Function 
+
+;CalcDate-----------------------------------------
+
+Function JulDate( nYear, nMonth, nDay )
+Local nTmpYear, nTmpMonth, nResult = -1
+
+If ( nYear = 0 ) Return nResult
+
+If ( nMonth < 3 )
+nTmpYear = nYear - 1
+nTmpMonth = nMonth + 12
+Else
+nTmpYear = nYear
+nTmpMonth = nMonth
+End If
+
+nTmpMonth = nTmpMonth + 1
+nResult = nTmpYear * 365 + idiv( nTmpYear, 4 ) + idiv( ( nTmpMonth * 306 ), 10 ) + nDay + 1720995
+
+If ( nResult > 2299170 )
+nResult = nResult - idiv( nTmpYear, 100 ) + idiv( nTmpYear, 400 ) + 2 
+Else If ( nResult > 2299160 )
+nResult = nResult - idiv( nTmpYear, 100 ) + idiv( nTmpYear, 400 ) + 12
+End If
+
+Return nResult
+End Function
+
+;CalcDayOfWeek------------------------------------
+
+Function CalcDayOfWeek$( nYear, nMonth, nDay )
+If ( nYear < 100 )
+nYear = nYear + 1900
+End If
+
+nWeekDay# = JulDate( nYear, nMonth, nDay ) Mod 7
+If ( CheckDate( nYear, nMonth, nDay ) = 0 ) nWeekDay = 7
+
+Return mWeekDays( nWeekDay )
+End Function
+
+;DataSet------------------------------------------
+
+.dataSet
+Data 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+Data "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag", "Datum ungueltig"
+
+
+.SProtokoll
+DrawImage TB,x,0
+DrawImage TB,x,65
+DrawImage TB,x,130
+DrawImage TB,x,195
+DrawImage TB,x,260
+DrawImage TB,x,325
+DrawImage TB,x,390
+DrawImage TB,x,455
+DrawImage TB,x,520
+DrawImage TB,x,585
+DrawImage TB,x,650
+DrawImage TB,x,715
+DrawImage TB,x,780
+DrawImage TB,x,845
+DrawImage TB,x,910
+DrawImage TB,x,975
+Return
 
 
 Function ClsVB()
